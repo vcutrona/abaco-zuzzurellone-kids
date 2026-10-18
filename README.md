@@ -55,7 +55,7 @@ python3 -m http.server 8000
 
 ## Versioning
 
-The game follows [Semantic Versioning](https://semver.org/). The current version is shown in the footer of the start screens and is set by the `VERSIONE` constant at the top of the script. Each release should update that constant and get a matching Git tag (for example `v1.0.0`).
+The game follows [Semantic Versioning](https://semver.org/). The current version is shown in the footer of the start screens and is set by the `VERSION` constant at the top of the script. Each release should update that constant and get a matching Git tag (for example `v1.0.0`).
 
 ## Customisation
 
@@ -63,21 +63,21 @@ All settings are at the top of the script in `index.html`:
 
 | Constant | Default | Meaning |
 |---|---|---|
-| `OPZIONI_TENTATIVI_CPU` | `[6, 8, 10, 12, 15]` | Guess limits the child can give the computer |
-| `MAX_TENTATIVI_CPU` | `10` | Preselected guess limit for the computer |
-| `MAX_TENTATIVI_TU` | `20` | Guesses available to the child |
-| `NUM_AIUTI` | `4` | Number of hints |
-| `PAROLE_CPU` | `100` | How many words the computer knows in each game (a random subset) |
-| `RUMORE` | `0.4` | How far the computer strays from the middle of the interval (±40%) |
+| `CPU_GUESS_OPTIONS` | `[6, 8, 10, 12, 15]` | Guess limits the child can give the computer |
+| `MAX_CPU_GUESSES` | `10` | Preselected guess limit for the computer |
+| `MAX_CHILD_GUESSES` | `20` | Guesses available to the child |
+| `NUM_HINTS` | `4` | Number of hints |
+| `CPU_WORDS` | `100` | How many words the computer knows in each game (a random subset) |
+| `NOISE` | `0.4` | How far the computer strays from the middle of the interval (±40%) |
 
 The computer does not play a perfect binary search. It picks a word near the middle of the remaining interval, with some random noise, and it only knows a random subset of 100 words in each game. This keeps it beatable: a child who thinks of an unusual word has a good chance of winning.
 
-**Word lists.** The lists are `CATEGORIE_IT` and `CATEGORIE_EN`. Each category has a group (used for word selection), a hint sentence and a list of words. Duplicates and ordering are handled automatically.
+**Word lists.** The lists are `CATEGORIES_IT` and `CATEGORIES_EN`. Each category has a group (used for word selection), a hint sentence and a list of words. Duplicates and ordering are handled automatically.
 
 **Adding a language:**
-1. Add an entry to `LINGUE` with the interval words, an example word, the word list and the surprise names.
-2. Add its texts to `TESTI`.
-3. Add its labels to `GRUPPI`.
+1. Add an entry to `LANGUAGES` with the interval words, an example word, the word list and the surprise names.
+2. Add its texts to `TEXTS`.
+3. Add its labels to `GROUPS`.
 
 ## Privacy
 

@@ -10,5 +10,5 @@ message = "Bump version to v{new_version}"
 
 [[tool.bumpversion.files]]
 filename = "index.html"
-search = 'const VERSIONE = "{current_version}";'
-replace = 'const VERSIONE = "{new_version}";'
+search = 'const VERSION = "{current_version}";'
+replace = 'const VERSION = "{new_version}";'

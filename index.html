@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#E3F2FF">
 <script>
-  // Tema iniziale: segue quello del dispositivo. Impostato subito per evitare il lampo di colore.
-  document.documentElement.dataset.tema = matchMedia("(prefers-color-scheme: dark)").matches ? "scuro" : "chiaro";
+  // Initial theme: follows the device. Set right away to avoid a colour flash.
+  document.documentElement.dataset.theme = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 </script>
 <title>Abaco… Zuzzurellone!</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cline x1='5' y1='32' x2='59' y2='32' stroke='%238A6A4F' stroke-width='8' stroke-linecap='round'/%3E%3Ccircle cx='20' cy='32' r='9.5' fill='%23FFC23D'/%3E%3Ccircle cx='44' cy='32' r='9.5' fill='%23FF5A5F'/%3E%3C/svg%3E">
@@ -14,44 +14,44 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
 <style>
-  /* ===== Stile mobile-first: le regole base valgono per lo smartphone,
-     i blocchi @media (min-width) aggiungono spazio per tablet e computer ===== */
+  /* ===== Mobile-first styles: the base rules are for phones,
+     the @media (min-width) blocks add room for tablets and computers ===== */
   :root {
     color-scheme: light;
-    --sfondo: #E3F2FF;
-    --carta: #FFFFFF;
-    --inchiostro: #1F2A44;
-    --tenue: #5B6785;
-    --spento: #C9D3E3;
-    --filo: #8A6A4F;
-    --verde: #12B5A5;
-    --verde-scuro: #0B8478;
-    --viola: #8E5CF6;
-    --viola-scuro: #6A3FD0;
-    --giallo: #FFC23D;
-    --giallo-scuro: #D99A12;
-    --rosso: #FF5A5F;
-    --blu: #3D7BF7;
-    --ombra: rgba(31, 42, 68, .18);
+    --bg: #E3F2FF;
+    --card: #FFFFFF;
+    --ink: #1F2A44;
+    --muted: #5B6785;
+    --off: #C9D3E3;
+    --wire: #8A6A4F;
+    --green: #12B5A5;
+    --green-dark: #0B8478;
+    --purple: #8E5CF6;
+    --purple-dark: #6A3FD0;
+    --yellow: #FFC23D;
+    --yellow-dark: #D99A12;
+    --red: #FF5A5F;
+    --blue: #3D7BF7;
+    --shadow: rgba(31, 42, 68, .18);
     --font: "Baloo 2", "Trebuchet MS", Verdana, system-ui, sans-serif;
-    --raggio: 20px;
+    --radius: 20px;
   }
-  :root[data-tema="scuro"] {
+  :root[data-theme="dark"] {
     color-scheme: dark;
-    --sfondo: #172036;
-    --carta: #223050;
-    --inchiostro: #F2F5FB;
-    --tenue: #A8B4CF;
-    --spento: #3A4868;
-    --filo: #B48D6B;
-    --ombra: rgba(0, 0, 0, .35);
+    --bg: #172036;
+    --card: #223050;
+    --ink: #F2F5FB;
+    --muted: #A8B4CF;
+    --off: #3A4868;
+    --wire: #B48D6B;
+    --shadow: rgba(0, 0, 0, .35);
   }
   * { box-sizing: border-box; }
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
   html, body { margin: 0; }
   body {
-    background: var(--sfondo);
-    color: var(--inchiostro);
+    background: var(--bg);
+    color: var(--ink);
     font-family: var(--font);
     font-size: 1.05rem;
     line-height: 1.4;
@@ -65,78 +65,78 @@
   }
   [hidden] { display: none !important; }
 
-  /* Logo: le due parole estreme del dizionario, agli estremi di un filo */
+  /* Logo: the two end words of the dictionary, at the two ends of a wire */
   .logo { display: flex; align-items: center; gap: .4rem; }
-  /* titolo grande del gioco, nelle schermate del nome e del menu */
-  .logo.titolo { margin: .25rem 0 1rem; }
+  /* big game title, on the name and menu screens */
+  .logo.title { margin: .25rem 0 1rem; }
   .logo span { font-weight: 800; font-size: clamp(1rem, 5.4vw, 2.4rem); line-height: 1; padding: .35em .45em .25em; border-radius: 12px; color: #fff; }
-  .logo .da { background: var(--verde); }
-  .logo .a { background: var(--viola); }
-  .logo i { flex: 1; height: 5px; background: var(--filo); border-radius: 3px; position: relative; min-width: 1.5rem; }
+  .logo .from { background: var(--green); }
+  .logo .to { background: var(--purple); }
+  .logo i { flex: 1; height: 5px; background: var(--wire); border-radius: 3px; position: relative; min-width: 1.5rem; }
   .logo i::before, .logo i::after { content: ""; position: absolute; top: 50%; width: clamp(8px, 2.6vw, 14px); height: clamp(8px, 2.6vw, 14px); border-radius: 50%; transform: translateY(-50%); }
-  .logo i::before { left: 25%; background: var(--giallo); }
-  .logo i::after { left: 55%; background: var(--rosso); }
-  .logo.piccolo { margin: 0; }
-  .logo.piccolo span { font-size: var(--t, 1rem); border-radius: 8px; }
-  .logo.piccolo i { min-width: .9rem; }
-  .logo.piccolo i::before, .logo.piccolo i::after { width: 9px; height: 9px; }
+  .logo i::before { left: 25%; background: var(--yellow); }
+  .logo i::after { left: 55%; background: var(--red); }
+  .logo.mini { margin: 0; }
+  .logo.mini span { font-size: var(--t, 1rem); border-radius: 8px; }
+  .logo.mini i { min-width: .9rem; }
+  .logo.mini i::before, .logo.mini i::after { width: 9px; height: 9px; }
 
   h1, h2, h3 { font-weight: 800; line-height: 1.15; margin: 0 0 .5rem; }
   h1 { font-size: clamp(1.5rem, 6.5vw, 2.3rem); }
   h2 { font-size: clamp(1.3rem, 5.5vw, 1.8rem); }
   p { margin: 0 0 .9rem; max-width: 60ch; }
-  .tenue { color: var(--tenue); }
+  .muted { color: var(--muted); }
 
-  .pannello { background: var(--carta); border-radius: var(--raggio); padding: 1rem; box-shadow: 0 5px 0 var(--ombra); }
+  .panel { background: var(--card); border-radius: var(--radius); padding: 1rem; box-shadow: 0 5px 0 var(--shadow); }
 
-  /* font-size ≥ 16px: evita lo zoom automatico di iOS quando si tocca il campo */
+  /* font-size ≥ 16px: avoids iOS auto-zoom when the field is tapped */
   input[type=text], input[type=password] {
     width: 100%; min-height: 3.25rem; font: inherit; font-size: 1.4rem; font-weight: 700;
     text-transform: uppercase; letter-spacing: .03em;
-    padding: .4rem .8rem; border-radius: 14px; border: 4px solid var(--spento);
-    background: var(--sfondo); color: var(--inchiostro);
+    padding: .4rem .8rem; border-radius: 14px; border: 4px solid var(--off);
+    background: var(--bg); color: var(--ink);
   }
-  input:focus { outline: none; border-color: var(--blu); }
-  input::placeholder { text-transform: none; letter-spacing: 0; color: var(--tenue); font-weight: 500; font-size: 1.1rem; }
+  input:focus { outline: none; border-color: var(--blue); }
+  input::placeholder { text-transform: none; letter-spacing: 0; color: var(--muted); font-weight: 500; font-size: 1.1rem; }
 
   button { font: inherit; cursor: pointer; touch-action: manipulation; }
   .btn {
     min-height: 3.25rem; font-weight: 800; font-size: 1.15rem; border: 0; border-radius: 16px;
-    padding: .55rem 1.1rem .45rem; color: #fff; background: var(--blu);
+    padding: .55rem 1.1rem .45rem; color: #fff; background: var(--blue);
     box-shadow: 0 5px 0 #2456C0; transition: transform .08s, box-shadow .08s;
   }
   .btn:active { transform: translateY(4px); box-shadow: 0 1px 0 #2456C0; }
   .btn:disabled { opacity: .45; cursor: default; transform: none; }
-  .btn.verde { background: var(--verde); box-shadow: 0 5px 0 var(--verde-scuro); }
-  .btn.viola { background: var(--viola); box-shadow: 0 5px 0 var(--viola-scuro); }
-  .btn.giallo { background: var(--giallo); color: #3A2A00; box-shadow: 0 5px 0 var(--giallo-scuro); }
-  .btn.verde:active { box-shadow: 0 1px 0 var(--verde-scuro); }
-  .btn.viola:active { box-shadow: 0 1px 0 var(--viola-scuro); }
-  .btn.giallo:active { box-shadow: 0 1px 0 var(--giallo-scuro); }
+  .btn.green { background: var(--green); box-shadow: 0 5px 0 var(--green-dark); }
+  .btn.purple { background: var(--purple); box-shadow: 0 5px 0 var(--purple-dark); }
+  .btn.yellow { background: var(--yellow); color: #3A2A00; box-shadow: 0 5px 0 var(--yellow-dark); }
+  .btn.green:active { box-shadow: 0 1px 0 var(--green-dark); }
+  .btn.purple:active { box-shadow: 0 1px 0 var(--purple-dark); }
+  .btn.yellow:active { box-shadow: 0 1px 0 var(--yellow-dark); }
   .btn:disabled { box-shadow: none; }
-  .link { min-height: 2.75rem; background: none; border: 0; color: var(--tenue); font-weight: 700; text-decoration: underline; padding: .4rem .5rem; }
-  :focus-visible { outline: 4px solid var(--blu); outline-offset: 3px; }
+  .link { min-height: 2.75rem; background: none; border: 0; color: var(--muted); font-weight: 700; text-decoration: underline; padding: .4rem .5rem; }
+  :focus-visible { outline: 4px solid var(--blue); outline-offset: 3px; }
 
-  .riga { display: flex; gap: .6rem; flex-wrap: wrap; align-items: center; margin-top: .9rem; }
-  .riga-input { display: flex; gap: .5rem; }
-  .riga-input input { flex: 1; min-width: 0; }
-  .riga-input .btn { flex: none; }
+  .row { display: flex; gap: .6rem; flex-wrap: wrap; align-items: center; margin-top: .9rem; }
+  .input-row { display: flex; gap: .5rem; }
+  .input-row input { flex: 1; min-width: 0; }
+  .input-row .btn { flex: none; }
 
-  /* Menu: una colonna sul telefono, due dal tablet */
-  .modi { display: grid; gap: .9rem; grid-template-columns: 1fr; grid-auto-rows: 1fr; margin: 1rem 0; }
-  .modo {
-    text-align: left; border: 0; border-radius: var(--raggio); padding: 1rem 1.1rem; color: #fff;
+  /* Menu: one column on phones, two from tablets */
+  .modes { display: grid; gap: .9rem; grid-template-columns: 1fr; grid-auto-rows: 1fr; margin: 1rem 0; }
+  .mode {
+    text-align: left; border: 0; border-radius: var(--radius); padding: 1rem 1.1rem; color: #fff;
     display: grid; grid-template-columns: auto 1fr; column-gap: .9rem; row-gap: .15rem; align-items: center;
     touch-action: manipulation;
   }
-  .modo .emoji { font-size: 2.2rem; line-height: 1; grid-row: span 2; }
-  .modo strong { font-size: 1.35rem; line-height: 1.1; }
-  .modo span:not(.emoji) { font-size: 1rem; opacity: .95; }
-  .modo.uno { background: var(--verde); box-shadow: 0 5px 0 var(--verde-scuro); }
-  .modo.due { background: var(--viola); box-shadow: 0 5px 0 var(--viola-scuro); }
-  .modo:active { transform: translateY(4px); box-shadow: none; }
-  /* «Come si gioca»: aperto all'inizio, con una freccia che fa capire che si può chiudere e riaprire */
-  .regole { margin-top: 1rem; }
+  .mode .emoji { font-size: 2.2rem; line-height: 1; grid-row: span 2; }
+  .mode strong { font-size: 1.35rem; line-height: 1.1; }
+  .mode span:not(.emoji) { font-size: 1rem; opacity: .95; }
+  .mode.one { background: var(--green); box-shadow: 0 5px 0 var(--green-dark); }
+  .mode.two { background: var(--purple); box-shadow: 0 5px 0 var(--purple-dark); }
+  .mode:active { transform: translateY(4px); box-shadow: none; }
+  /* "How to play": open at first, with an arrow that shows it can be closed and reopened */
+  .rules { margin-top: 1rem; }
   details summary { font-weight: 800; cursor: pointer; min-height: 2.75rem; display: flex; align-items: center; gap: .5rem; list-style: none; }
   details summary::-webkit-details-marker { display: none; }
   details summary::after {
@@ -149,427 +149,427 @@
   details ol { padding-left: 1.3rem; margin: .5rem 0 0; }
   details li { margin-bottom: .3rem; }
 
-  /* Barra superiore di gioco */
-  /* Testata su tre colonne: Menu a sinistra, logo piccolo al centro, interruttore del tema a destra.
-     Le colonne laterali sono uguali, così il logo resta centrato sullo schermo. */
-  /* --t è la misura comune della testata: logo piccolo e interruttore la usano entrambi,
-     così hanno sempre la stessa altezza (1.6 volte --t) a ogni larghezza */
-  .testata { --t: clamp(.8rem, 3.4vw, 1.05rem); display: grid; grid-template-columns: minmax(max-content, 1fr) auto minmax(max-content, 1fr); align-items: center; gap: .5rem; min-height: 2.75rem; margin-bottom: .6rem; }
-  .testata .link { grid-column: 1; justify-self: start; padding-left: 0; }
-  .testata .logo { grid-column: 2; }
-  /* telefoni: di «⬅ Menu» resta solo la freccia, così il logo può essere più grande e centrato */
-  @media (max-width: 339px) { .testata { --t: .7rem; } }
-  @media (max-width: 419px) { .testata { gap: .3rem; } .testata .testo-menu { display: none; } .testata .link { min-width: 2.75rem; font-size: 1.3rem; text-decoration: none; } }
-  /* gruppo dei comandi a destra: oggi il tema, in futuro anche la lingua */
-  .comandi { grid-column: 3; justify-self: end; display: flex; align-items: center; gap: .6rem; }
+  /* Top bar */
+  /* Header on three columns: Menu on the left, small logo in the middle, theme switch on the right.
+     The side columns are equal, so the logo stays centred on the screen. */
+  /* --t is the shared header size: the small logo and the switches all use it,
+     so they always have the same height (1.6 times --t) at every width */
+  .topbar { --t: clamp(.8rem, 3.4vw, 1.05rem); display: grid; grid-template-columns: minmax(max-content, 1fr) auto minmax(max-content, 1fr); align-items: center; gap: .5rem; min-height: 2.75rem; margin-bottom: .6rem; }
+  .topbar .link { grid-column: 1; justify-self: start; padding-left: 0; }
+  .topbar .logo { grid-column: 2; }
+  /* phones: only the arrow of "⬅ Menu" is left, so the logo can be bigger and centred */
+  @media (max-width: 339px) { .topbar { --t: .7rem; } }
+  @media (max-width: 419px) { .topbar { gap: .3rem; } .topbar .menu-label { display: none; } .topbar .link { min-width: 2.75rem; font-size: 1.3rem; text-decoration: none; } }
+  /* group of controls on the right: the theme today, more controls in the future */
+  .controls { grid-column: 3; justify-self: end; display: flex; align-items: center; gap: .6rem; }
 
-  /* Interruttore sole/luna, misurato in em sulla stessa --t del logo */
-  .tema {
+  /* Sun/moon switch, sized in em on the same --t as the logo */
+  .theme {
     font-size: var(--t, 1rem); flex: none; position: relative; width: 2.9em; height: 1.6em; padding: 0;
     border: 0; border-radius: 999px; background: #9ED3FF; box-shadow: 0 2px 0 rgba(31, 42, 68, .18);
   }
-  /* area di tocco fissa da 64×44px, più grande dell'interruttore visibile (si allarga verso sinistra per non uscire dallo schermo) */
-  .tema::before { content: ""; position: absolute; right: -6px; top: 50%; width: 64px; height: 44px; transform: translateY(-50%); }
-  .tema .pomello {
+  /* fixed 64×44px touch area, bigger than the visible switch (it grows to the left so it never leaves the screen) */
+  .theme::before { content: ""; position: absolute; right: -6px; top: 50%; width: 64px; height: 44px; transform: translateY(-50%); }
+  .theme .knob {
     position: absolute; top: .18em; left: .18em; width: 1.24em; height: 1.24em; border-radius: 50%;
     display: grid; place-items: center; background: #fff; box-shadow: 0 .1em 0 rgba(0, 0, 0, .15);
     transition: transform .2s;
   }
-  .tema svg { width: .9em; height: .9em; }
-  .tema .sole { color: #FFB000; }
-  .tema .luna { color: #FFE58A; display: none; }
-  [data-tema="scuro"] .tema {
+  .theme svg { width: .9em; height: .9em; }
+  .theme .sun { color: #FFB000; }
+  .theme .moon { color: #FFE58A; display: none; }
+  [data-theme="dark"] .theme {
     background: radial-gradient(circle at 18% 32%, #fff .07em, transparent .11em),
                 radial-gradient(circle at 32% 70%, #fff .055em, transparent .09em),
                 radial-gradient(circle at 45% 38%, #fff .05em, transparent .085em), #3A4A8C;
     box-shadow: 0 2px 0 rgba(0, 0, 0, .35);
   }
-  /* corsa del pomello: larghezza - pomello - 2 margini = 2.9 - 1.24 - 0.36 */
-  [data-tema="scuro"] .tema .pomello { transform: translateX(1.3em); background: #1B2440; }
-  [data-tema="scuro"] .tema .sole { display: none; }
-  [data-tema="scuro"] .tema .luna { display: block; }
-  @media (prefers-reduced-motion: reduce) { .tema .pomello { transition: none; } }
+  /* knob travel: width - knob - 2 margins = 2.9 - 1.24 - 0.36 */
+  [data-theme="dark"] .theme .knob { transform: translateX(1.3em); background: #1B2440; }
+  [data-theme="dark"] .theme .sun { display: none; }
+  [data-theme="dark"] .theme .moon { display: block; }
+  @media (prefers-reduced-motion: reduce) { .theme .knob { transition: none; } }
 
-  /* Tentativi */
-  .tentativi { display: flex; align-items: center; gap: .3rem .6rem; flex-wrap: wrap; margin-bottom: .6rem; }
-  /* telefono: oltre 10 tentativi le palline vanno su due righe uguali (es. 10+10) */
-  .palline { display: grid; grid-template-columns: repeat(var(--colonne, 10), 12px); gap: 3px; }
-  .palline b { width: 12px; height: 12px; border-radius: 50%; background: var(--spento); }
-  .palline b.usata { background: var(--rosso); }
-  .tentativi small { font-weight: 700; color: var(--tenue); font-size: .95rem; }
+  /* Guesses */
+  .guesses { display: flex; align-items: center; gap: .3rem .6rem; flex-wrap: wrap; margin-bottom: .6rem; }
+  /* phones: with more than 10 guesses the dots go on two equal rows (e.g. 10+10) */
+  .dots { display: grid; grid-template-columns: repeat(var(--cols, 10), 12px); gap: 3px; }
+  .dots b { width: 12px; height: 12px; border-radius: 50%; background: var(--off); }
+  .dots b.used { background: var(--red); }
+  .guesses small { font-weight: 700; color: var(--muted); font-size: .95rem; }
 
-  /* L'abaco dell'alfabeto: sul telefono due aste (A–M e N–Z), da 600px una sola */
-  .abaco { --perla: min(22px, 5.6vw); --sopra: 1.15rem; display: flex; flex-direction: column; gap: .5rem; margin-bottom: .9rem; }
-  /* --d è il diametro reale della perlina: al massimo --perla e mai oltre l'80% della colonna.
-     Barra, filo e perline usano tutti --d, così restano allineati a ogni larghezza. */
-  .asta { position: relative; padding-top: var(--sopra); }
-  .asta .filo, .asta .zona, .asta .colori, .asta b { --d: var(--perla); }
+  /* The alphabet abacus: two rods on phones (A–M and N–Z), a single one from 600px */
+  .abacus { --bead: min(22px, 5.6vw); --top: 1.15rem; display: flex; flex-direction: column; gap: .5rem; margin-bottom: .9rem; }
+  /* --d is the actual bead diameter: at most --bead and never more than 80% of the column.
+     Band, wire and beads all use --d, so they stay aligned at every width. */
+  .rod { position: relative; padding-top: var(--top); }
+  .rod .wire, .rod .band, .rod .colors, .rod b { --d: var(--bead); }
   @supports (width: 1cqw) {
-    .asta { container-type: inline-size; }
-    .asta .filo, .asta .zona, .asta .colori, .asta b { --d: min(var(--perla), 100cqw / var(--n) * .8); }
+    .rod { container-type: inline-size; }
+    .rod .wire, .rod .band, .rod .colors, .rod b { --d: min(var(--bead), 100cqw / var(--n) * .8); }
   }
-  .asta .filo { position: absolute; left: 0; right: 0; top: calc(var(--sopra) + 2px + var(--d) / 2 - 2px); height: 4px; background: var(--filo); border-radius: 2px; }
-  /* La barra evidenziatrice fa da maschera: dentro c'è una copia colorata delle perline,
-     ritagliata dai suoi bordi. Così le perline di confine restano colorate solo in parte. */
-  .asta .zona { position: absolute; top: calc(var(--sopra) - 3px); height: calc(var(--d) + 10px); background: rgba(255, 194, 61, .35); border-radius: 999px; }
-  .asta .zona.continua-sx { border-top-left-radius: 0; border-bottom-left-radius: 0; }
-  .asta .zona.continua-dx { border-top-right-radius: 0; border-bottom-right-radius: 0; }
-  .asta .colori { position: absolute; left: 0; right: 0; top: calc(var(--sopra) - 3px); height: calc(var(--d) + 10px); padding-top: 5px; display: grid; }
-  .asta .colori i { display: flex; justify-content: center; align-items: flex-start; }
-  /* la perlina non supera mai l'80% della sua colonna: resta sempre spazio tra una e l'altra */
-  .asta .colori b { width: var(--d); aspect-ratio: 1; border-radius: 50%; }
-  .asta .colori .c0 { background: var(--rosso); }
-  .asta .colori .c1 { background: var(--giallo); }
-  .asta .colori .c2 { background: var(--verde); }
-  .asta .colori .c3 { background: var(--blu); }
-  .asta .colori .c4 { background: var(--viola); }
-  .asta .perle { position: relative; display: grid; }
-  .asta .perla { display: flex; flex-direction: column; align-items: center; gap: 9px; } /* 5px di barra sotto la perlina + 4px di respiro */
-  .asta .perla b { width: var(--d); aspect-ratio: 1; border-radius: 50%; background: var(--spento); margin-top: 2px; }
-  .asta .perla span { font-size: clamp(.75rem, 3.4vw, 1rem); font-weight: 800; color: var(--tenue); padding: 0 3px; }
-  .asta .perla.dentro span { color: var(--inchiostro); }
-  .asta .perla.evidenza span { color: #fff; background: var(--rosso); border-radius: 6px; }
-  .asta .segno { position: absolute; top: 0; transform: translateX(-50%); font-size: 1rem; line-height: 1; color: var(--inchiostro); }
+  .rod .wire { position: absolute; left: 0; right: 0; top: calc(var(--top) + 2px + var(--d) / 2 - 2px); height: 4px; background: var(--wire); border-radius: 2px; }
+  /* The highlight band works as a mask: inside it there is a coloured copy of the beads,
+     clipped by its edges. This way the boundary beads are only partly coloured. */
+  .rod .band { position: absolute; top: calc(var(--top) - 3px); height: calc(var(--d) + 10px); background: rgba(255, 194, 61, .35); border-radius: 999px; }
+  .rod .band.cont-left { border-top-left-radius: 0; border-bottom-left-radius: 0; }
+  .rod .band.cont-right { border-top-right-radius: 0; border-bottom-right-radius: 0; }
+  .rod .colors { position: absolute; left: 0; right: 0; top: calc(var(--top) - 3px); height: calc(var(--d) + 10px); padding-top: 5px; display: grid; }
+  .rod .colors i { display: flex; justify-content: center; align-items: flex-start; }
+  /* a bead never exceeds 80% of its column: there is always room between two beads */
+  .rod .colors b { width: var(--d); aspect-ratio: 1; border-radius: 50%; }
+  .rod .colors .c0 { background: var(--red); }
+  .rod .colors .c1 { background: var(--yellow); }
+  .rod .colors .c2 { background: var(--green); }
+  .rod .colors .c3 { background: var(--blue); }
+  .rod .colors .c4 { background: var(--purple); }
+  .rod .beads { position: relative; display: grid; }
+  .rod .bead { display: flex; flex-direction: column; align-items: center; gap: 9px; } /* 5px of band below the bead + 4px of breathing room */
+  .rod .bead b { width: var(--d); aspect-ratio: 1; border-radius: 50%; background: var(--off); margin-top: 2px; }
+  .rod .bead span { font-size: clamp(.75rem, 3.4vw, 1rem); font-weight: 800; color: var(--muted); padding: 0 3px; }
+  .rod .bead.inside span { color: var(--ink); }
+  .rod .bead.highlight span { color: #fff; background: var(--red); border-radius: 6px; }
+  .rod .marker { position: absolute; top: 0; transform: translateX(-50%); font-size: 1rem; line-height: 1; color: var(--ink); }
 
-  /* Le tre tessere: limite basso, parola in gioco, limite alto.
-     Le parole lunghe si rimpiccioliscono da sole (vedi adattaTessere) */
-  .intervallo { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, .85fr) minmax(0, 1fr); gap: .35rem; align-items: stretch; margin-bottom: .9rem; }
-  .tessera { border-radius: 16px; padding: .5rem .25rem .4rem; color: #fff; text-align: center; display: flex; flex-direction: column; justify-content: center; min-width: 0; }
-  .tessera small { font-size: .8rem; font-weight: 700; opacity: .9; }
-  .tessera strong { display: block; font-size: 1.15rem; font-weight: 800; line-height: 1.15; white-space: nowrap; overflow: hidden; }
-  .tessera strong.a-capo { white-space: normal; overflow-wrap: anywhere; }
-  .tessera.basso { background: var(--verde); }
-  .tessera.alto { background: var(--viola); }
-  .tessera.mezzo { background: var(--giallo); color: #3A2A00; }
-  .tessera.mezzo strong { font-size: 1.4rem; }
+  /* The three tiles: low bound, word in play, high bound.
+     Long words shrink by themselves (see fitTiles) */
+  .interval { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, .85fr) minmax(0, 1fr); gap: .35rem; align-items: stretch; margin-bottom: .9rem; }
+  .tile { border-radius: 16px; padding: .5rem .25rem .4rem; color: #fff; text-align: center; display: flex; flex-direction: column; justify-content: center; min-width: 0; }
+  .tile small { font-size: .8rem; font-weight: 700; opacity: .9; }
+  .tile strong { display: block; font-size: 1.15rem; font-weight: 800; line-height: 1.15; white-space: nowrap; overflow: hidden; }
+  .tile strong.wrap { white-space: normal; overflow-wrap: anywhere; }
+  .tile.low { background: var(--green); }
+  .tile.high { background: var(--purple); }
+  .tile.mid { background: var(--yellow); color: #3A2A00; }
+  .tile.mid strong { font-size: 1.4rem; }
   .pop { animation: pop .25s ease-out; }
   @keyframes pop { from { transform: scale(.85); } to { transform: scale(1); } }
   @media (prefers-reduced-motion: reduce) { .pop { animation: none; } }
 
-  .fumetto { display: flex; gap: .6rem; align-items: center; margin-bottom: .8rem; }
-  .fumetto .faccia { font-size: 2.2rem; line-height: 1; }
-  .fumetto p { margin: 0; font-weight: 700; font-size: 1.2rem; }
-  /* Telefono: Prima e Dopo affiancati, «È lei!» sotto a tutta larghezza */
-  .risposte { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; }
-  .risposte .btn { padding-inline: .3rem; font-size: 1.15rem; min-height: 3.6rem; }
-  .risposte .giusta { grid-column: 1 / -1; order: 3; }
-  .domanda { margin: .7rem 0 0; font-size: .95rem; }
+  .bubble { display: flex; gap: .6rem; align-items: center; margin-bottom: .8rem; }
+  .bubble .face { font-size: 2.2rem; line-height: 1; }
+  .bubble p { margin: 0; font-weight: 700; font-size: 1.2rem; }
+  /* Phones: Before and After side by side, "That's it!" below at full width */
+  .answers { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; }
+  .answers .btn { padding-inline: .3rem; font-size: 1.15rem; min-height: 3.6rem; }
+  .answers .correct { grid-column: 1 / -1; order: 3; }
+  .question { margin: .7rem 0 0; font-size: .95rem; }
 
-  .messaggio { min-height: 1.5em; font-weight: 700; margin: .7rem 0 0; }
-  .messaggio.errore { color: var(--rosso); }
+  .message { min-height: 1.5em; font-weight: 700; margin: .7rem 0 0; }
+  .message.error { color: var(--red); }
 
-  .aiuto { margin-top: .9rem; border: 4px solid var(--rosso); border-radius: 16px; padding: .8rem; }
-  .aiuto h3 { font-size: 1.15rem; margin-bottom: .3rem; }
-  .aiuto p { margin-bottom: .6rem; }
-  .alfabeto { display: flex; flex-wrap: wrap; gap: 2px; }
-  .alfabeto span { width: 1.45rem; text-align: center; border-radius: 6px; font-weight: 800; color: var(--tenue); }
-  .alfabeto span.si { background: var(--rosso); color: #fff; }
+  .explain { margin-top: .9rem; border: 4px solid var(--red); border-radius: 16px; padding: .8rem; }
+  .explain h3 { font-size: 1.15rem; margin-bottom: .3rem; }
+  .explain p { margin-bottom: .6rem; }
+  .alphabet { display: flex; flex-wrap: wrap; gap: 2px; }
+  .alphabet span { width: 1.45rem; text-align: center; border-radius: 6px; font-weight: 800; color: var(--muted); }
+  .alphabet span.on { background: var(--red); color: #fff; }
 
-  .scelte-titolo { font-weight: 800; margin: 1rem 0 .5rem; }
-  .scelte { display: grid; grid-template-columns: repeat(5, 1fr); gap: .4rem; max-width: 26rem; }
-  .scelte button { font-weight: 800; font-size: 1.25rem; min-height: 3rem; padding: .2rem 0 0; border-radius: 14px; border: 4px solid var(--spento); background: var(--sfondo); color: var(--inchiostro); }
-  .scelte button[aria-checked="true"] { background: var(--verde); border-color: var(--verde); color: #fff; }
-  #b-via { width: 100%; }
+  .choices-title { font-weight: 800; margin: 1rem 0 .5rem; }
+  .choices { display: grid; grid-template-columns: repeat(5, 1fr); gap: .4rem; max-width: 26rem; }
+  .choices button { font-weight: 800; font-size: 1.25rem; min-height: 3rem; padding: .2rem 0 0; border-radius: 14px; border: 4px solid var(--off); background: var(--bg); color: var(--ink); }
+  .choices button[aria-checked="true"] { background: var(--green); border-color: var(--green); color: #fff; }
+  #b-start { width: 100%; }
 
-  /* Scelta dei gruppi di parole: pulsanti grandi da accendere e spegnere */
-  .gruppi { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .5rem; margin: .4rem 0 .6rem; }
-  .gruppo {
+  /* Word group picker: big buttons to switch on and off */
+  .groups { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .5rem; margin: .4rem 0 .6rem; }
+  .group {
     display: flex; align-items: center; gap: .5rem; text-align: left; min-height: 3.4rem;
-    padding: .45rem .6rem; border-radius: 14px; border: 4px solid var(--spento);
-    background: var(--sfondo); color: var(--inchiostro); font-weight: 800; font-size: 1rem; line-height: 1.15;
+    padding: .45rem .6rem; border-radius: 14px; border: 4px solid var(--off);
+    background: var(--bg); color: var(--ink); font-weight: 800; font-size: 1rem; line-height: 1.15;
   }
-  .gruppo .emoji { font-size: 1.5rem; line-height: 1; flex: none; }
-  .gruppo span:last-child { min-width: 0; overflow-wrap: break-word; hyphens: auto; }
-  @media (max-width: 359px) { .gruppo { font-size: .9rem; gap: .35rem; padding-inline: .45rem; } .gruppo .emoji { font-size: 1.25rem; } }
-  .gruppo .emoji { filter: grayscale(1); opacity: .55; }
-  .gruppo[aria-pressed="true"] { background: var(--verde); border-color: var(--verde); color: #fff; }
-  .gruppo[aria-pressed="true"] .emoji { filter: none; opacity: 1; }
-  .gruppi-azioni { display: flex; justify-content: space-between; align-items: center; gap: .5rem; flex-wrap: wrap; margin-bottom: .8rem; }
-  .gruppi-azioni .link { padding-left: 0; }
-  #conta-parole { font-weight: 800; color: var(--tenue); }
-  #conta-parole.zero { color: var(--rosso); }
-  #b-via2 { width: 100%; }
+  .group .emoji { font-size: 1.5rem; line-height: 1; flex: none; }
+  .group span:last-child { min-width: 0; overflow-wrap: break-word; hyphens: auto; }
+  @media (max-width: 359px) { .group { font-size: .9rem; gap: .35rem; padding-inline: .45rem; } .group .emoji { font-size: 1.25rem; } }
+  .group .emoji { filter: grayscale(1); opacity: .55; }
+  .group[aria-pressed="true"] { background: var(--green); border-color: var(--green); color: #fff; }
+  .group[aria-pressed="true"] .emoji { filter: none; opacity: 1; }
+  .group-actions { display: flex; justify-content: space-between; align-items: center; gap: .5rem; flex-wrap: wrap; margin-bottom: .8rem; }
+  .group-actions .link { padding-left: 0; }
+  #word-count { font-weight: 800; color: var(--muted); }
+  #word-count.zero { color: var(--red); }
+  #b-start2 { width: 100%; }
   @media (min-width: 600px) {
-    .gruppi { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    #b-via2 { width: auto; }
+    .groups { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    #b-start2 { width: auto; }
   }
-  @media (min-width: 900px) { .gruppi { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
-  /* Riga sopra l'abaco: l'inizio comune delle parole possibili e, con il «?», la lettera mostrata sulle aste */
-  .zoom { display: flex; align-items: center; gap: .5rem; font-weight: 700; color: var(--tenue); font-size: .95rem; min-height: 2.3rem; padding: .1rem .5rem; margin: 0 -.5rem; border-radius: 12px; }
-  .zoom .caselle { gap: 3px; }
-  .zoom .caselle span { width: 1.6rem; height: 1.9rem; font-size: 1.05rem; border-radius: 8px; }
-  .zoom .caselle span.qui { border-color: var(--giallo); color: var(--inchiostro); }
-  .zoom.nuovo { background: rgba(255, 194, 61, .35); color: var(--inchiostro); }
-  /* Footer discreto: versione, codice, licenza e crediti */
-  /* le voci vanno a capo intere, separate da spazio: nessun puntino resta appeso a fine riga */
-  .piede { margin-top: 2rem; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 0 1.1rem; font-size: .85rem; color: var(--tenue); text-align: center; }
-  .piede > * { white-space: nowrap; padding: .3rem 0; }
-  .piede a { color: inherit; font-weight: 700; text-decoration: underline; text-underline-offset: 2px; }
-  .aiutini { margin-top: .9rem; border: 4px dashed var(--giallo); border-radius: 16px; padding: .7rem .8rem; }
-  .aiutini ul { margin: 0 0 .5rem; padding-left: 1.2rem; font-weight: 700; }
-  .caselle { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; }
-  .caselle span { width: 1.9rem; height: 2.3rem; border-radius: 9px; display: grid; place-items: center; font-weight: 800; font-size: 1.2rem; background: var(--sfondo); border: 3px solid var(--spento); }
-  .caselle span.piena { background: var(--rosso); border-color: var(--rosso); color: #fff; }
-  .caselle span.puntini { border: 0; background: none; width: auto; color: var(--tenue); }
-  #b-aiutino { flex: 1; }
+  @media (min-width: 900px) { .groups { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+  /* Row above the abacus: the common start of the possible words and, with the "?", the letter shown on the rods */
+  .zoom { display: flex; align-items: center; gap: .5rem; font-weight: 700; color: var(--muted); font-size: .95rem; min-height: 2.3rem; padding: .1rem .5rem; margin: 0 -.5rem; border-radius: 12px; }
+  .zoom .boxes { gap: 3px; }
+  .zoom .boxes span { width: 1.6rem; height: 1.9rem; font-size: 1.05rem; border-radius: 8px; }
+  .zoom .boxes span.here { border-color: var(--yellow); color: var(--ink); }
+  .zoom.new { background: rgba(255, 194, 61, .35); color: var(--ink); }
+  /* Discreet footer: version, code, licence and credits */
+  /* items wrap whole, separated by space: no dot is left hanging at the end of a line */
+  .footer { margin-top: 2rem; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 0 1.1rem; font-size: .85rem; color: var(--muted); text-align: center; }
+  .footer > * { white-space: nowrap; padding: .3rem 0; }
+  .footer a { color: inherit; font-weight: 700; text-decoration: underline; text-underline-offset: 2px; }
+  .hints { margin-top: .9rem; border: 4px dashed var(--yellow); border-radius: 16px; padding: .7rem .8rem; }
+  .hints ul { margin: 0 0 .5rem; padding-left: 1.2rem; font-weight: 700; }
+  .boxes { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; }
+  .boxes span { width: 1.9rem; height: 2.3rem; border-radius: 9px; display: grid; place-items: center; font-weight: 800; font-size: 1.2rem; background: var(--bg); border: 3px solid var(--off); }
+  .boxes span.filled { background: var(--red); border-color: var(--red); color: #fff; }
+  .boxes span.gap { border: 0; background: none; width: auto; color: var(--muted); }
+  #b-hint { flex: 1; }
 
-  .storia-titolo { margin: 1.2rem 0 0; font-size: 1.05rem; }
-  .lato.vuoto { display: none; }
-  .storia li.vuota { background: none; border: 3px dashed var(--spento); color: var(--tenue); font-size: .95rem; }
-  .storia { list-style: none; margin: .4rem 0 0; padding: 0; display: flex; flex-direction: column; gap: .35rem; }
-  .storia li { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; column-gap: .5rem; background: var(--sfondo); border-radius: 12px; padding: .3rem .7rem; }
-  .storia li strong { font-weight: 800; letter-spacing: .03em; }
-  .storia li em { font-style: normal; font-weight: 700; font-size: .9rem; }
-  .storia li.prima em { color: var(--verde-scuro); }
-  .storia li.dopo em { color: var(--viola-scuro); }
-  [data-tema="scuro"] .storia li.prima em { color: var(--verde); }
-  [data-tema="scuro"] .storia li.dopo em { color: #B394FF; }
+  .history-title { margin: 1.2rem 0 0; font-size: 1.05rem; }
+  .side.empty { display: none; }
+  .history li.empty { background: none; border: 3px dashed var(--off); color: var(--muted); font-size: .95rem; }
+  .history { list-style: none; margin: .4rem 0 0; padding: 0; display: flex; flex-direction: column; gap: .35rem; }
+  .history li { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; column-gap: .5rem; background: var(--bg); border-radius: 12px; padding: .3rem .7rem; }
+  .history li strong { font-weight: 800; letter-spacing: .03em; }
+  .history li em { font-style: normal; font-weight: 700; font-size: .9rem; }
+  .history li.before em { color: var(--green-dark); }
+  .history li.after em { color: var(--purple-dark); }
+  [data-theme="dark"] .history li.before em { color: var(--green); }
+  [data-theme="dark"] .history li.after em { color: #B394FF; }
 
-  .fine { text-align: center; }
-  .fine .grande { font-size: 4.2rem; line-height: 1; margin-bottom: .5rem; }
-  .fine p { margin-inline: auto; }
-  .fine .riga { flex-direction: column; align-items: stretch; }
+  .end { text-align: center; }
+  .end .big { font-size: 4.2rem; line-height: 1; margin-bottom: .5rem; }
+  .end p { margin-inline: auto; }
+  .end .row { flex-direction: column; align-items: stretch; }
 
-  /* ===== Telefoni grandi e tablet in verticale ===== */
+  /* ===== Large phones and portrait tablets ===== */
   @media (min-width: 600px) {
     body { font-size: 1.15rem; }
     main { padding-inline: max(1.25rem, env(safe-area-inset-left)); padding-top: max(1.25rem, env(safe-area-inset-top)); }
-    .pannello { padding: 1.5rem; border-radius: 24px; box-shadow: 0 6px 0 var(--ombra); }
-    .logo.titolo { margin-bottom: 1.5rem; }
-    .modi { grid-template-columns: 1fr 1fr; gap: 1rem; }
-    .modo { display: flex; flex-direction: column; align-items: flex-start; gap: .4rem; padding: 1.4rem; min-height: 200px; }
-    .modo .emoji { font-size: 2.6rem; }
-    .modo strong { font-size: 1.6rem; }
-    .abaco { --perla: min(26px, 3vw); --sopra: 1.4rem; margin-bottom: 1.25rem; }
-    .palline { display: flex; flex-wrap: wrap; }
-    .palline b { width: 14px; height: 14px; }
-    .intervallo { grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr) minmax(0, 1fr); gap: .6rem; margin-bottom: 1.25rem; }
-    .tessera { padding: .7rem .6rem .5rem; border-radius: 18px; }
-    .tessera small { font-size: .9rem; }
-    .tessera strong { font-size: 1.7rem; }
-    .tessera.mezzo strong { font-size: 2rem; }
-    .risposte { grid-template-columns: 1fr auto 1fr; }
-    .risposte .giusta { grid-column: auto; order: 0; padding-inline: 1.2rem; }
-    .risposte .btn { font-size: 1.25rem; }
-    .caselle span { width: 2.2rem; height: 2.6rem; font-size: 1.4rem; }
-    #b-aiutino { flex: none; }
-    #b-via { width: auto; }
-    .fine .grande { font-size: 5rem; }
-    .fine .riga { flex-direction: row; justify-content: center; }
+    .panel { padding: 1.5rem; border-radius: 24px; box-shadow: 0 6px 0 var(--shadow); }
+    .logo.title { margin-bottom: 1.5rem; }
+    .modes { grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .mode { display: flex; flex-direction: column; align-items: flex-start; gap: .4rem; padding: 1.4rem; min-height: 200px; }
+    .mode .emoji { font-size: 2.6rem; }
+    .mode strong { font-size: 1.6rem; }
+    .abacus { --bead: min(26px, 3vw); --top: 1.4rem; margin-bottom: 1.25rem; }
+    .dots { display: flex; flex-wrap: wrap; }
+    .dots b { width: 14px; height: 14px; }
+    .interval { grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr) minmax(0, 1fr); gap: .6rem; margin-bottom: 1.25rem; }
+    .tile { padding: .7rem .6rem .5rem; border-radius: 18px; }
+    .tile small { font-size: .9rem; }
+    .tile strong { font-size: 1.7rem; }
+    .tile.mid strong { font-size: 2rem; }
+    .answers { grid-template-columns: 1fr auto 1fr; }
+    .answers .correct { grid-column: auto; order: 0; padding-inline: 1.2rem; }
+    .answers .btn { font-size: 1.25rem; }
+    .boxes span { width: 2.2rem; height: 2.6rem; font-size: 1.4rem; }
+    #b-hint { flex: none; }
+    #b-start { width: auto; }
+    .end .big { font-size: 5rem; }
+    .end .row { flex-direction: row; justify-content: center; }
   }
 
-  /* ===== Tablet in orizzontale e computer: le parole provate vanno a lato ===== */
+  /* ===== Landscape tablets and computers: the words tried move to the side ===== */
   @media (min-width: 900px) {
-    body[data-schermata="s-gioco"] main { max-width: 1040px; }
-    .gioco { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 1.75rem; align-items: start; }
-    .gioco .abaco { --perla: min(20px, 1.9vw); }
-    .gioco .lato { border-left: 3px solid var(--sfondo); padding-left: 1.5rem; }
-    .gioco .storia-titolo { margin-top: 0; }
-    .gioco .lato.vuoto { display: block; }
-    .gioco .storia { max-height: 60vh; overflow-y: auto; }
-    .storia li em { font-size: .85rem; }
+    body[data-screen="s-game"] main { max-width: 1040px; }
+    .game { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 1.75rem; align-items: start; }
+    .game .abacus { --bead: min(20px, 1.9vw); }
+    .game .side { border-left: 3px solid var(--bg); padding-left: 1.5rem; }
+    .game .history-title { margin-top: 0; }
+    .game .side.empty { display: block; }
+    .game .history { max-height: 60vh; overflow-y: auto; }
+    .history li em { font-size: .85rem; }
   }
 
-  /* Interruttore della lingua: stessa forma di quello del tema, con le bandiere nel pomello.
-     Compare solo nelle schermate del nome e del menu, a sinistra nella testata. */
-  .lingua {
+  /* Language switch: same shape as the theme switch, with the flags in the knob.
+     It shows only on the name and menu screens, on the left of the header. */
+  .lang {
     grid-column: 1; justify-self: start;
     font-size: var(--t, 1rem); position: relative; width: 2.9em; height: 1.6em; padding: 0;
     border: 0; border-radius: 999px; background: #BFD4EC; box-shadow: 0 2px 0 rgba(31, 42, 68, .18);
   }
-  [data-tema="scuro"] .lingua { background: #3A4868; box-shadow: 0 2px 0 rgba(0, 0, 0, .35); }
-  .lingua::before { content: ""; position: absolute; left: -6px; top: 50%; width: 64px; height: 44px; transform: translateY(-50%); }
-  /* pomello identico a quello sole/luna (stesso sfondo, misura e ombra), con dentro la bandiera tonda
-     grande come il sole e la luna */
-  .lingua .pomello {
+  [data-theme="dark"] .lang { background: #3A4868; box-shadow: 0 2px 0 rgba(0, 0, 0, .35); }
+  .lang::before { content: ""; position: absolute; left: -6px; top: 50%; width: 64px; height: 44px; transform: translateY(-50%); }
+  /* knob identical to the sun/moon one (same background, size and shadow), holding the round flag
+     as big as the sun and the moon */
+  .lang .knob {
     position: absolute; top: .18em; left: .18em; width: 1.24em; height: 1.24em; border-radius: 50%;
     display: grid; place-items: center; background: #fff; box-shadow: 0 .1em 0 rgba(0, 0, 0, .15);
     transition: transform .2s;
   }
-  [data-tema="scuro"] .lingua .pomello { background: #1B2440; }
-  .lingua .pomello svg { display: block; width: .9em; height: .9em; border-radius: 50%; }
-  .lingua .pomello .uk { display: none; }
-  .lingua[aria-checked="true"] .pomello { transform: translateX(1.3em); }
-  .lingua[aria-checked="true"] .pomello .it { display: none; }
-  .lingua[aria-checked="true"] .pomello .uk { display: block; }
-  @media (prefers-reduced-motion: reduce) { .lingua .pomello { transition: none; } }
+  [data-theme="dark"] .lang .knob { background: #1B2440; }
+  .lang .knob svg { display: block; width: .9em; height: .9em; border-radius: 50%; }
+  .lang .knob .uk { display: none; }
+  .lang[aria-checked="true"] .knob { transform: translateX(1.3em); }
+  .lang[aria-checked="true"] .knob .it { display: none; }
+  .lang[aria-checked="true"] .knob .uk { display: block; }
+  @media (prefers-reduced-motion: reduce) { .lang .knob { transition: none; } }
 </style>
 </head>
 <body>
 <main>
-  <header class="testata" id="testata">
-    <button class="lingua" id="b-lingua" role="switch" aria-checked="false" aria-label="English">
-      <span class="pomello" aria-hidden="true">
+  <header class="topbar" id="topbar">
+    <button class="lang" id="b-lang" role="switch" aria-checked="false" aria-label="English">
+      <span class="knob" aria-hidden="true">
         <svg class="it" viewBox="0 0 3 2" preserveAspectRatio="xMidYMid slice"><rect width="1" height="2" fill="#009246"/><rect x="1" width="1" height="2" fill="#fff"/><rect x="2" width="1" height="2" fill="#CE2B37"/></svg>
         <svg class="uk" viewBox="0 0 60 30" preserveAspectRatio="xMidYMid slice"><clipPath id="uk-t"><path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z"/></clipPath><rect width="60" height="30" fill="#012169"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" stroke-width="6"/><path d="M0,0 L60,30 M60,0 L0,30" clip-path="url(#uk-t)" stroke="#C8102E" stroke-width="4"/><path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/><path d="M30,0 v30 M0,15 h60" stroke="#C8102E" stroke-width="6"/></svg>
       </span>
     </button>
-    <button class="link" id="b-torna" data-menu hidden data-t-aria="torna">⬅<span class="testo-menu"> Menu</span></button>
-    <div class="logo piccolo" id="logo-piccolo" aria-hidden="true" hidden><span class="da"></span><i></i><span class="a"></span></div>
-    <div class="comandi">
-      <button class="tema" id="b-tema" role="switch" aria-checked="false" data-t-aria="temaScuro">
-        <span class="pomello" aria-hidden="true">
-          <svg class="sole" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.6" fill="currentColor"/><path d="M12 2.4v2.4M12 19.2v2.4M2.4 12h2.4M19.2 12h2.4M5.2 5.2l1.7 1.7M17.1 17.1l1.7 1.7M5.2 18.8l1.7-1.7M17.1 6.9l1.7-1.7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" fill="none"/></svg>
-          <svg class="luna" viewBox="0 0 24 24"><path d="M20.5 14.6A8.6 8.6 0 0 1 9.4 3.5a8.6 8.6 0 1 0 11.1 11.1z" fill="currentColor"/></svg>
+    <button class="link" id="b-back" data-menu hidden data-t-aria="back">⬅<span class="menu-label"> Menu</span></button>
+    <div class="logo mini" id="logo-mini" aria-hidden="true" hidden><span class="from"></span><i></i><span class="to"></span></div>
+    <div class="controls">
+      <button class="theme" id="b-theme" role="switch" aria-checked="false" data-t-aria="darkTheme">
+        <span class="knob" aria-hidden="true">
+          <svg class="sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.6" fill="currentColor"/><path d="M12 2.4v2.4M12 19.2v2.4M2.4 12h2.4M19.2 12h2.4M5.2 5.2l1.7 1.7M17.1 17.1l1.7 1.7M5.2 18.8l1.7-1.7M17.1 6.9l1.7-1.7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" fill="none"/></svg>
+          <svg class="moon" viewBox="0 0 24 24"><path d="M20.5 14.6A8.6 8.6 0 0 1 9.4 3.5a8.6 8.6 0 1 0 11.1 11.1z" fill="currentColor"/></svg>
         </span>
       </button>
     </div>
   </header>
 
-  <!-- 1. Nome -->
-  <section id="s-nome" class="schermata">
-    <div class="logo titolo" aria-hidden="true"><span class="da"></span><i></i><span class="a"></span></div>
-    <div class="pannello">
-      <h1 data-t="nomeTitolo"></h1>
-      <p class="tenue" data-t="nomeInfo"></p>
-      <div class="riga-input">
-        <input id="in-nome" type="text" enterkeyhint="go" maxlength="20" autocomplete="off" data-t-ph="nomePh" data-t-aria="nomeAria">
-        <button class="btn verde" id="b-nome" data-t="gioca"></button>
+  <!-- 1. Name -->
+  <section id="s-name" class="screen">
+    <div class="logo title" aria-hidden="true"><span class="from"></span><i></i><span class="to"></span></div>
+    <div class="panel">
+      <h1 data-t="nameTitle"></h1>
+      <p class="muted" data-t="nameInfo"></p>
+      <div class="input-row">
+        <input id="in-name" type="text" enterkeyhint="go" maxlength="20" autocomplete="off" data-t-ph="namePh" data-t-aria="nameAria">
+        <button class="btn green" id="b-name" data-t="play"></button>
       </div>
-      <button class="link" id="b-salta" data-t="sorpresa"></button>
+      <button class="link" id="b-surprise" data-t="surprise"></button>
     </div>
   </section>
 
   <!-- 2. Menu -->
-  <section id="s-menu" class="schermata" hidden>
-    <div class="logo titolo" aria-hidden="true"><span class="da"></span><i></i><span class="a"></span></div>
-    <h1 id="saluto"></h1>
+  <section id="s-menu" class="screen" hidden>
+    <div class="logo title" aria-hidden="true"><span class="from"></span><i></i><span class="to"></span></div>
+    <h1 id="greeting"></h1>
     <p data-t="intro"></p>
-    <details class="pannello regole" open>
-      <summary data-t="regoleTitolo"></summary>
+    <details class="panel rules" open>
+      <summary data-t="rulesTitle"></summary>
       <ol>
-        <li data-t="regola1"></li>
-        <li data-t="regola2"></li>
-        <li data-t="regola3"></li>
-        <li data-t="regola4"></li>
+        <li data-t="rule1"></li>
+        <li data-t="rule2"></li>
+        <li data-t="rule3"></li>
+        <li data-t="rule4"></li>
       </ol>
     </details>
-    <div class="modi">
-      <button class="modo uno" id="b-modo1">
+    <div class="modes">
+      <button class="mode one" id="b-mode1">
         <span class="emoji" aria-hidden="true">🤫</span>
-        <strong data-t="modo1Titolo"></strong>
-        <span data-t="modo1Testo"></span>
+        <strong data-t="mode1Title"></strong>
+        <span data-t="mode1Text"></span>
       </button>
-      <button class="modo due" id="b-modo2">
+      <button class="mode two" id="b-mode2">
         <span class="emoji" aria-hidden="true">🔍</span>
-        <strong data-t="modo2Titolo"></strong>
-        <span data-t="modo2Testo"></span>
+        <strong data-t="mode2Title"></strong>
+        <span data-t="mode2Text"></span>
       </button>
     </div>
-    <button class="link" id="b-cambia-nome" data-t="cambiaNome"></button>
+    <button class="link" id="b-change-name" data-t="changeName"></button>
   </section>
 
-  <!-- 3. Parola segreta (modalità 1) -->
-  <section id="s-segreta" class="schermata" hidden>
-    <div class="pannello">
-      <h2 data-t="segretaTitolo"></h2>
-      <p data-t="segretaInfo"></p>
-      <div class="riga-input">
-        <input id="in-segreta" type="password" enterkeyhint="go" autocorrect="off" maxlength="24" autocomplete="off" autocapitalize="characters" spellcheck="false" data-t-ph="segretaPh" data-t-aria="segretaPh">
-        <button class="btn giallo" id="b-occhio" aria-pressed="false"></button>
+  <!-- 3. Secret word (mode 1) -->
+  <section id="s-secret" class="screen" hidden>
+    <div class="panel">
+      <h2 data-t="secretTitle"></h2>
+      <p data-t="secretInfo"></p>
+      <div class="input-row">
+        <input id="in-secret" type="password" enterkeyhint="go" autocorrect="off" maxlength="24" autocomplete="off" autocapitalize="characters" spellcheck="false" data-t-ph="secretPh" data-t-aria="secretPh">
+        <button class="btn yellow" id="b-eye" aria-pressed="false"></button>
       </div>
-      <p class="scelte-titolo" data-t="quanti"></p>
-      <div class="scelte" id="scelte-tentativi" role="radiogroup" data-t-aria="quantiAria"></div>
-      <p class="messaggio errore" id="msg-segreta" aria-live="polite"></p>
-      <button class="btn verde" id="b-via" data-t="inizia"></button>
+      <p class="choices-title" data-t="howMany"></p>
+      <div class="choices" id="guess-choices" role="radiogroup" data-t-aria="howManyAria"></div>
+      <p class="message error" id="msg-secret" aria-live="polite"></p>
+      <button class="btn green" id="b-start" data-t="start"></button>
     </div>
   </section>
 
-  <!-- 3b. Gruppi di parole (modalità 2) -->
-  <section id="s-categorie" class="schermata" hidden>
-    <div class="pannello">
-      <h2 data-t="catTitolo"></h2>
-      <p data-t="catInfo"></p>
-      <div class="gruppi" id="gruppi"></div>
-      <div class="gruppi-azioni">
-        <button class="link" id="b-tutti"></button>
-        <span id="conta-parole" aria-live="polite"></span>
+  <!-- 3b. Word groups (mode 2) -->
+  <section id="s-groups" class="screen" hidden>
+    <div class="panel">
+      <h2 data-t="groupsTitle"></h2>
+      <p data-t="groupsInfo"></p>
+      <div class="groups" id="groups"></div>
+      <div class="group-actions">
+        <button class="link" id="b-all"></button>
+        <span id="word-count" aria-live="polite"></span>
       </div>
-      <button class="btn verde" id="b-via2" data-t="inizia"></button>
+      <button class="btn green" id="b-start2" data-t="start"></button>
     </div>
   </section>
 
-  <!-- 4. Partita -->
-  <section id="s-gioco" class="schermata" hidden>
-    <div class="pannello gioco">
-     <div class="tavolo">
-      <div class="tentativi"><div class="palline" id="palline" aria-hidden="true"></div><small id="conta"></small></div>
+  <!-- 4. Game -->
+  <section id="s-game" class="screen" hidden>
+    <div class="panel game">
+     <div class="board">
+      <div class="guesses"><div class="dots" id="dots" aria-hidden="true"></div><small id="count"></small></div>
 
-      <div class="abaco" id="abaco" role="img"></div>
+      <div class="abacus" id="abacus" role="img"></div>
 
-      <div class="intervallo" id="intervallo">
-        <div class="tessera basso"><small data-t="tDopo"></small><strong id="t-basso"></strong></div>
-        <div class="tessera mezzo"><small id="t-mezzo-et"></small><strong id="t-mezzo">?</strong></div>
-        <div class="tessera alto"><small data-t="tPrima"></small><strong id="t-alto"></strong></div>
+      <div class="interval" id="interval">
+        <div class="tile low"><small data-t="tAfter"></small><strong id="t-low"></strong></div>
+        <div class="tile mid"><small id="t-mid-label"></small><strong id="t-mid">?</strong></div>
+        <div class="tile high"><small data-t="tBefore"></small><strong id="t-high"></strong></div>
       </div>
 
-      <!-- Modalità 1: il computer indovina -->
+      <!-- Mode 1: the computer guesses -->
       <div id="area-cpu" hidden>
-        <div class="fumetto"><span class="faccia" aria-hidden="true">🤖</span><p id="cpu-dice" aria-live="polite"></p></div>
-        <div class="risposte">
-          <button class="btn verde" data-r="prima" data-t="bPrima"></button>
-          <button class="btn giallo giusta" data-r="giusta" data-t="bGiusta"></button>
-          <button class="btn viola" data-r="dopo" data-t="bDopo"></button>
+        <div class="bubble"><span class="face" aria-hidden="true">🤖</span><p id="cpu-says" aria-live="polite"></p></div>
+        <div class="answers">
+          <button class="btn green" data-r="before" data-t="bBefore"></button>
+          <button class="btn yellow correct" data-r="correct" data-t="bCorrect"></button>
+          <button class="btn purple" data-r="after" data-t="bAfter"></button>
         </div>
-        <p class="tenue domanda" data-t="domanda"></p>
-        <div class="aiuto" id="aiuto" hidden aria-live="polite">
-          <h3 data-t="aiutoTitolo"></h3>
-          <p id="aiuto-testo"></p>
-          <div class="alfabeto" id="aiuto-alfabeto"></div>
+        <p class="muted question" data-t="question"></p>
+        <div class="explain" id="explain" hidden aria-live="polite">
+          <h3 data-t="explainTitle"></h3>
+          <p id="explain-text"></p>
+          <div class="alphabet" id="explain-alphabet"></div>
         </div>
       </div>
 
-      <!-- Modalità 2: indovini tu -->
-      <div id="area-tu" hidden>
-        <div class="riga-input">
-          <input id="in-prova" type="text" enterkeyhint="go" autocorrect="off" maxlength="24" autocomplete="off" autocapitalize="characters" spellcheck="false" data-t-ph="provaPh" data-t-aria="provaAria">
-          <button class="btn verde" id="b-prova" data-t="prova"></button>
+      <!-- Mode 2: the child guesses -->
+      <div id="area-child" hidden>
+        <div class="input-row">
+          <input id="in-guess" type="text" enterkeyhint="go" autocorrect="off" maxlength="24" autocomplete="off" autocapitalize="characters" spellcheck="false" data-t-ph="guessPh" data-t-aria="guessAria">
+          <button class="btn green" id="b-guess" data-t="guess"></button>
         </div>
-        <p class="messaggio" id="msg-prova" aria-live="polite"></p>
-        <div class="aiutini" id="aiutini" hidden aria-live="polite">
-          <ul id="aiutini-lista"></ul>
-          <div class="caselle" id="caselle" aria-hidden="true"></div>
+        <p class="message" id="msg-guess" aria-live="polite"></p>
+        <div class="hints" id="hints" hidden aria-live="polite">
+          <ul id="hints-list"></ul>
+          <div class="boxes" id="boxes" aria-hidden="true"></div>
         </div>
-        <div class="riga">
-          <button class="btn giallo" id="b-aiutino"></button>
-          <button class="link" id="b-arrendo" hidden data-t="arrendo"></button>
+        <div class="row">
+          <button class="btn yellow" id="b-hint"></button>
+          <button class="link" id="b-give-up" hidden data-t="giveUp"></button>
         </div>
       </div>
 
      </div>
-     <aside class="lato" id="lato">
-      <h3 class="storia-titolo" data-t="storiaTitolo"></h3>
-      <ul class="storia" id="storia"></ul>
+     <aside class="side" id="side">
+      <h3 class="history-title" data-t="historyTitle"></h3>
+      <ul class="history" id="history"></ul>
      </aside>
     </div>
   </section>
 
-  <!-- 5. Fine -->
-  <section id="s-fine" class="schermata fine" hidden>
-    <div class="pannello">
-      <div class="grande" id="f-emoji" aria-hidden="true"></div>
-      <h1 id="f-titolo"></h1>
-      <p id="f-testo"></p>
-      <div class="riga">
-        <button class="btn verde" id="b-ancora" data-t="ancora"></button>
-        <button class="btn viola" data-menu data-t="cambiaGioco"></button>
+  <!-- 5. End -->
+  <section id="s-end" class="screen end" hidden>
+    <div class="panel">
+      <div class="big" id="end-emoji" aria-hidden="true"></div>
+      <h1 id="end-title"></h1>
+      <p id="end-text"></p>
+      <div class="row">
+        <button class="btn green" id="b-again" data-t="again"></button>
+        <button class="btn purple" data-menu data-t="changeGame"></button>
       </div>
     </div>
   </section>
 
-  <footer class="piede" id="piede">
-    <span id="versione"></span>
-    <a href="https://github.com/vcutrona/abaco-zuzzurellone-kids" target="_blank" rel="noopener" data-t="piedeCodice"></a>
-    <a href="https://github.com/vcutrona/abaco-zuzzurellone-kids/blob/main/LICENSE" target="_blank" rel="noopener" data-t="piedeLicenza"></a>
-    <span data-t="piedeClaude"></span>
-    <a href="https://it.wikipedia.org/wiki/Abaco_zuzzurellone" target="_blank" rel="noopener" data-t="piedeWiki"></a>
+  <footer class="footer" id="footer">
+    <span id="version"></span>
+    <a href="https://github.com/vcutrona/abaco-zuzzurellone-kids" target="_blank" rel="noopener" data-t="footerCode"></a>
+    <a href="https://github.com/vcutrona/abaco-zuzzurellone-kids/blob/main/LICENSE" target="_blank" rel="noopener" data-t="footerLicense"></a>
+    <span data-t="footerClaude"></span>
+    <a href="https://it.wikipedia.org/wiki/Abaco_zuzzurellone" target="_blank" rel="noopener" data-t="footerWiki"></a>
   </footer>
 </main>
 <script>
-// Ogni gruppo ha la frase usata come aiuto "categoria" e le sue parole.
-// Si possono aggiungere parole o gruppi: il gioco elimina i doppioni e mette tutto in ordine.
-const CATEGORIE_IT = [
-  { gruppo: "animali", aiuto: "È un animale.", parole: [
+// Each category has its group, the sentence used as the "category" hint, and its words.
+// Words and categories can be added freely: the game removes duplicates and sorts everything.
+const CATEGORIES_IT = [
+  { group: "animals", hint: "È un animale.", words: [
     "alce", "ape", "aquila", "asino", "bruco", "bue", "cammello", "cane", "canguro", "capra",
     "castoro", "cavalletta", "cavallo", "cervo", "cicogna", "cigno", "civetta", "coccinella", "coccodrillo", "coniglio",
     "corvo", "cucciolo", "delfino", "drago", "elefante", "falco", "formica", "gallina", "gallo", "gambero",
@@ -580,96 +580,96 @@ const CATEGORIE_IT = [
     "rondine", "salmone", "scimmia", "scoiattolo", "serpente", "squalo", "talpa", "tartaruga", "tigre", "tonno",
     "topo", "trota", "unicorno", "vespa", "volpe", "zanzara", "zebra"
   ]},
-  { gruppo: "fruttaverdura", aiuto: "È un frutto.", parole: [
+  { group: "fruitveg", hint: "È un frutto.", words: [
     "albicocca", "ananas", "anguria", "arancia", "banana", "castagna", "ciliegia", "cocco", "fico", "fragola",
     "kiwi", "lampone", "limone", "mandarino", "mandorla", "mango", "mela", "melone", "mirtillo", "mora",
     "nocciola", "noce", "oliva", "pera", "pesca", "uva"
   ]},
-  { gruppo: "fruttaverdura", aiuto: "È una verdura.", parole: [
+  { group: "fruitveg", hint: "È una verdura.", words: [
     "aglio", "basilico", "broccolo", "carciofo", "carota", "cavolo", "cece", "cetriolo", "cipolla", "fungo",
     "insalata", "lattuga", "mais", "patata", "peperone", "pisello", "pomodoro", "sedano", "spinaci", "zucca",
     "zucchina"
   ]},
-  { gruppo: "cibo", aiuto: "Si mangia o si beve.", parole: [
+  { group: "food", hint: "Si mangia o si beve.", words: [
     "acqua", "biscotto", "budino", "caramella", "ciambella", "cioccolato", "cornetto", "crema", "crostata", "farina",
     "focaccia", "formaggio", "frittata", "gelato", "ghiacciolo", "gnocchi", "lasagna", "marmellata", "merenda", "miele",
     "minestra", "minestrone", "olio", "pane", "panna", "pasta", "pepe", "pizza", "polenta", "prosciutto",
     "ravioli", "riso", "salame", "sale", "spaghetti", "torta", "uovo", "yogurt", "zucchero"
   ]},
-  { gruppo: "casa", aiuto: "È una cosa che trovi in casa.", parole: [
+  { group: "home", hint: "È una cosa che trovi in casa.", words: [
     "armadio", "bicchiere", "bottiglia", "campanello", "cassetto", "chiave", "ciotola", "coltello", "computer", "coperta",
     "cucchiaio", "cuscino", "divano", "doccia", "forchetta", "forno", "frigorifero", "lampada", "lavatrice", "letto",
     "orologio", "padella", "pentola", "pettine", "piatto", "poltrona", "quadro", "radio", "sapone", "scopa",
     "sedia", "spazzola", "spazzolino", "specchio", "sveglia", "tappeto", "tavolo", "tazza", "telefono", "televisore",
     "tenda", "tovaglia", "vaso"
   ]},
-  { gruppo: "casa", aiuto: "È una parte della casa.", parole: [
+  { group: "home", hint: "È una parte della casa.", words: [
     "bagno", "balcone", "camera", "camino", "finestra", "giardino", "muro", "pavimento", "porta", "salotto",
     "scala", "tetto"
   ]},
-  { gruppo: "scuola", aiuto: "Lo trovi a scuola.", parole: [
+  { group: "school", hint: "Lo trovi a scuola.", words: [
     "astuccio", "banco", "cartella", "classe", "colla", "diario", "foglio", "globo", "gomma", "lavagna",
     "libro", "matita", "pastello", "penna", "pennarello", "pennello", "quaderno", "righello", "temperino"
   ]},
-  { gruppo: "vestiti", aiuto: "Si indossa.", parole: [
+  { group: "clothes", hint: "Si indossa.", words: [
     "anello", "berretto", "bottone", "calzino", "camicia", "cappello", "cappotto", "ciabatte", "cintura", "collana",
     "costume", "felpa", "giacca", "guanto", "maglia", "maglione", "occhiali", "pantaloni", "pigiama", "sandalo",
     "scarpa", "sciarpa", "stivale", "tasca", "vestito"
   ]},
-  { gruppo: "scuola", aiuto: "È un gioco o un giocattolo.", parole: [
+  { group: "school", hint: "È un gioco o un giocattolo.", words: [
     "altalena", "aquilone", "bambola", "biglia", "bolla", "cubo", "dado", "domino", "giostra", "macchinina",
     "monopattino", "palla", "pallone", "pattini", "pupazzo", "puzzle", "robot", "scivolo", "trenino", "trottola"
   ]},
-  { gruppo: "scuola", aiuto: "È uno strumento musicale.", parole: [
+  { group: "school", hint: "È uno strumento musicale.", words: [
     "chitarra", "fischietto", "flauto", "tromba", "violino", "xilofono"
   ]},
-  { gruppo: "mezzi", aiuto: "È un mezzo di trasporto.", parole: [
+  { group: "travel", hint: "È un mezzo di trasporto.", words: [
     "aereo", "ambulanza", "astronave", "barca", "bicicletta", "camion", "canoa", "furgone", "gru", "macchina",
     "mongolfiera", "moto", "nave", "razzo", "slitta", "taxi", "traghetto", "tram", "treno"
   ]},
-  { gruppo: "natura", aiuto: "Lo trovi nella natura.", parole: [
+  { group: "nature", hint: "Lo trovi nella natura.", words: [
     "arcobaleno", "bosco", "cascata", "cielo", "collina", "cometa", "deserto", "erba", "fango",
     "fiume", "foglia", "foresta", "ghiaccio", "grotta", "lago", "luna", "mare", "mondo", "montagna",
     "nebbia", "neve", "nido", "nuvola", "onda", "pianeta", "pietra", "pigna", "pioggia", "radice",
     "ramo", "roccia", "sabbia", "sasso", "seme", "sentiero", "sole", "spiaggia", "stella", "tempesta",
     "terra", "tronco", "tuono", "valle", "vulcano"
   ]},
-  { gruppo: "natura", aiuto: "È una pianta o un fiore.", parole: [
+  { group: "nature", hint: "È una pianta o un fiore.", words: [
     "albero", "cactus", "fiore", "girasole", "margherita", "viola"
   ]},
-  { gruppo: "natura", aiuto: "È un momento della giornata o una stagione.", parole: [
+  { group: "nature", hint: "È un momento della giornata o una stagione.", words: [
     "alba", "autunno", "estate", "giorno", "inverno", "notte", "primavera", "tramonto"
   ]},
-  { gruppo: "corpo", aiuto: "È una parte del corpo.", parole: [
+  { group: "body", hint: "È una parte del corpo.", words: [
     "bocca", "braccio", "capelli", "collo", "dente", "dito", "faccia", "gamba", "ginocchio", "gomito",
     "guancia", "labbro", "lingua", "mano", "naso", "occhio", "orecchio", "pancia", "piede", "spalla",
     "testa"
   ]},
-  { gruppo: "mezzi", aiuto: "È un luogo.", parole: [
+  { group: "travel", hint: "È un luogo.", words: [
     "aeroporto", "biblioteca", "casa", "castello", "chiesa", "cinema", "circo", "farmacia", "faro", "fattoria",
     "fontana", "gelateria", "mercato", "mulino", "negozio", "ospedale", "palestra", "panetteria", "parco", "piscina",
     "pizzeria", "ponte", "porto", "scuola", "stazione", "strada", "teatro", "torre", "zoo"
   ]},
-  { gruppo: "persone", aiuto: "È una persona o un personaggio delle fiabe.", parole: [
+  { group: "people", hint: "È una persona o un personaggio delle fiabe.", words: [
     "amico", "autista", "cantante", "cavaliere", "clown", "contadino", "cuoco", "dentista", "dottore", "fata",
     "fornaio", "gigante", "maestra", "maestro", "mago", "marinaio", "musicista", "pescatore", "pilota", "pittore",
     "pompiere", "postino", "principe", "principessa", "re", "regina", "sirena", "strega", "veterinario"
   ]},
-  { gruppo: "oggetti", aiuto: "È un oggetto.", parole: [
+  { group: "things", hint: "È un oggetto.", words: [
     "ago", "bandiera", "borsa", "bussola", "busta", "candelina", "carta", "cartolina", "chiodo", "corda",
     "corona", "disegno", "fiammifero", "filo", "fumetto", "lampadina", "lana", "lanterna", "lettera", "maschera",
     "nastro", "ombrello", "pacco", "pallina", "regalo", "rete", "sacco", "scatola", "scudo", "sega",
     "spada", "telescopio", "torcia", "valigia", "zaino"
   ]},
-  { gruppo: "oggetti", aiuto: "È una cosa che non si può toccare con le mani.", parole: [
+  { group: "things", hint: "È una cosa che non si può toccare con le mani.", words: [
     "bacio", "canzone", "colore", "compleanno", "favola", "festa", "musica", "numero", "sogno", "sorriso",
     "storia"
   ]}
 ];
 
-// Stessa struttura per l'inglese: 500 parole semplici divise per categoria.
-const CATEGORIE_EN = [
-  { gruppo: "animali", aiuto: "It's an animal.", parole: [
+// Same structure for English: 500 simple words split by category.
+const CATEGORIES_EN = [
+  { group: "animals", hint: "It's an animal.", words: [
     "ant", "bat", "bear", "bee", "beetle", "bird", "bunny", "butterfly", "camel", "cat",
     "chick", "chicken", "cow", "crab", "crocodile", "deer", "dinosaur", "dog", "dolphin", "donkey",
     "dragon", "duck", "eagle", "elephant", "fish", "fly", "fox", "frog", "giraffe", "goat",
@@ -678,826 +678,826 @@ const CATEGORIE_EN = [
     "pig", "pony", "puppy", "rabbit", "rhino", "seal", "shark", "sheep", "snail", "snake",
     "spider", "squirrel", "swan", "tiger", "turkey", "turtle", "unicorn", "whale", "wolf", "zebra"
   ]},
-  { gruppo: "fruttaverdura", aiuto: "It's a fruit.", parole: [
+  { group: "fruitveg", hint: "It's a fruit.", words: [
     "apple", "banana", "blackberry", "blueberry", "cherry", "coconut", "fig", "grape", "kiwi", "lemon",
     "lime", "mango", "melon", "olive", "orange", "peach", "pear", "pineapple", "plum", "raspberry",
     "strawberry", "watermelon"
   ]},
-  { gruppo: "fruttaverdura", aiuto: "It's a vegetable.", parole: [
+  { group: "fruitveg", hint: "It's a vegetable.", words: [
     "bean", "broccoli", "cabbage", "carrot", "celery", "corn", "cucumber", "garlic", "lettuce", "mushroom",
     "onion", "pea", "pepper", "potato", "pumpkin", "spinach", "tomato", "zucchini"
   ]},
-  { gruppo: "cibo", aiuto: "You can eat it or drink it.", parole: [
+  { group: "food", hint: "You can eat it or drink it.", words: [
     "bread", "burger", "butter", "cake", "candy", "cereal", "cheese", "chocolate", "cookie", "cream",
     "cupcake", "donut", "egg", "honey", "jam", "jelly", "juice", "lemonade", "milk", "muffin",
     "pancake", "pasta", "peanut", "pie", "pizza", "popcorn", "rice", "salad", "salt", "sandwich",
     "soup", "spaghetti", "sugar", "toast", "waffle", "water", "yogurt"
   ]},
-  { gruppo: "casa", aiuto: "You can find it at home.", parole: [
+  { group: "home", hint: "You can find it at home.", words: [
     "bathtub", "bed", "blanket", "bottle", "bowl", "broom", "bucket", "candle", "chair", "clock",
     "computer", "couch", "cup", "curtain", "drawer", "fork", "fridge", "glass", "key", "knife",
     "lamp", "mirror", "mug", "oven", "pan", "pillow", "plate", "pot", "radio", "shelf",
     "shower", "sink", "soap", "spoon", "table", "telephone", "television", "toaster", "toothbrush", "towel"
   ]},
-  { gruppo: "casa", aiuto: "It's a part of a house.", parole: [
+  { group: "home", hint: "It's a part of a house.", words: [
     "attic", "balcony", "basement", "bathroom", "bedroom", "ceiling", "chimney", "door", "floor", "garage",
     "garden", "kitchen", "roof", "stairs", "wall", "window"
   ]},
-  { gruppo: "scuola", aiuto: "You can find it at school.", parole: [
+  { group: "school", hint: "You can find it at school.", words: [
     "backpack", "book", "chalk", "classroom", "crayon", "desk", "eraser", "glue", "map", "marker",
     "notebook", "paintbrush", "paper", "pen", "pencil", "ruler", "scissors"
   ]},
-  { gruppo: "vestiti", aiuto: "You can wear it.", parole: [
+  { group: "clothes", hint: "You can wear it.", words: [
     "belt", "boot", "bracelet", "cap", "coat", "dress", "glasses", "glove", "hat", "helmet",
     "jacket", "jeans", "necklace", "pajamas", "ring", "sandal", "scarf", "shirt", "shoe", "shorts",
     "skirt", "sock", "sweater", "tie"
   ]},
-  { gruppo: "scuola", aiuto: "It's a game or a toy.", parole: [
+  { group: "school", hint: "It's a game or a toy.", words: [
     "ball", "balloon", "block", "bubble", "dice", "doll", "domino", "kite", "marble", "puppet",
     "puzzle", "robot", "seesaw", "skateboard", "slide", "swing", "teddy", "trampoline", "yoyo"
   ]},
-  { gruppo: "scuola", aiuto: "It's a musical instrument.", parole: [
+  { group: "school", hint: "It's a musical instrument.", words: [
     "drum", "flute", "guitar", "harp", "piano", "trumpet", "violin", "whistle", "xylophone"
   ]},
-  { gruppo: "mezzi", aiuto: "It's a way to travel.", parole: [
+  { group: "travel", hint: "It's a way to travel.", words: [
     "airplane", "ambulance", "bicycle", "boat", "bus", "canoe", "car", "helicopter", "motorcycle", "rocket",
     "scooter", "ship", "sled", "spaceship", "submarine", "taxi", "tractor", "train", "truck", "van"
   ]},
-  { gruppo: "natura", aiuto: "You can find it in nature.", parole: [
+  { group: "nature", hint: "You can find it in nature.", words: [
     "beach", "cave", "cloud", "desert", "earth", "field", "forest", "grass", "hill", "ice",
     "island", "jungle", "lake", "leaf", "lightning", "moon", "mountain", "mud", "nest", "ocean",
     "planet", "pond", "rain", "rainbow", "river", "rock", "sand", "sea", "seed", "shell",
     "sky", "snow", "snowflake", "star", "stone", "storm", "sun", "thunder", "valley", "volcano",
     "waterfall", "wave", "wind"
   ]},
-  { gruppo: "natura", aiuto: "It's a plant or a flower.", parole: [
+  { group: "nature", hint: "It's a plant or a flower.", words: [
     "bush", "cactus", "daisy", "flower", "lily", "rose", "sunflower", "tree", "tulip"
   ]},
-  { gruppo: "natura", aiuto: "It's a time of day or a season.", parole: [
+  { group: "nature", hint: "It's a time of day or a season.", words: [
     "autumn", "day", "evening", "morning", "night", "spring", "summer", "sunrise", "sunset", "winter"
   ]},
-  { gruppo: "corpo", aiuto: "It's a part of the body.", parole: [
+  { group: "body", hint: "It's a part of the body.", words: [
     "arm", "back", "belly", "cheek", "chin", "ear", "eye", "face", "finger", "foot",
     "hair", "hand", "head", "heart", "knee", "leg", "lip", "mouth", "neck", "nose",
     "shoulder", "thumb", "toe", "tongue", "tooth"
   ]},
-  { gruppo: "mezzi", aiuto: "It's a place.", parole: [
+  { group: "travel", hint: "It's a place.", words: [
     "airport", "bakery", "bridge", "castle", "church", "cinema", "circus", "city", "farm", "hospital",
     "house", "library", "lighthouse", "market", "museum", "park", "playground", "pool", "school", "shop",
     "station", "street", "supermarket", "theater", "tower", "village", "zoo"
   ]},
-  { gruppo: "persone", aiuto: "It's a person or a fairy-tale character.", parole: [
+  { group: "people", hint: "It's a person or a fairy-tale character.", words: [
     "artist", "astronaut", "baby", "baker", "clown", "cook", "cowboy", "dancer", "dentist", "doctor",
     "driver", "elf", "fairy", "farmer", "firefighter", "fisherman", "friend", "gardener", "giant", "king",
     "knight", "magician", "mermaid", "nurse", "painter", "pilot", "pirate", "prince", "princess", "queen",
     "sailor", "singer", "teacher", "vet", "witch", "wizard"
   ]},
-  { gruppo: "oggetti", aiuto: "It's an object.", parole: [
+  { group: "things", hint: "It's an object.", words: [
     "bag", "basket", "bell", "box", "brush", "button", "camera", "card", "coin", "comic",
     "compass", "crown", "drawing", "envelope", "flag", "flashlight", "gift", "hammer", "ladder", "lantern",
     "letter", "magnet", "mask", "nail", "needle", "newspaper", "photo", "ribbon", "rope", "shield",
     "shovel", "sticker", "suitcase", "sword", "telescope", "tent", "ticket", "treasure", "umbrella", "wallet",
     "watch", "wheel"
   ]},
-  { gruppo: "oggetti", aiuto: "It's something you can't touch.", parole: [
+  { group: "things", hint: "It's something you can't touch.", words: [
     "birthday", "color", "dream", "holiday", "hug", "idea", "joke", "kiss", "laugh", "music",
     "number", "party", "smile", "song", "story", "wish"
   ]}
 ];
 
-/* ===== Impostazioni del gioco ===== */
-// Versione mostrata nel footer (SemVer: maggiore.minore.correzione). Da aggiornare a ogni rilascio,
-// insieme al tag Git corrispondente (es. v1.0.0).
-const VERSIONE = "1.0.0";
-// Tentativi del computer quando indovina lui (modalità 1): si scelgono a inizio partita
-const OPZIONI_TENTATIVI_CPU = [6, 8, 10, 12, 15];
-const MAX_TENTATIVI_CPU = 10; // valore proposto di partenza
-// Aiuti nella modalità 2: categoria, iniziale, finale, lunghezza
-const NUM_AIUTI = 4;
-// Tentativi del bambino quando indovina lui (modalità 2)
-const MAX_TENTATIVI_TU = 20;
-// Il computer conosce solo questo numero di parole, estratte a caso a ogni partita
-const PAROLE_CPU = 100;
-// Il computer non sceglie sempre la parola esattamente a metà:
-// si sposta a caso fino a questa frazione delle parole rimaste (0.4 = ±40%).
-const RUMORE = 0.4;
-const ALFABETO = "abcdefghijklmnopqrstuvwxyz".split("");
+/* ===== Game settings ===== */
+// Version shown in the footer (SemVer: major.minor.patch). Update it at every release,
+// together with the matching Git tag (e.g. v1.0.0).
+const VERSION = "1.0.0";
+// Guesses the computer gets when it is the one guessing (mode 1): chosen at the start of the game
+const CPU_GUESS_OPTIONS = [6, 8, 10, 12, 15];
+const MAX_CPU_GUESSES = 10; // preselected value
+// Hints in mode 2: category, first letter, last letter, length
+const NUM_HINTS = 4;
+// Guesses the child gets when they are the one guessing (mode 2)
+const MAX_CHILD_GUESSES = 20;
+// The computer only knows this many words, drawn at random in every game
+const CPU_WORDS = 100;
+// The computer doesn't always pick the word exactly in the middle:
+// it moves at random by up to this fraction of the remaining words (0.4 = ±40%).
+const NOISE = 0.4;
+const ALPHABET = "abcdefghijklmnopqrstuvwxyz".split("");
 
-/* ===== Lingue =====
-   Ogni lingua ha i suoi estremi del dizionario, le sue parole e i suoi nomi a sorpresa.
-   I nomi a sorpresa sono allineati per posizione: lo stesso nome si traduce cambiando lingua. */
-const LINGUE = {
+/* ===== Languages =====
+   Each language has its own dictionary ends, its own words and its own surprise names.
+   The surprise names are aligned by position: the same name gets translated when the language changes. */
+const LANGUAGES = {
   it: {
-    inizio: "abaco", fine: "zuzzurellone", esempio: "mela", categorie: CATEGORIE_IT,
-    nomiBuffi: ["Pinguino", "Canguro", "Fagiolo", "Folletto", "Drago", "Riccio", "Biscotto", "Pupazzo", "Gufo", "Polpo",
+    start: "abaco", end: "zuzzurellone", example: "mela", categories: CATEGORIES_IT,
+    funnyNames: ["Pinguino", "Canguro", "Fagiolo", "Folletto", "Drago", "Riccio", "Biscotto", "Pupazzo", "Gufo", "Polpo",
       "Giraffa", "Lumaca", "Patata", "Zucchina", "Trottola", "Tartaruga", "Farfalla", "Ciambella", "Rana", "Scimmia"],
-    // i primi 10 nomi sono maschili, gli altri femminili: l'aggettivo si accorda
-    generi: "mmmmmmmmmmffffffffff",
-    aggettiviBuffi: [["Ballerino", "Ballerina"], ["Distratto", "Distratta"], ["Spaziale", "Spaziale"],
+    // the first 10 names are masculine, the others feminine: the adjective agrees with them
+    genders: "mmmmmmmmmmffffffffff",
+    funnyAdjectives: [["Ballerino", "Ballerina"], ["Distratto", "Distratta"], ["Spaziale", "Spaziale"],
       ["Saltellante", "Saltellante"], ["Starnutente", "Starnutente"], ["Volante", "Volante"],
       ["Coraggioso", "Coraggiosa"], ["Sbadato", "Sbadata"], ["Canterino", "Canterina"],
       ["Pasticcione", "Pasticciona"], ["Dormiglione", "Dormigliona"], ["Gigante", "Gigante"],
       ["Elegante", "Elegante"], ["Ruggente", "Ruggente"], ["Spettinato", "Spettinata"],
       ["Golosone", "Golosona"], ["Fortunato", "Fortunata"], ["Sorridente", "Sorridente"]],
-    componiNome: (n, a, genere) => `${n} ${genere === "m" ? a[0] : a[1]}`
+    makeName: (n, a, gender) => `${n} ${gender === "m" ? a[0] : a[1]}`
   },
   en: {
-    inizio: "aardvark", fine: "zyzzyva", esempio: "apple", categorie: CATEGORIE_EN,
-    nomiBuffi: ["Penguin", "Kangaroo", "Bean", "Elf", "Dragon", "Hedgehog", "Cookie", "Puppet", "Owl", "Octopus",
+    start: "aardvark", end: "zyzzyva", example: "apple", categories: CATEGORIES_EN,
+    funnyNames: ["Penguin", "Kangaroo", "Bean", "Elf", "Dragon", "Hedgehog", "Cookie", "Puppet", "Owl", "Octopus",
       "Giraffe", "Snail", "Potato", "Zucchini", "Pickle", "Turtle", "Butterfly", "Donut", "Frog", "Monkey"],
-    generi: "",
-    aggettiviBuffi: [["Dancing"], ["Dreamy"], ["Cosmic"], ["Bouncy"], ["Sneezy"], ["Flying"], ["Brave"], ["Clumsy"],
+    genders: "",
+    funnyAdjectives: [["Dancing"], ["Dreamy"], ["Cosmic"], ["Bouncy"], ["Sneezy"], ["Flying"], ["Brave"], ["Clumsy"],
       ["Singing"], ["Messy"], ["Sleepy"], ["Giant"], ["Fancy"], ["Roaring"], ["Scruffy"], ["Hungry"], ["Lucky"], ["Smiley"]],
-    componiNome: (n, a) => `${a[0]} ${n}`
+    makeName: (n, a) => `${a[0]} ${n}`
   }
 };
 
-/* ===== Gruppi di parole per la modalità 2 =====
-   Ogni categoria delle liste ha un "gruppo": il bambino sceglie i gruppi, l'aiuto resta sulla categoria. */
-const GRUPPI = [
-  { id: "animali", emoji: "🐾", it: "Animali", en: "Animals" },
-  { id: "fruttaverdura", emoji: "🍎", it: "Frutta e verdura", en: "Fruit and veg" },
-  { id: "cibo", emoji: "🍕", it: "Cibo", en: "Food" },
-  { id: "casa", emoji: "🏠", it: "La casa", en: "Home" },
-  { id: "scuola", emoji: "✏️", it: "Scuola, giochi e musica", en: "School, toys and music" },
-  { id: "vestiti", emoji: "👕", it: "Vestiti", en: "Clothes" },
-  { id: "mezzi", emoji: "🚗", it: "Mezzi e luoghi", en: "Vehicles and places" },
-  { id: "natura", emoji: "🌳", it: "Natura e stagioni", en: "Nature and seasons" },
-  { id: "corpo", emoji: "🖐️", it: "Corpo", en: "Body" },
-  { id: "persone", emoji: "🧚", it: "Persone e fiabe", en: "People and characters" },
-  { id: "oggetti", emoji: "🎁", it: "Oggetti e altro", en: "Things and more" }
+/* ===== Word groups for mode 2 =====
+   Every category in the lists has a "group": the child picks groups, while the hint stays on the category. */
+const GROUPS = [
+  { id: "animals", emoji: "🐾", it: "Animali", en: "Animals" },
+  { id: "fruitveg", emoji: "🍎", it: "Frutta e verdura", en: "Fruit and veg" },
+  { id: "food", emoji: "🍕", it: "Cibo", en: "Food" },
+  { id: "home", emoji: "🏠", it: "La casa", en: "Home" },
+  { id: "school", emoji: "✏️", it: "Scuola, giochi e musica", en: "School, toys and music" },
+  { id: "clothes", emoji: "👕", it: "Vestiti", en: "Clothes" },
+  { id: "travel", emoji: "🚗", it: "Mezzi e luoghi", en: "Vehicles and places" },
+  { id: "nature", emoji: "🌳", it: "Natura e stagioni", en: "Nature and seasons" },
+  { id: "body", emoji: "🖐️", it: "Corpo", en: "Body" },
+  { id: "people", emoji: "🧚", it: "Persone e fiabe", en: "People and characters" },
+  { id: "things", emoji: "🎁", it: "Oggetti e altro", en: "Things and more" }
 ];
 
-/* ===== Testi dell'interfaccia =====
-   Le voci possono essere testi fissi o funzioni con parametri.
-   I, F ed E sono gli estremi e la parola d'esempio della lingua scelta, già in maiuscolo. */
-const TESTI = {
+/* ===== Interface texts =====
+   Entries can be fixed strings or functions with parameters.
+   A, Z and X are the first word, the last word and the example word of the current language, already in uppercase. */
+const TEXTS = {
   it: {
-    titoloPagina: (I, F) => `${I[0] + I.slice(1).toLowerCase()}… ${F[0] + F.slice(1).toLowerCase()}!`,
-    lingua: "English", linguaTitolo: "Switch to English",
-    temaScuro: "Tema scuro", temaChiaroTitolo: "Passa al tema chiaro", temaScuroTitolo: "Passa al tema scuro",
-    torna: "Torna al menu",
-    nomeTitolo: "Come vuoi farti chiamare?", nomeInfo: "Scrivi il tuo nome o un soprannome: serve solo per salutarti durante il gioco.",
-    nomePh: "Scrivi qui", nomeAria: "Il tuo nome o soprannome", gioca: "Gioca", sorpresa: "Usa un soprannome a sorpresa",
-    saluto: n => `Ciao, ${n}! A cosa giochiamo?`,
-    intro: (I, F) => `Una parola segreta si nasconde tra ${I} e ${F}. A ogni tentativo scopri se viene prima o dopo, e lo spazio per nascondersi diventa più piccolo.`,
-    modo1Titolo: "Pensi tu la parola",
-    modo1Testo: "Il computer prova a indovinarla. Scegli tu quanti tentativi ha: se non ci riesce, vinci tu.",
-    modo2Titolo: "Indovini tu la parola",
-    modo2Testo: () => `Il computer ne pensa una. Hai ${MAX_TENTATIVI_TU} tentativi e ${NUM_AIUTI} aiuti per trovarla.`,
-    regoleTitolo: "Come si gioca",
-    regola1: (I, F) => `Chi pensa la parola dice: «tra ${I} e ${F}».`,
-    regola2: (I, F, E) => `Chi indovina dice una parola, per esempio ${E}.`,
-    regola3: (I, F, E) => `Se la parola segreta viene prima nell'alfabeto, il nuovo spazio è tra ${I} e ${E}. Se viene dopo, è tra ${E} e ${F}.`,
-    regola4: "Si continua finché la parola salta fuori, o finiscono i tentativi.",
-    cambiaNome: "Cambia soprannome",
-    segretaTitolo: "Pensa a una parola",
-    segretaInfo: "Scrivila qui senza farla vedere. Il computer non la sbircia: serve solo ad aiutarti se ti confondi con l'alfabeto.",
-    segretaPh: "La tua parola segreta", mostra: "Mostra", nascondi: "Nascondi",
-    quanti: "Quanti tentativi ha il computer?", quantiAria: "Tentativi del computer", inizia: "Inizia",
-    errVuota: "Scrivi prima la tua parola segreta.", errLettere: "Usa solo lettere, senza spazi o numeri.",
-    errFuori: (B, A) => `La parola deve stare tra ${B} e ${A}.`,
-    conta: r => (r === 1 ? "ultimo tentativo!" : `${r} tentativi rimasti`),
-    tDopo: "dopo", tPrima: "prima di", tSegreta: "segreta", tCpu: "🤖 dice",
-    cpuPensa: "Fammi pensare…", cpuChiede: W => `È forse ${W}?`,
-    bPrima: "⬅ Prima", bGiusta: "È lei! 🎉", bDopo: "Dopo ➡",
-    domanda: "La tua parola viene prima o dopo nell'alfabeto?",
-    aiutoTitolo: "Ops, controlliamo insieme",
-    aiutoGiusta: W => `Guarda bene: ${W} è proprio la tua parola! Premi «È lei!».`,
-    spTua: A => `La tua parola è ${A}. `,
-    spUna: L => `La prima lettera è uguale (${L}). `,
-    spPiu: (n, P) => `Le prime ${n} lettere sono uguali (${P}). `,
-    spCorta: C => `Poi ${C} finisce: la parola più corta viene prima. `,
-    spLettera: (n, A, la, B, lb, x, y) => `Guarda la lettera numero ${n}: in ${A} c'è ${la}, in ${B} c'è ${lb}. Nell'alfabeto ${x} viene prima di ${y}. `,
-    spQuindi: (A, prima, B) => `Quindi ${A} viene <strong>${prima ? "prima di" : "dopo"}</strong> ${B}.`,
-    provaPh: "Scrivi una parola", provaAria: "La tua parola", prova: "Prova",
-    errVuotaProva: "Scrivi una parola.", errGia: W => `${W} l'hai già provata. Scegline un'altra.`,
-    msgPrima: W => `La parola segreta viene prima di ${W}.`, msgDopo: W => `La parola segreta viene dopo ${W}.`,
-    storiaTitolo: "Parole provate", storiaVuota: "Qui compariranno le parole provate.",
-    storiaPrima: "⬅ la segreta viene prima", storiaDopo: "la segreta viene dopo ➡",
-    aiutoSemplice: "È una parola semplice.",
-    aiutoInizio: L => `Comincia con la lettera ${L}.`, aiutoFine: L => `Finisce con la lettera ${L}.`,
-    aiutoLunga: n => `Ha ${n} lettere.`, aiutoBottone: (n, t) => `💡 Aiuto ${n} di ${t}`,
-    arrendo: "Mi arrendo",
-    haiVinto: "Hai vinto",
-    fineCpuTentativi: (n, W) => `Il computer ha usato tutti i ${n} tentativi e non ha trovato ${W}.`,
-    fineCpuNessuna: (B, A, W) => `Il computer non conosce nessuna parola tra ${B} e ${A}. ${W} l'ha messo in difficoltà!`,
-    fineCpuVince: "Il computer ha indovinato!",
-    fineCpuVinceTesto: (W, n, m) => `La tua parola era ${W}: trovata al tentativo ${n} su ${m}. Prova con una parola più difficile!`,
-    trovata: "Trovata",
-    trovataTesto: (W, n, m) => `La parola segreta era ${W}. Ce l'hai fatta al tentativo ${n} su ${m}.`,
-    finiti: "Tentativi finiti", finitiTesto: W => `La parola segreta era ${W}. La prossima volta la trovi!`,
-    arreso: "Nessun problema", arresoTesto: W => `La parola segreta era ${W}. Vuoi riprovare?`,
-    ancora: "Gioca ancora", cambiaGioco: "Cambia gioco",
-    piedeCodice: "Codice su GitHub", piedeLicenza: "Licenza MIT",
-    piedeClaude: "Creato con Claude di Anthropic", piedeWiki: "Il gioco su Wikipedia",
-    zoomInizio: "Iniziano con",
+    pageTitle: (A, Z) => `${A[0] + A.slice(1).toLowerCase()}… ${Z[0] + Z.slice(1).toLowerCase()}!`,
+    lang: "English", langTitle: "Switch to English",
+    darkTheme: "Tema scuro", toLightTitle: "Passa al tema chiaro", toDarkTitle: "Passa al tema scuro",
+    back: "Torna al menu",
+    nameTitle: "Come vuoi farti chiamare?", nameInfo: "Scrivi il tuo nome o un soprannome: serve solo per salutarti durante il gioco.",
+    namePh: "Scrivi qui", nameAria: "Il tuo nome o soprannome", play: "Gioca", surprise: "Usa un soprannome a sorpresa",
+    greeting: n => `Ciao, ${n}! A cosa giochiamo?`,
+    intro: (A, Z) => `Una parola segreta si nasconde tra ${A} e ${Z}. A ogni tentativo scopri se viene prima o dopo, e lo spazio per nascondersi diventa più piccolo.`,
+    mode1Title: "Pensi tu la parola",
+    mode1Text: "Il computer prova a indovinarla. Scegli tu quanti tentativi ha: se non ci riesce, vinci tu.",
+    mode2Title: "Indovini tu la parola",
+    mode2Text: () => `Il computer ne pensa una. Hai ${MAX_CHILD_GUESSES} tentativi e ${NUM_HINTS} aiuti per trovarla.`,
+    rulesTitle: "Come si gioca",
+    rule1: (A, Z) => `Chi pensa la parola dice: «tra ${A} e ${Z}».`,
+    rule2: (A, Z, X) => `Chi indovina dice una parola, per esempio ${X}.`,
+    rule3: (A, Z, X) => `Se la parola segreta viene prima nell'alfabeto, il nuovo spazio è tra ${A} e ${X}. Se viene dopo, è tra ${X} e ${Z}.`,
+    rule4: "Si continua finché la parola salta fuori, o finiscono i tentativi.",
+    changeName: "Cambia soprannome",
+    secretTitle: "Pensa a una parola",
+    secretInfo: "Scrivila qui senza farla vedere. Il computer non la sbircia: serve solo ad aiutarti se ti confondi con l'alfabeto.",
+    secretPh: "La tua parola segreta", show: "Mostra", hide: "Nascondi",
+    howMany: "Quanti tentativi ha il computer?", howManyAria: "Tentativi del computer", start: "Inizia",
+    errEmpty: "Scrivi prima la tua parola segreta.", errLetters: "Usa solo lettere, senza spazi o numeri.",
+    errOutside: (L, H) => `La parola deve stare tra ${L} e ${H}.`,
+    count: r => (r === 1 ? "ultimo tentativo!" : `${r} tentativi rimasti`),
+    tAfter: "dopo", tBefore: "prima di", tSecret: "segreta", tCpu: "🤖 dice",
+    cpuThinks: "Fammi pensare…", cpuAsks: W => `È forse ${W}?`,
+    bBefore: "⬅ Prima", bCorrect: "È lei! 🎉", bAfter: "Dopo ➡",
+    question: "La tua parola viene prima o dopo nell'alfabeto?",
+    explainTitle: "Ops, controlliamo insieme",
+    explainCorrect: W => `Guarda bene: ${W} è proprio la tua parola! Premi «È lei!».`,
+    exYours: A => `La tua parola è ${A}. `,
+    exOne: L => `La prima lettera è uguale (${L}). `,
+    exMany: (n, P) => `Le prime ${n} lettere sono uguali (${P}). `,
+    exShorter: C => `Poi ${C} finisce: la parola più corta viene prima. `,
+    exLetter: (n, A, la, B, lb, x, y) => `Guarda la lettera numero ${n}: in ${A} c'è ${la}, in ${B} c'è ${lb}. Nell'alfabeto ${x} viene prima di ${y}. `,
+    exSo: (A, before, B) => `Quindi ${A} viene <strong>${before ? "prima di" : "dopo"}</strong> ${B}.`,
+    guessPh: "Scrivi una parola", guessAria: "La tua parola", guess: "Prova",
+    errEmptyGuess: "Scrivi una parola.", errAlready: W => `${W} l'hai già provata. Scegline un'altra.`,
+    msgBefore: W => `La parola segreta viene prima di ${W}.`, msgAfter: W => `La parola segreta viene dopo ${W}.`,
+    historyTitle: "Parole provate", historyEmpty: "Qui compariranno le parole provate.",
+    historyBefore: "⬅ la segreta viene prima", historyAfter: "la segreta viene dopo ➡",
+    hintSimple: "È una parola semplice.",
+    hintFirst: L => `Comincia con la lettera ${L}.`, hintLast: L => `Finisce con la lettera ${L}.`,
+    hintLength: n => `Ha ${n} lettere.`, hintButton: (n, t) => `💡 Aiuto ${n} di ${t}`,
+    giveUp: "Mi arrendo",
+    youWin: "Hai vinto",
+    endCpuOutOfGuesses: (n, W) => `Il computer ha usato tutti i ${n} tentativi e non ha trovato ${W}.`,
+    endCpuNoWords: (L, H, W) => `Il computer non conosce nessuna parola tra ${L} e ${H}. ${W} l'ha messo in difficoltà!`,
+    endCpuWins: "Il computer ha indovinato!",
+    endCpuWinsText: (W, n, m) => `La tua parola era ${W}: trovata al tentativo ${n} su ${m}. Prova con una parola più difficile!`,
+    found: "Trovata",
+    foundText: (W, n, m) => `La parola segreta era ${W}. Ce l'hai fatta al tentativo ${n} su ${m}.`,
+    outOfGuesses: "Tentativi finiti", outOfGuessesText: W => `La parola segreta era ${W}. La prossima volta la trovi!`,
+    gaveUp: "Nessun problema", gaveUpText: W => `La parola segreta era ${W}. Vuoi riprovare?`,
+    again: "Gioca ancora", changeGame: "Cambia gioco",
+    footerCode: "Codice su GitHub", footerLicense: "Licenza MIT",
+    footerClaude: "Creato con Claude di Anthropic", footerWiki: "Il gioco su Wikipedia",
+    zoomStart: "Iniziano con",
     zoomAria: (n, P) => (P ? `Le parole possibili iniziano con ${P}: l'abaco mostra la lettera numero ${n}.` : "L'abaco mostra la prima lettera delle parole possibili."),
-    catTitolo: "Con quali parole giochiamo?",
-    catInfo: "Scegli uno o più gruppi. Con un solo gruppo sai già di che tipo è la parola segreta.",
-    tutti: "Scegli tutti", nessuno: "Togli tutti",
-    contaParole: n => (n === 0 ? "Scegli almeno un gruppo" : n === 1 ? "1 parola" : `${n} parole`)
+    groupsTitle: "Con quali parole giochiamo?",
+    groupsInfo: "Scegli uno o più gruppi. Con un solo gruppo sai già di che tipo è la parola segreta.",
+    all: "Scegli tutti", none: "Togli tutti",
+    wordCount: n => (n === 0 ? "Scegli almeno un gruppo" : n === 1 ? "1 parola" : `${n} parole`)
   },
   en: {
-    titoloPagina: (I, F) => `${I[0] + I.slice(1).toLowerCase()}… ${F[0] + F.slice(1).toLowerCase()}!`,
-    lingua: "English", linguaTitolo: "Passa all'italiano",
-    temaScuro: "Dark theme", temaChiaroTitolo: "Switch to light theme", temaScuroTitolo: "Switch to dark theme",
-    torna: "Back to menu",
-    nomeTitolo: "What should we call you?", nomeInfo: "Type your name or a nickname: we only use it to say hi during the game.",
-    nomePh: "Name or nickname", nomeAria: "Your name or nickname", gioca: "Play", sorpresa: "Use a surprise nickname",
-    saluto: n => `Hi, ${n}! What shall we play?`,
-    intro: (I, F) => `A secret word is hiding between ${I} and ${F}. With every guess you find out if it comes before or after, and its hiding place gets smaller.`,
-    modo1Titolo: "You think of the word",
-    modo1Testo: "The computer tries to guess it. You choose how many guesses it gets: if it can't find it, you win.",
-    modo2Titolo: "You guess the word",
-    modo2Testo: () => `The computer thinks of one. You have ${MAX_TENTATIVI_TU} guesses and ${NUM_AIUTI} hints to find it.`,
-    regoleTitolo: "How to play",
-    regola1: (I, F) => `The one who thinks of the word says: “between ${I} and ${F}”.`,
-    regola2: (I, F, E) => `The one guessing says a word, for example ${E}.`,
-    regola3: (I, F, E) => `If the secret word comes before it in the alphabet, the new hiding place is between ${I} and ${E}. If it comes after, it’s between ${E} and ${F}.`,
-    regola4: "Keep going until the word pops out, or you run out of guesses.",
-    cambiaNome: "Change nickname",
-    segretaTitolo: "Think of a word",
-    segretaInfo: "Type it here without letting anyone see. The computer won’t peek: it’s only used to help you if you get mixed up with the alphabet.",
-    segretaPh: "Your secret word", mostra: "Show", nascondi: "Hide",
-    quanti: "How many guesses does the computer get?", quantiAria: "Computer’s guesses", inizia: "Start",
-    errVuota: "Type your secret word first.", errLettere: "Use letters only, no spaces or numbers.",
-    errFuori: (B, A) => `The word must be between ${B} and ${A}.`,
-    conta: r => (r === 1 ? "last guess!" : `${r} guesses left`),
-    tDopo: "after", tPrima: "before", tSegreta: "secret", tCpu: "🤖 says",
-    cpuPensa: "Let me think…", cpuChiede: W => `Is it ${W}?`,
-    bPrima: "⬅ Before", bGiusta: "That’s it! 🎉", bDopo: "After ➡",
-    domanda: "Does your word come before or after it in the alphabet?",
-    aiutoTitolo: "Oops, let’s check together",
-    aiutoGiusta: W => `Look closely: ${W} is your word! Press “That’s it!”.`,
-    spTua: A => `Your word is ${A}. `,
-    spUna: L => `The first letter is the same (${L}). `,
-    spPiu: (n, P) => `The first ${n} letters are the same (${P}). `,
-    spCorta: C => `Then ${C} ends: the shorter word comes first. `,
-    spLettera: (n, A, la, B, lb, x, y) => `Look at letter number ${n}: ${A} has ${la}, ${B} has ${lb}. In the alphabet ${x} comes before ${y}. `,
-    spQuindi: (A, prima, B) => `So ${A} comes <strong>${prima ? "before" : "after"}</strong> ${B}.`,
-    provaPh: "Type a word", provaAria: "Your word", prova: "Try",
-    errVuotaProva: "Type a word.", errGia: W => `You already tried ${W}. Pick another one.`,
-    msgPrima: W => `The secret word comes before ${W}.`, msgDopo: W => `The secret word comes after ${W}.`,
-    storiaTitolo: "Words tried", storiaVuota: "The words you try will appear here.",
-    storiaPrima: "⬅ the secret comes before", storiaDopo: "the secret comes after ➡",
-    aiutoSemplice: "It’s a simple word.",
-    aiutoInizio: L => `It starts with the letter ${L}.`, aiutoFine: L => `It ends with the letter ${L}.`,
-    aiutoLunga: n => `It has ${n} letters.`, aiutoBottone: (n, t) => `💡 Hint ${n} of ${t}`,
-    arrendo: "I give up",
-    haiVinto: "You win",
-    fineCpuTentativi: (n, W) => `The computer used all ${n} guesses and didn’t find ${W}.`,
-    fineCpuNessuna: (B, A, W) => `The computer doesn’t know any word between ${B} and ${A}. ${W} stumped it!`,
-    fineCpuVince: "The computer guessed it!",
-    fineCpuVinceTesto: (W, n, m) => `Your word was ${W}: found on guess ${n} of ${m}. Try a harder word!`,
-    trovata: "Found it",
-    trovataTesto: (W, n, m) => `The secret word was ${W}. You got it on guess ${n} of ${m}.`,
-    finiti: "Out of guesses", finitiTesto: W => `The secret word was ${W}. You’ll find it next time!`,
-    arreso: "No problem", arresoTesto: W => `The secret word was ${W}. Want to try again?`,
-    ancora: "Play again", cambiaGioco: "Change game",
-    piedeCodice: "Source on GitHub", piedeLicenza: "MIT License",
-    piedeClaude: "Made with Claude by Anthropic", piedeWiki: "The game on Wikipedia (in Italian)",
-    zoomInizio: "They start with",
+    pageTitle: (A, Z) => `${A[0] + A.slice(1).toLowerCase()}… ${Z[0] + Z.slice(1).toLowerCase()}!`,
+    lang: "English", langTitle: "Passa all'italiano",
+    darkTheme: "Dark theme", toLightTitle: "Switch to light theme", toDarkTitle: "Switch to dark theme",
+    back: "Back to menu",
+    nameTitle: "What should we call you?", nameInfo: "Type your name or a nickname: we only use it to say hi during the game.",
+    namePh: "Name or nickname", nameAria: "Your name or nickname", play: "Play", surprise: "Use a surprise nickname",
+    greeting: n => `Hi, ${n}! What shall we play?`,
+    intro: (A, Z) => `A secret word is hiding between ${A} and ${Z}. With every guess you find out if it comes before or after, and its hiding place gets smaller.`,
+    mode1Title: "You think of the word",
+    mode1Text: "The computer tries to guess it. You choose how many guesses it gets: if it can't find it, you win.",
+    mode2Title: "You guess the word",
+    mode2Text: () => `The computer thinks of one. You have ${MAX_CHILD_GUESSES} guesses and ${NUM_HINTS} hints to find it.`,
+    rulesTitle: "How to play",
+    rule1: (A, Z) => `The one who thinks of the word says: “between ${A} and ${Z}”.`,
+    rule2: (A, Z, X) => `The one guessing says a word, for example ${X}.`,
+    rule3: (A, Z, X) => `If the secret word comes before it in the alphabet, the new hiding place is between ${A} and ${X}. If it comes after, it’s between ${X} and ${Z}.`,
+    rule4: "Keep going until the word pops out, or you run out of guesses.",
+    changeName: "Change nickname",
+    secretTitle: "Think of a word",
+    secretInfo: "Type it here without letting anyone see. The computer won’t peek: it’s only used to help you if you get mixed up with the alphabet.",
+    secretPh: "Your secret word", show: "Show", hide: "Hide",
+    howMany: "How many guesses does the computer get?", howManyAria: "Computer’s guesses", start: "Start",
+    errEmpty: "Type your secret word first.", errLetters: "Use letters only, no spaces or numbers.",
+    errOutside: (L, H) => `The word must be between ${L} and ${H}.`,
+    count: r => (r === 1 ? "last guess!" : `${r} guesses left`),
+    tAfter: "after", tBefore: "before", tSecret: "secret", tCpu: "🤖 says",
+    cpuThinks: "Let me think…", cpuAsks: W => `Is it ${W}?`,
+    bBefore: "⬅ Before", bCorrect: "That’s it! 🎉", bAfter: "After ➡",
+    question: "Does your word come before or after it in the alphabet?",
+    explainTitle: "Oops, let’s check together",
+    explainCorrect: W => `Look closely: ${W} is your word! Press “That’s it!”.`,
+    exYours: A => `Your word is ${A}. `,
+    exOne: L => `The first letter is the same (${L}). `,
+    exMany: (n, P) => `The first ${n} letters are the same (${P}). `,
+    exShorter: C => `Then ${C} ends: the shorter word comes first. `,
+    exLetter: (n, A, la, B, lb, x, y) => `Look at letter number ${n}: ${A} has ${la}, ${B} has ${lb}. In the alphabet ${x} comes before ${y}. `,
+    exSo: (A, before, B) => `So ${A} comes <strong>${before ? "before" : "after"}</strong> ${B}.`,
+    guessPh: "Type a word", guessAria: "Your word", guess: "Try",
+    errEmptyGuess: "Type a word.", errAlready: W => `You already tried ${W}. Pick another one.`,
+    msgBefore: W => `The secret word comes before ${W}.`, msgAfter: W => `The secret word comes after ${W}.`,
+    historyTitle: "Words tried", historyEmpty: "The words you try will appear here.",
+    historyBefore: "⬅ the secret comes before", historyAfter: "the secret comes after ➡",
+    hintSimple: "It’s a simple word.",
+    hintFirst: L => `It starts with the letter ${L}.`, hintLast: L => `It ends with the letter ${L}.`,
+    hintLength: n => `It has ${n} letters.`, hintButton: (n, t) => `💡 Hint ${n} of ${t}`,
+    giveUp: "I give up",
+    youWin: "You win",
+    endCpuOutOfGuesses: (n, W) => `The computer used all ${n} guesses and didn’t find ${W}.`,
+    endCpuNoWords: (L, H, W) => `The computer doesn’t know any word between ${L} and ${H}. ${W} stumped it!`,
+    endCpuWins: "The computer guessed it!",
+    endCpuWinsText: (W, n, m) => `Your word was ${W}: found on guess ${n} of ${m}. Try a harder word!`,
+    found: "Found it",
+    foundText: (W, n, m) => `The secret word was ${W}. You got it on guess ${n} of ${m}.`,
+    outOfGuesses: "Out of guesses", outOfGuessesText: W => `The secret word was ${W}. You’ll find it next time!`,
+    gaveUp: "No problem", gaveUpText: W => `The secret word was ${W}. Want to try again?`,
+    again: "Play again", changeGame: "Change game",
+    footerCode: "Source on GitHub", footerLicense: "MIT License",
+    footerClaude: "Made with Claude by Anthropic", footerWiki: "The game on Wikipedia (in Italian)",
+    zoomStart: "They start with",
     zoomAria: (n, P) => (P ? `The possible words start with ${P}: the abacus shows letter number ${n}.` : "The abacus shows the first letter of the possible words."),
-    catTitolo: "Which words shall we play with?",
-    catInfo: "Pick one or more groups. With just one group you already know what kind of word the secret is.",
-    tutti: "Select all", nessuno: "Clear all",
-    contaParole: n => (n === 0 ? "Pick at least one group" : n === 1 ? "1 word" : `${n} words`)
+    groupsTitle: "Which words shall we play with?",
+    groupsInfo: "Pick one or more groups. With just one group you already know what kind of word the secret is.",
+    all: "Select all", none: "Clear all",
+    wordCount: n => (n === 0 ? "Pick at least one group" : n === 1 ? "1 word" : `${n} words`)
   }
 };
 
-/* ===== Utilità ===== */
+/* ===== Utilities ===== */
 const $ = id => document.getElementById(id);
-const norm = s => s.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+const norm = s => s.trim().toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
 const cmp = (a, b) => (a < b ? -1 : a > b ? 1 : 0);
-const M = s => s.toUpperCase();
-const caso = n => Math.floor(Math.random() * n);
+const U = s => s.toUpperCase();
+const random = n => Math.floor(Math.random() * n);
 
-// Lingua iniziale: la prima lingua supportata nell'elenco delle preferenze del browser
-// (es. tedesco, poi italiano → italiano). Se nessuna è supportata, inglese.
-function linguaIniziale() {
-  const preferite = navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || ""];
-  for (const l of preferite) {
-    const codice = l.toLowerCase().slice(0, 2);
-    if (codice in LINGUE) return codice;
+// Initial language: the first supported language in the browser's preference list
+// (e.g. German, then Italian → Italian). If none is supported, English.
+function initialLanguage() {
+  const preferred = navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || ""];
+  for (const l of preferred) {
+    const code = l.toLowerCase().slice(0, 2);
+    if (code in LANGUAGES) return code;
   }
   return "en";
 }
-let lingua = linguaIniziale();
-let L, INIZIO, FINE, DIZ, AIUTO_CATEGORIA;
-const t = (chiave, ...arg) => {
-  const v = TESTI[lingua][chiave];
-  return typeof v === "function" ? v(...arg) : v;
+let lang = initialLanguage();
+let L, START, END, DICT, CATEGORY_HINT;
+const t = (key, ...args) => {
+  const v = TEXTS[lang][key];
+  return typeof v === "function" ? v(...args) : v;
 };
-// parametri comuni dei testi fissi: estremi e parola d'esempio, in maiuscolo
-const estremi = () => [M(INIZIO), M(FINE), M(L.esempio)];
+// shared parameters of the fixed texts: dictionary ends and example word, in uppercase
+const ends = () => [U(START), U(END), U(L.example)];
 
-// Parole dei gruppi scelti, nella lingua attuale
-function paroleInGioco() {
-  return [...new Set(L.categorie.filter(c => stato.gruppi.has(c.gruppo)).flatMap(c => c.parole).map(norm))].sort(cmp);
+// Words of the selected groups, in the current language
+function wordsInPlay() {
+  return [...new Set(L.categories.filter(c => state.groups.has(c.group)).flatMap(c => c.words).map(norm))].sort(cmp);
 }
 
-function caricaParole() {
-  L = LINGUE[lingua];
-  INIZIO = L.inizio;
-  FINE = L.fine;
-  DIZ = [...new Set(L.categorie.flatMap(c => c.parole).map(norm))].sort(cmp);
-  AIUTO_CATEGORIA = new Map();
-  L.categorie.forEach(c => c.parole.forEach(w => AIUTO_CATEGORIA.set(norm(w), c.aiuto)));
+function loadWords() {
+  L = LANGUAGES[lang];
+  START = L.start;
+  END = L.end;
+  DICT = [...new Set(L.categories.flatMap(c => c.words).map(norm))].sort(cmp);
+  CATEGORY_HINT = new Map();
+  L.categories.forEach(c => c.words.forEach(w => CATEGORY_HINT.set(norm(w), c.hint)));
 }
 
-const stato = {
-  nome: "", buffo: null, modo: 0, segreta: "", basso: "", alto: "",
-  storia: [], ipotesi: null, attesa: false, aiuti: 0, aiutiGratis: 0, livelloPrima: 0, dizCpu: [], maxCpu: MAX_TENTATIVI_CPU,
-  gruppi: new Set(GRUPPI.map(g => g.id)) // all'inizio tutti i gruppi sono scelti
+const state = {
+  name: "", funny: null, mode: 0, secret: "", low: "", high: "",
+  history: [], guess: null, waiting: false, hints: 0, freeHints: 0, prevLevel: 0, cpuDict: [], maxCpu: MAX_CPU_GUESSES,
+  groups: new Set(GROUPS.map(g => g.id)) // at first every group is selected
 };
-const maxTentativi = () => (stato.modo === 1 ? stato.maxCpu : MAX_TENTATIVI_TU);
+const maxGuesses = () => (state.mode === 1 ? state.maxCpu : MAX_CHILD_GUESSES);
 
-// Il nome a sorpresa è salvato come coppia di posizioni, così si traduce cambiando lingua
-function nomeVisibile() {
-  if (!stato.buffo) return stato.nome;
-  const [i, j] = stato.buffo;
-  return L.componiNome(L.nomiBuffi[i], L.aggettiviBuffi[j], L.generi[i]);
+// The surprise name is stored as a pair of positions, so it gets translated when the language changes
+function displayName() {
+  if (!state.funny) return state.name;
+  const [i, j] = state.funny;
+  return L.makeName(L.funnyNames[i], L.funnyAdjectives[j], L.genders[i]);
 }
-const conNome = s => (nomeVisibile() ? `${s}, ${nomeVisibile()}!` : `${s}!`);
+const withName = s => (displayName() ? `${s}, ${displayName()}!` : `${s}!`);
 
-function applicaTesti() {
-  document.documentElement.lang = lingua;
-  const [I, F, E] = estremi();
-  document.title = t("titoloPagina", I, F);
-  document.querySelectorAll(".logo .da").forEach(e => (e.textContent = I));
-  document.querySelectorAll(".logo .a").forEach(e => (e.textContent = F));
-  document.querySelectorAll("[data-t]").forEach(e => (e.textContent = t(e.dataset.t, I, F, E)));
+function applyTexts() {
+  document.documentElement.lang = lang;
+  const [A, Z, X] = ends();
+  document.title = t("pageTitle", A, Z);
+  document.querySelectorAll(".logo .from").forEach(e => (e.textContent = A));
+  document.querySelectorAll(".logo .to").forEach(e => (e.textContent = Z));
+  document.querySelectorAll("[data-t]").forEach(e => (e.textContent = t(e.dataset.t, A, Z, X)));
   document.querySelectorAll("[data-t-ph]").forEach(e => (e.placeholder = t(e.dataset.tPh)));
   document.querySelectorAll("[data-t-aria]").forEach(e => e.setAttribute("aria-label", t(e.dataset.tAria)));
-  $("b-lingua").setAttribute("aria-checked", String(lingua === "en"));
-  $("b-lingua").title = t("linguaTitolo");
-  if (nomeVisibile()) $("saluto").textContent = t("saluto", nomeVisibile());
-  disegnaGruppi();
-  applicaTema(document.documentElement.dataset.tema);
+  $("b-lang").setAttribute("aria-checked", String(lang === "en"));
+  $("b-lang").title = t("langTitle");
+  if (displayName()) $("greeting").textContent = t("greeting", displayName());
+  drawGroups();
+  applyTheme(document.documentElement.dataset.theme);
 }
 
-$("b-lingua").onclick = () => {
-  lingua = lingua === "it" ? "en" : "it";
-  caricaParole();
-  applicaTesti();
+$("b-lang").onclick = () => {
+  lang = lang === "it" ? "en" : "it";
+  loadWords();
+  applyTexts();
 };
 
-// Scelta dei tentativi del computer
-function disegnaScelte() {
-  $("scelte-tentativi").innerHTML = OPZIONI_TENTATIVI_CPU.map(n =>
-    `<button role="radio" aria-checked="${n === stato.maxCpu}" data-n="${n}">${n}</button>`).join("");
-  $("scelte-tentativi").querySelectorAll("button").forEach(b => (b.onclick = () => {
-    stato.maxCpu = Number(b.dataset.n);
-    disegnaScelte();
-    $("scelte-tentativi").querySelector(`[data-n="${b.dataset.n}"]`).focus();
+// Choice of the computer's guesses
+function drawChoices() {
+  $("guess-choices").innerHTML = CPU_GUESS_OPTIONS.map(n =>
+    `<button role="radio" aria-checked="${n === state.maxCpu}" data-n="${n}">${n}</button>`).join("");
+  $("guess-choices").querySelectorAll("button").forEach(b => (b.onclick = () => {
+    state.maxCpu = Number(b.dataset.n);
+    drawChoices();
+    $("guess-choices").querySelector(`[data-n="${b.dataset.n}"]`).focus();
   }));
 }
 
-function mostra(id) {
-  document.querySelectorAll(".schermata").forEach(s => (s.hidden = s.id !== id));
-  document.body.dataset.schermata = id;
-  const inPartita = id === "s-segreta" || id === "s-categorie" || id === "s-gioco";
-  $("b-torna").hidden = !inPartita;
-  $("logo-piccolo").hidden = !(inPartita || id === "s-fine");
-  // la lingua si sceglie solo prima di iniziare a giocare
-  $("b-lingua").hidden = !(id === "s-nome" || id === "s-menu");
-  // il footer compare solo nelle schermate iniziali, non durante la partita
-  $("piede").hidden = !(id === "s-nome" || id === "s-menu");
+function show(id) {
+  document.querySelectorAll(".screen").forEach(s => (s.hidden = s.id !== id));
+  document.body.dataset.screen = id;
+  const inGame = id === "s-secret" || id === "s-groups" || id === "s-game";
+  $("b-back").hidden = !inGame;
+  $("logo-mini").hidden = !(inGame || id === "s-end");
+  // the language can only be chosen before starting to play
+  $("b-lang").hidden = !(id === "s-name" || id === "s-menu");
+  // the footer only shows on the start screens, not during the game
+  $("footer").hidden = !(id === "s-name" || id === "s-menu");
   window.scrollTo(0, 0);
 }
 
-/* ===== Nome e menu ===== */
-function salvaNome(nome) {
-  const n = nome.trim();
-  stato.nome = n ? n.charAt(0).toUpperCase() + n.slice(1) : "";
-  stato.buffo = n ? null : [caso(L.nomiBuffi.length), caso(L.aggettiviBuffi.length)];
-  $("saluto").textContent = t("saluto", nomeVisibile());
-  mostra("s-menu");
+/* ===== Name and menu ===== */
+function saveName(name) {
+  const n = name.trim();
+  state.name = n ? n.charAt(0).toUpperCase() + n.slice(1) : "";
+  state.funny = n ? null : [random(L.funnyNames.length), random(L.funnyAdjectives.length)];
+  $("greeting").textContent = t("greeting", displayName());
+  show("s-menu");
 }
-$("b-nome").onclick = () => salvaNome($("in-nome").value);
-$("in-nome").addEventListener("keydown", e => { if (e.key === "Enter") salvaNome($("in-nome").value); });
-$("b-salta").onclick = () => salvaNome("");
-$("b-cambia-nome").onclick = () => { mostra("s-nome"); $("in-nome").focus(); };
-document.querySelectorAll("[data-menu]").forEach(b => (b.onclick = () => mostra("s-menu")));
-$("b-modo1").onclick = () => avviaModo1();
-$("b-modo2").onclick = () => { disegnaGruppi(); mostra("s-categorie"); };
-$("b-ancora").onclick = () => (stato.modo === 1 ? avviaModo1() : avviaModo2());
+$("b-name").onclick = () => saveName($("in-name").value);
+$("in-name").addEventListener("keydown", e => { if (e.key === "Enter") saveName($("in-name").value); });
+$("b-surprise").onclick = () => saveName("");
+$("b-change-name").onclick = () => { show("s-name"); $("in-name").focus(); };
+document.querySelectorAll("[data-menu]").forEach(b => (b.onclick = () => show("s-menu")));
+$("b-mode1").onclick = () => startMode1();
+$("b-mode2").onclick = () => { drawGroups(); show("s-groups"); };
+$("b-again").onclick = () => (state.mode === 1 ? startMode1() : startMode2());
 
-/* ===== Parte comune della partita ===== */
-function nuovaPartita(modo) {
-  Object.assign(stato, { modo, basso: INIZIO, alto: FINE, storia: [], ipotesi: null, attesa: false, aiuti: 0, aiutiGratis: 0, livelloPrima: 0 });
-  $("area-cpu").hidden = modo !== 1;
-  $("area-tu").hidden = modo !== 2;
-  $("aiuto").hidden = true;
-  $("msg-prova").textContent = "";
-  disegnaAiuti();
+/* ===== Shared game logic ===== */
+function newGame(mode) {
+  Object.assign(state, { mode, low: START, high: END, history: [], guess: null, waiting: false, hints: 0, freeHints: 0, prevLevel: 0 });
+  $("area-cpu").hidden = mode !== 1;
+  $("area-child").hidden = mode !== 2;
+  $("explain").hidden = true;
+  $("msg-guess").textContent = "";
+  drawHints();
 }
 
-// Posizione di una parola sull'abaco, da 0 (A) a 26 (fine della Z)
-function posizione(w) {
+// Position of a word on the abacus, from 0 (A) to 26 (end of Z)
+function position(w) {
   let p = w.charCodeAt(0) - 97, d = 1;
   for (let k = 1; k < Math.min(w.length, 6); k++) { d *= 27; p += (w.charCodeAt(k) - 96) / d; }
   return Math.min(25.999, p);
 }
 
-function disegna(evidenzia = lettereAiuti(), livelloEvidenza = 0) {
-  // palline dei tentativi
-  const usati = stato.storia.length;
-  const totale = maxTentativi();
-  $("palline").style.setProperty("--colonne", totale > 10 ? Math.ceil(totale / 2) : totale);
-  $("palline").innerHTML = Array.from({ length: totale }, (_, i) => `<b class="${i < usati ? "usata" : ""}"></b>`).join("");
-  $("conta").textContent = t("conta", totale - usati);
+function draw(highlight = hintLetters(), highlightLevel = 0) {
+  // guess dots
+  const used = state.history.length;
+  const total = maxGuesses();
+  $("dots").style.setProperty("--cols", total > 10 ? Math.ceil(total / 2) : total);
+  $("dots").innerHTML = Array.from({ length: total }, (_, i) => `<b class="${i < used ? "used" : ""}"></b>`).join("");
+  $("count").textContent = t("count", total - used);
 
-  disegnaAbaco(evidenzia, livelloEvidenza);
+  drawAbacus(highlight, highlightLevel);
 
-  // tessere
-  $("t-basso").textContent = M(stato.basso);
-  $("t-alto").textContent = M(stato.alto);
-  adattaTessere();
+  // tiles
+  $("t-low").textContent = U(state.low);
+  $("t-high").textContent = U(state.high);
+  fitTiles();
 
-  // parole provate (la più recente in alto)
-  $("lato").classList.toggle("vuoto", usati === 0);
-  $("storia").innerHTML = usati === 0
-    ? `<li class="vuota">${t("storiaVuota")}</li>`
-    : stato.storia.slice().reverse().map(s =>
-      `<li class="${s.verso}"><strong>${M(s.parola)}</strong><em>${t(s.verso === "prima" ? "storiaPrima" : "storiaDopo")}</em></li>`
+  // words tried (most recent on top)
+  $("side").classList.toggle("empty", used === 0);
+  $("history").innerHTML = used === 0
+    ? `<li class="empty">${t("historyEmpty")}</li>`
+    : state.history.slice().reverse().map(h =>
+      `<li class="${h.dir}"><strong>${U(h.word)}</strong><em>${t(h.dir === "before" ? "historyBefore" : "historyAfter")}</em></li>`
     ).join("");
 }
 
-// Sul telefono l'abaco ha due aste (A–M e N–Z), da 600px in su una sola
-const schermoStretto = window.matchMedia("(max-width: 599px)");
-function disegnaAbaco(evidenzia, livelloEvidenza) {
-  const aste = schermoStretto.matches ? 2 : 1;
-  const perAsta = 26 / aste;
-  // Zoom: se i due limiti iniziano con le stesse lettere, l'abaco mostra la lettera successiva.
-  // Ogni parola tra i due limiti ha per forza lo stesso inizio, quindi basta guardare il resto.
-  const k = inizioComune(stato.basso, stato.alto);
-  const prefisso = stato.alto.slice(0, k);
-  const pos = w => (w.length ? posizione(w) : 0);
-  // gli estremi del dizionario valgono come inizio della A e fine della Z
-  const pb = k === 0 && stato.basso === INIZIO ? 0 : pos(stato.basso.slice(k));
-  const pa = k === 0 && stato.alto === FINE ? 26 : pos(stato.alto.slice(k));
-  const pi = stato.ipotesi && stato.ipotesi.startsWith(prefisso) ? pos(stato.ipotesi.slice(k)) : null;
-  // le lettere si evidenziano solo se riguardano la posizione che l'abaco sta mostrando
-  if (livelloEvidenza !== k) evidenzia = [];
-  // la riga sopra l'abaco resta accesa finché il prossimo tentativo non cambia i limiti
-  const nuovoLivello = k > stato.livelloPrima;
+// On phones the abacus has two rods (A–M and N–Z), from 600px up a single one
+const narrowScreen = window.matchMedia("(max-width: 599px)");
+function drawAbacus(highlight, highlightLevel) {
+  const rods = narrowScreen.matches ? 2 : 1;
+  const perRod = 26 / rods;
+  // Zoom: if the two bounds start with the same letters, the abacus shows the next letter.
+  // Every word between the two bounds necessarily has the same start, so only the rest matters.
+  const k = commonPrefix(state.low, state.high);
+  const prefix = state.high.slice(0, k);
+  const pos = w => (w.length ? position(w) : 0);
+  // the dictionary ends count as the start of A and the end of Z
+  const pl = k === 0 && state.low === START ? 0 : pos(state.low.slice(k));
+  const ph = k === 0 && state.high === END ? 26 : pos(state.high.slice(k));
+  const pg = state.guess && state.guess.startsWith(prefix) ? pos(state.guess.slice(k)) : null;
+  // letters are highlighted only if they concern the position the abacus is showing
+  if (highlightLevel !== k) highlight = [];
+  // the row above the abacus stays lit until the next guess changes the bounds
+  const newLevel = k > state.prevLevel;
   let html = "";
-  for (let r = 0; r < aste; r++) {
-    const da = r * perAsta, a = da + perAsta;
-    const lo = Math.max(pb, da), hi = Math.min(pa, a);
-    const lettere = ALFABETO.slice(da, a);
-    const griglia = `grid-template-columns:repeat(${perAsta},minmax(0,1fr))`;
-    // barra evidenziatrice con dentro le perline colorate, allineate a quelle grigie sotto
-    let zona = "";
+  for (let r = 0; r < rods; r++) {
+    const from = r * perRod, to = from + perRod;
+    const lo = Math.max(pl, from), hi = Math.min(ph, to);
+    const letters = ALPHABET.slice(from, to);
+    const grid = `grid-template-columns:repeat(${perRod},minmax(0,1fr))`;
+    // highlight band with the coloured beads inside, aligned with the grey ones below
+    let band = "";
     if (hi > lo) {
-      const sx = (lo - da) / perAsta * 100, dx = (hi - da) / perAsta * 100;
-      // sul telefono, dove la barra prosegue sull'altra asta, il bordo resta dritto
-      const continuaSx = r > 0 && lo === da, continuaDx = r < aste - 1 && hi === a;
-      // agli estremi dell'alfabeto la barra sborda di qualche pixel, così la curva non taglia A e Z
-      const extSx = lo === 0 ? 6 : 0, extDx = hi === 26 ? 6 : 0;
-      const cls = ["zona", continuaSx ? "continua-sx" : "", continuaDx ? "continua-dx" : ""].join(" ");
-      zona = `<div class="${cls}" style="left:calc(${sx}% - ${extSx}px);width:calc(${dx - sx}% + ${extSx + extDx}px)"></div>`;
-      // le perline colorate sono ritagliate con la stessa forma della barra
-      const sxR = continuaSx ? "0" : "999px", dxR = continuaDx ? "0" : "999px";
-      const ritaglio = `inset(0 calc(${100 - dx}% - ${extDx}px) 0 calc(${sx}% - ${extSx}px) round ${sxR} ${dxR} ${dxR} ${sxR})`;
-      const colori = lettere.map((l, j) => `<i><b class="c${(da + j) % 5}"></b></i>`).join("");
-      zona += `<div class="colori" style="${griglia};clip-path:${ritaglio};-webkit-clip-path:${ritaglio}">${colori}</div>`;
+      const left = (lo - from) / perRod * 100, right = (hi - from) / perRod * 100;
+      // on phones, where the band continues on the other rod, the edge stays straight
+      const contLeft = r > 0 && lo === from, contRight = r < rods - 1 && hi === to;
+      // at the ends of the alphabet the band overhangs by a few pixels, so the curve doesn't cut A and Z
+      const extLeft = lo === 0 ? 6 : 0, extRight = hi === 26 ? 6 : 0;
+      const cls = ["band", contLeft ? "cont-left" : "", contRight ? "cont-right" : ""].join(" ");
+      band = `<div class="${cls}" style="left:calc(${left}% - ${extLeft}px);width:calc(${right - left}% + ${extLeft + extRight}px)"></div>`;
+      // the coloured beads are clipped with the same shape as the band
+      const leftR = contLeft ? "0" : "999px", rightR = contRight ? "0" : "999px";
+      const clip = `inset(0 calc(${100 - right}% - ${extRight}px) 0 calc(${left}% - ${extLeft}px) round ${leftR} ${rightR} ${rightR} ${leftR})`;
+      const colors = letters.map((l, j) => `<i><b class="c${(from + j) % 5}"></b></i>`).join("");
+      band += `<div class="colors" style="${grid};clip-path:${clip};-webkit-clip-path:${clip}">${colors}</div>`;
     }
-    const segno = pi !== null && pi >= da && pi < a
-      ? `<div class="segno" style="left:${(pi - da) / perAsta * 100}%">▼</div>` : "";
-    const perle = lettere.map((l, j) => {
-      const i = da + j;
-      const dentro = i + 1 > pb && i < pa;
-      const cls = ["perla", dentro ? "dentro" : "", evidenzia.includes(l) ? "evidenza" : ""].join(" ");
-      return `<div class="${cls}"><b></b><span>${M(l)}</span></div>`;
+    const marker = pg !== null && pg >= from && pg < to
+      ? `<div class="marker" style="left:${(pg - from) / perRod * 100}%">▼</div>` : "";
+    const beads = letters.map((l, j) => {
+      const i = from + j;
+      const inside = i + 1 > pl && i < ph;
+      const cls = ["bead", inside ? "inside" : "", highlight.includes(l) ? "highlight" : ""].join(" ");
+      return `<div class="${cls}"><b></b><span>${U(l)}</span></div>`;
     }).join("");
-    html += `<div class="asta" style="--n:${perAsta}"><div class="filo"></div><div class="perle" style="${griglia}">${perle}</div>${zona}${segno}</div>`;
+    html += `<div class="rod" style="--n:${perRod}"><div class="wire"></div><div class="beads" style="${grid}">${beads}</div>${band}${marker}</div>`;
   }
-  const caselle = [...prefisso].map(c => `<span class="piena">${M(c)}</span>`).join("") + `<span class="qui">?</span>`;
-  $("abaco").innerHTML = `<div class="zoom${nuovoLivello ? " nuovo" : ""}"><span>${t("zoomInizio")}</span><span class="caselle">${caselle}</span></div>` + html;
-  $("abaco").setAttribute("aria-label", t("zoomAria", k + 1, M(prefisso)));
+  const boxes = [...prefix].map(c => `<span class="filled">${U(c)}</span>`).join("") + `<span class="here">?</span>`;
+  $("abacus").innerHTML = `<div class="zoom${newLevel ? " new" : ""}"><span>${t("zoomStart")}</span><span class="boxes">${boxes}</span></div>` + html;
+  $("abacus").setAttribute("aria-label", t("zoomAria", k + 1, U(prefix)));
 }
 
-// Rimpicciolisce le parole lunghe (es. ZUZZURELLONE) finché stanno nella tessera
-function adattaTessere() {
-  document.querySelectorAll(".tessera strong").forEach(el => {
+// Shrinks long words (e.g. ZUZZURELLONE) until they fit in the tile
+function fitTiles() {
+  document.querySelectorAll(".tile strong").forEach(el => {
     el.style.fontSize = "";
-    el.classList.remove("a-capo");
+    el.classList.remove("wrap");
     let size = parseFloat(getComputedStyle(el).fontSize) || 16;
     while (el.scrollWidth > el.clientWidth && size > 11) {
       size -= 1;
       el.style.fontSize = size + "px";
     }
-    if (el.scrollWidth > el.clientWidth) el.classList.add("a-capo");
+    if (el.scrollWidth > el.clientWidth) el.classList.add("wrap");
   });
 }
 
-function ridisegnaSeInGioco() { if (!$("s-gioco").hidden) disegna(); }
-schermoStretto.addEventListener("change", ridisegnaSeInGioco);
-let attesaResize;
-window.addEventListener("resize", () => { clearTimeout(attesaResize); attesaResize = setTimeout(adattaTessere, 120); });
+function redrawIfPlaying() { if (!$("s-game").hidden) draw(); }
+narrowScreen.addEventListener("change", redrawIfPlaying);
+let resizeTimer;
+window.addEventListener("resize", () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(fitTiles, 120); });
 
-// Con mouse e tastiera il campo resta attivo dopo ogni tentativo; sul touch la tastiera
-// si chiude, così il bambino vede abaco e tessere aggiornati
-const puntatorePreciso = window.matchMedia("(pointer: fine)");
-function attivaCampo(dopoTentativo) {
-  if (puntatorePreciso.matches) $("in-prova").focus();
-  else if (dopoTentativo) $("in-prova").blur();
+// With mouse and keyboard the field stays focused after each guess; on touch the keyboard
+// closes, so the child sees the updated abacus and tiles
+const finePointer = window.matchMedia("(pointer: fine)");
+function focusField(afterGuess) {
+  if (finePointer.matches) $("in-guess").focus();
+  else if (afterGuess) $("in-guess").blur();
 }
-// Sul telefono, quando si apre la tastiera, tiene in vista tessere e campo
-$("in-prova").addEventListener("focus", () => {
-  if (puntatorePreciso.matches) return;
-  setTimeout(() => $("intervallo").scrollIntoView({ block: "start", behavior: "smooth" }), 300);
+// On phones, when the keyboard opens, keep the tiles and the field in view
+$("in-guess").addEventListener("focus", () => {
+  if (finePointer.matches) return;
+  setTimeout(() => $("interval").scrollIntoView({ block: "start", behavior: "smooth" }), 300);
 });
 
-// Quante lettere iniziali hanno in comune due parole
-function inizioComune(a, b) {
+// How many leading letters two words have in common
+function commonPrefix(a, b) {
   let k = 0;
   while (k < a.length && k < b.length && a[k] === b[k]) k++;
   return k;
 }
 
-function registra(parola, verso) {
-  stato.livelloPrima = inizioComune(stato.basso, stato.alto);
-  stato.storia.push({ parola, verso });
-  if (verso === "prima") stato.alto = parola; else stato.basso = parola;
+function record(word, dir) {
+  state.prevLevel = commonPrefix(state.low, state.high);
+  state.history.push({ word, dir });
+  if (dir === "before") state.high = word; else state.low = word;
 }
 
-function fine(emoji, titolo, testo) {
-  $("f-emoji").textContent = emoji;
-  $("f-titolo").textContent = titolo;
-  $("f-testo").textContent = testo;
-  mostra("s-fine");
+function endGame(emoji, title, text) {
+  $("end-emoji").textContent = emoji;
+  $("end-title").textContent = title;
+  $("end-text").textContent = text;
+  show("s-end");
 }
 
-/* ===== Modalità 1: tu pensi, il computer indovina ===== */
-function avviaModo1() {
-  nuovaPartita(1);
-  $("in-segreta").value = "";
-  $("in-segreta").type = "password";
-  $("b-occhio").textContent = t("mostra");
-  $("b-occhio").setAttribute("aria-pressed", "false");
-  $("msg-segreta").textContent = "";
-  disegnaScelte();
-  mostra("s-segreta");
-  if (puntatorePreciso.matches) $("in-segreta").focus();
+/* ===== Mode 1: you think, the computer guesses ===== */
+function startMode1() {
+  newGame(1);
+  $("in-secret").value = "";
+  $("in-secret").type = "password";
+  $("b-eye").textContent = t("show");
+  $("b-eye").setAttribute("aria-pressed", "false");
+  $("msg-secret").textContent = "";
+  drawChoices();
+  show("s-secret");
+  if (finePointer.matches) $("in-secret").focus();
 }
 
-$("b-occhio").onclick = () => {
-  const nascosta = $("in-segreta").type === "password";
-  $("in-segreta").type = nascosta ? "text" : "password";
-  $("b-occhio").textContent = t(nascosta ? "nascondi" : "mostra");
-  $("b-occhio").setAttribute("aria-pressed", String(nascosta));
+$("b-eye").onclick = () => {
+  const hidden = $("in-secret").type === "password";
+  $("in-secret").type = hidden ? "text" : "password";
+  $("b-eye").textContent = t(hidden ? "hide" : "show");
+  $("b-eye").setAttribute("aria-pressed", String(hidden));
 };
 
-function confermaSegreta() {
-  const p = norm($("in-segreta").value);
-  const err = $("msg-segreta");
-  if (!p) return (err.textContent = t("errVuota"));
-  if (!/^[a-z]+$/.test(p)) return (err.textContent = t("errLettere"));
-  if (!(cmp(p, INIZIO) > 0 && cmp(p, FINE) < 0)) return (err.textContent = t("errFuori", M(INIZIO), M(FINE)));
-  stato.segreta = p;
-  // il computer conosce solo un piccolo gruppo di parole, diverso a ogni partita
-  stato.dizCpu = DIZ.slice().sort(() => Math.random() - 0.5).slice(0, PAROLE_CPU).sort(cmp);
-  mostra("s-gioco");
-  turnoCpu();
+function confirmSecret() {
+  const p = norm($("in-secret").value);
+  const err = $("msg-secret");
+  if (!p) return (err.textContent = t("errEmpty"));
+  if (!/^[a-z]+$/.test(p)) return (err.textContent = t("errLetters"));
+  if (!(cmp(p, START) > 0 && cmp(p, END) < 0)) return (err.textContent = t("errOutside", U(START), U(END)));
+  state.secret = p;
+  // the computer only knows a small set of words, different in every game
+  state.cpuDict = DICT.slice().sort(() => Math.random() - 0.5).slice(0, CPU_WORDS).sort(cmp);
+  show("s-game");
+  cpuTurn();
 }
-$("b-via").onclick = confermaSegreta;
-$("in-segreta").addEventListener("keydown", e => { if (e.key === "Enter") confermaSegreta(); });
+$("b-start").onclick = confirmSecret;
+$("in-secret").addEventListener("keydown", e => { if (e.key === "Enter") confirmSecret(); });
 
-function turnoCpu() {
-  $("aiuto").hidden = true;
-  if (stato.storia.length >= stato.maxCpu) {
-    return fine("🏆", conNome(t("haiVinto")), t("fineCpuTentativi", stato.maxCpu, M(stato.segreta)));
+function cpuTurn() {
+  $("explain").hidden = true;
+  if (state.history.length >= state.maxCpu) {
+    return endGame("🏆", withName(t("youWin")), t("endCpuOutOfGuesses", state.maxCpu, U(state.secret)));
   }
-  const candidate = stato.dizCpu.filter(w => cmp(w, stato.basso) > 0 && cmp(w, stato.alto) < 0);
-  if (!candidate.length) {
-    return fine("🏆", conNome(t("haiVinto")), t("fineCpuNessuna", M(stato.basso), M(stato.alto), M(stato.segreta)));
+  const candidates = state.cpuDict.filter(w => cmp(w, state.low) > 0 && cmp(w, state.high) < 0);
+  if (!candidates.length) {
+    return endGame("🏆", withName(t("youWin")), t("endCpuNoWords", U(state.low), U(state.high), U(state.secret)));
   }
-  // metà dell'intervallo, più un po' di rumore
-  const meta = (candidate.length - 1) / 2;
-  const spostamento = (Math.random() * 2 - 1) * candidate.length * RUMORE;
-  const i = Math.max(0, Math.min(candidate.length - 1, Math.round(meta + spostamento)));
+  // middle of the interval, plus a bit of noise
+  const mid = (candidates.length - 1) / 2;
+  const shift = (Math.random() * 2 - 1) * candidates.length * NOISE;
+  const i = Math.max(0, Math.min(candidates.length - 1, Math.round(mid + shift)));
 
-  stato.ipotesi = null;
-  stato.attesa = true;
-  bottoniCpu(false);
-  $("cpu-dice").textContent = t("cpuPensa");
-  $("t-mezzo-et").textContent = t("tCpu");
-  $("t-mezzo").textContent = "…";
-  disegna();
+  state.guess = null;
+  state.waiting = true;
+  cpuButtons(false);
+  $("cpu-says").textContent = t("cpuThinks");
+  $("t-mid-label").textContent = t("tCpu");
+  $("t-mid").textContent = "…";
+  draw();
 
   setTimeout(() => {
-    stato.ipotesi = candidate[i];
-    stato.attesa = false;
-    $("cpu-dice").textContent = t("cpuChiede", M(stato.ipotesi));
-    const el = $("t-mezzo");
-    el.textContent = M(stato.ipotesi);
+    state.guess = candidates[i];
+    state.waiting = false;
+    $("cpu-says").textContent = t("cpuAsks", U(state.guess));
+    const el = $("t-mid");
+    el.textContent = U(state.guess);
     el.parentElement.classList.remove("pop"); void el.offsetWidth; el.parentElement.classList.add("pop");
-    bottoniCpu(true);
-    disegna();
+    cpuButtons(true);
+    draw();
   }, 650);
 }
 
-function bottoniCpu(attivi) {
-  document.querySelectorAll("#area-cpu [data-r]").forEach(b => (b.disabled = !attivi));
+function cpuButtons(enabled) {
+  document.querySelectorAll("#area-cpu [data-r]").forEach(b => (b.disabled = !enabled));
 }
-document.querySelectorAll("#area-cpu [data-r]").forEach(b => (b.onclick = () => rispondi(b.dataset.r)));
+document.querySelectorAll("#area-cpu [data-r]").forEach(b => (b.onclick = () => answer(b.dataset.r)));
 
-function rispondi(r) {
-  if (stato.attesa || !stato.ipotesi) return;
-  const g = stato.ipotesi;
-  const c = cmp(stato.segreta, g);
-  const vera = c < 0 ? "prima" : c > 0 ? "dopo" : "giusta";
+function answer(r) {
+  if (state.waiting || !state.guess) return;
+  const g = state.guess;
+  const c = cmp(state.secret, g);
+  const truth = c < 0 ? "before" : c > 0 ? "after" : "correct";
 
-  if (r !== vera) return mostraAiuto(g, vera);
+  if (r !== truth) return showExplanation(g, truth);
 
-  if (vera === "giusta") {
-    return fine("🤖", t("fineCpuVince"), t("fineCpuVinceTesto", M(g), stato.storia.length + 1, stato.maxCpu));
+  if (truth === "correct") {
+    return endGame("🤖", t("endCpuWins"), t("endCpuWinsText", U(g), state.history.length + 1, state.maxCpu));
   }
-  registra(g, vera);
-  turnoCpu();
+  record(g, truth);
+  cpuTurn();
 }
 
-function mostraAiuto(g, vera) {
-  let testo, lettere = [], livello = 0;
-  if (vera === "giusta") {
-    testo = t("aiutoGiusta", M(g));
+function showExplanation(g, truth) {
+  let text, letters = [], level = 0;
+  if (truth === "correct") {
+    text = t("explainCorrect", U(g));
   } else {
-    const s = spiega(stato.segreta, g);
-    testo = s.testo;
-    lettere = s.lettere;
-    livello = s.livello;
+    const e = explain(state.secret, g);
+    text = e.text;
+    letters = e.letters;
+    level = e.level;
   }
-  $("aiuto-testo").innerHTML = testo;
-  $("aiuto-alfabeto").innerHTML = lettere.length
-    ? ALFABETO.map(l => `<span class="${lettere.includes(l) ? "si" : ""}">${M(l)}</span>`).join("")
+  $("explain-text").innerHTML = text;
+  $("explain-alphabet").innerHTML = letters.length
+    ? ALPHABET.map(l => `<span class="${letters.includes(l) ? "on" : ""}">${U(l)}</span>`).join("")
     : "";
-  $("aiuto").hidden = false;
-  disegna(lettere, livello);
+  $("explain").hidden = false;
+  draw(letters, level);
 }
 
-// Spiega a parole perché "a" viene prima o dopo "b"
-function spiega(a, b) {
+// Explains in words why "a" comes before or after "b"
+function explain(a, b) {
   let i = 0;
   while (i < a.length && i < b.length && a[i] === b[i]) i++;
-  const A = M(a), B = M(b);
-  let testo = t("spTua", A);
-  if (i === 1) testo += t("spUna", M(a[0]));
-  if (i > 1) testo += t("spPiu", i, M(a.slice(0, i)));
-  let lettere = [], livello = 0;
+  const A = U(a), B = U(b);
+  let text = t("exYours", A);
+  if (i === 1) text += t("exOne", U(a[0]));
+  if (i > 1) text += t("exMany", i, U(a.slice(0, i)));
+  let letters = [], level = 0;
   if (i === a.length || i === b.length) {
-    testo += t("spCorta", a.length < b.length ? A : B);
+    text += t("exShorter", a.length < b.length ? A : B);
   } else {
     const la = a[i], lb = b[i];
     const [x, y] = la < lb ? [la, lb] : [lb, la];
-    testo += t("spLettera", i + 1, A, M(la), B, M(lb), M(x), M(y));
-    lettere = [la, lb];
+    text += t("exLetter", i + 1, A, U(la), B, U(lb), U(x), U(y));
+    letters = [la, lb];
   }
-  livello = i;
-  testo += t("spQuindi", A, cmp(a, b) < 0, B);
-  return { testo, lettere, livello };
+  level = i;
+  text += t("exSo", A, cmp(a, b) < 0, B);
+  return { text, letters, level };
 }
 
-/* ===== Modalità 2: il computer pensa, tu indovini ===== */
-function avviaModo2() {
-  nuovaPartita(2);
-  const parole = paroleInGioco();
-  stato.segreta = parole[caso(parole.length)];
-  // se tutte le parole in gioco sono della stessa categoria, il primo aiuto (la categoria) è già noto: lo diamo gratis
-  const categorie = new Set(parole.map(w => AIUTO_CATEGORIA.get(w)));
-  stato.aiutiGratis = categorie.size === 1 ? 1 : 0;
-  stato.aiuti = stato.aiutiGratis;
-  $("t-mezzo-et").textContent = t("tSegreta");
-  $("t-mezzo").textContent = "?";
-  $("in-prova").value = "";
-  disegnaAiuti();
-  mostra("s-gioco");
-  disegna();
-  attivaCampo(false);
+/* ===== Mode 2: the computer thinks, you guess ===== */
+function startMode2() {
+  newGame(2);
+  const words = wordsInPlay();
+  state.secret = words[random(words.length)];
+  // if all the words in play belong to the same category, the first hint (the category) is already known: it's given for free
+  const categories = new Set(words.map(w => CATEGORY_HINT.get(w)));
+  state.freeHints = categories.size === 1 ? 1 : 0;
+  state.hints = state.freeHints;
+  $("t-mid-label").textContent = t("tSecret");
+  $("t-mid").textContent = "?";
+  $("in-guess").value = "";
+  drawHints();
+  show("s-game");
+  draw();
+  focusField(false);
 }
 
-function disegnaGruppi() {
-  $("gruppi").innerHTML = GRUPPI.map(g =>
-    `<button class="gruppo" data-g="${g.id}" aria-pressed="${stato.gruppi.has(g.id)}"><span class="emoji" aria-hidden="true">${g.emoji}</span><span>${g[lingua]}</span></button>`
+function drawGroups() {
+  $("groups").innerHTML = GROUPS.map(g =>
+    `<button class="group" data-g="${g.id}" aria-pressed="${state.groups.has(g.id)}"><span class="emoji" aria-hidden="true">${g.emoji}</span><span>${g[lang]}</span></button>`
   ).join("");
-  $("gruppi").querySelectorAll(".gruppo").forEach(b => (b.onclick = () => {
+  $("groups").querySelectorAll(".group").forEach(b => (b.onclick = () => {
     const id = b.dataset.g;
-    if (stato.gruppi.has(id)) stato.gruppi.delete(id); else stato.gruppi.add(id);
-    disegnaGruppi();
-    $("gruppi").querySelector(`[data-g="${id}"]`).focus();
+    if (state.groups.has(id)) state.groups.delete(id); else state.groups.add(id);
+    drawGroups();
+    $("groups").querySelector(`[data-g="${id}"]`).focus();
   }));
-  const tutti = stato.gruppi.size === GRUPPI.length;
-  $("b-tutti").textContent = t(tutti ? "nessuno" : "tutti");
-  const n = paroleInGioco().length;
-  $("conta-parole").textContent = t("contaParole", n);
-  $("conta-parole").classList.toggle("zero", n === 0);
-  $("b-via2").disabled = n === 0;
+  const all = state.groups.size === GROUPS.length;
+  $("b-all").textContent = t(all ? "none" : "all");
+  const n = wordsInPlay().length;
+  $("word-count").textContent = t("wordCount", n);
+  $("word-count").classList.toggle("zero", n === 0);
+  $("b-start2").disabled = n === 0;
 }
-$("b-tutti").onclick = () => {
-  stato.gruppi = stato.gruppi.size === GRUPPI.length ? new Set() : new Set(GRUPPI.map(g => g.id));
-  disegnaGruppi();
+$("b-all").onclick = () => {
+  state.groups = state.groups.size === GROUPS.length ? new Set() : new Set(GROUPS.map(g => g.id));
+  drawGroups();
 };
-$("b-via2").onclick = () => avviaModo2();
+$("b-start2").onclick = () => startMode2();
 
-function avvisa(testo, errore = false) {
-  const m = $("msg-prova");
-  m.textContent = testo;
-  m.classList.toggle("errore", errore);
+function notify(text, error = false) {
+  const m = $("msg-guess");
+  m.textContent = text;
+  m.classList.toggle("error", error);
 }
 
-function prova() {
-  const p = norm($("in-prova").value);
-  if (!p) return avvisa(t("errVuotaProva"), true);
-  if (!/^[a-z]+$/.test(p)) return avvisa(t("errLettere"), true);
-  if (stato.storia.some(s => s.parola === p)) return avvisa(t("errGia", M(p)), true);
-  if (!(cmp(p, stato.basso) > 0 && cmp(p, stato.alto) < 0)) {
-    return avvisa(t("errFuori", M(stato.basso), M(stato.alto)), true);
+function tryGuess() {
+  const p = norm($("in-guess").value);
+  if (!p) return notify(t("errEmptyGuess"), true);
+  if (!/^[a-z]+$/.test(p)) return notify(t("errLetters"), true);
+  if (state.history.some(h => h.word === p)) return notify(t("errAlready", U(p)), true);
+  if (!(cmp(p, state.low) > 0 && cmp(p, state.high) < 0)) {
+    return notify(t("errOutside", U(state.low), U(state.high)), true);
   }
-  $("in-prova").value = "";
-  const c = cmp(stato.segreta, p);
+  $("in-guess").value = "";
+  const c = cmp(state.secret, p);
   if (c === 0) {
-    return fine("🎉", conNome(t("trovata")), t("trovataTesto", M(p), stato.storia.length + 1, MAX_TENTATIVI_TU));
+    return endGame("🎉", withName(t("found")), t("foundText", U(p), state.history.length + 1, MAX_CHILD_GUESSES));
   }
-  registra(p, c < 0 ? "prima" : "dopo");
-  if (stato.storia.length >= MAX_TENTATIVI_TU) {
-    return fine("🙈", t("finiti"), t("finitiTesto", M(stato.segreta)));
+  record(p, c < 0 ? "before" : "after");
+  if (state.history.length >= MAX_CHILD_GUESSES) {
+    return endGame("🙈", t("outOfGuesses"), t("outOfGuessesText", U(state.secret)));
   }
-  avvisa(t(c < 0 ? "msgPrima" : "msgDopo", M(p)));
-  disegna();
-  attivaCampo(true);
+  notify(t(c < 0 ? "msgBefore" : "msgAfter", U(p)));
+  draw();
+  focusField(true);
 }
-$("b-prova").onclick = prova;
-$("in-prova").addEventListener("keydown", e => { if (e.key === "Enter") prova(); });
+$("b-guess").onclick = tryGuess;
+$("in-guess").addEventListener("keydown", e => { if (e.key === "Enter") tryGuess(); });
 
-// Aiuti incrementali, in quest'ordine: 1) categoria, 2) lettera iniziale, 3) lettera finale, 4) lunghezza
-function lettereAiuti() {
-  if (stato.modo !== 2) return [];
-  const s = stato.segreta, l = [];
-  if (stato.aiuti >= 2) l.push(s[0]);
-  if (stato.aiuti >= 3) l.push(s[s.length - 1]);
+// Incremental hints, in this order: 1) category, 2) first letter, 3) last letter, 4) length
+function hintLetters() {
+  if (state.mode !== 2) return [];
+  const s = state.secret, l = [];
+  if (state.hints >= 2) l.push(s[0]);
+  if (state.hints >= 3) l.push(s[s.length - 1]);
   return l;
 }
 
-function disegnaAiuti() {
-  const s = stato.segreta, n = stato.aiuti;
-  $("aiutini").hidden = n === 0;
-  const frasi = [];
-  if (n >= 1) frasi.push(AIUTO_CATEGORIA.get(s) || t("aiutoSemplice"));
-  if (n >= 2) frasi.push(t("aiutoInizio", M(s[0])));
-  if (n >= 3) frasi.push(t("aiutoFine", M(s[s.length - 1])));
-  if (n >= 4) frasi.push(t("aiutoLunga", s.length));
-  $("aiutini-lista").innerHTML = frasi.map(f => `<li>${f}</li>`).join("");
+function drawHints() {
+  const s = state.secret, n = state.hints;
+  $("hints").hidden = n === 0;
+  const lines = [];
+  if (n >= 1) lines.push(CATEGORY_HINT.get(s) || t("hintSimple"));
+  if (n >= 2) lines.push(t("hintFirst", U(s[0])));
+  if (n >= 3) lines.push(t("hintLast", U(s[s.length - 1])));
+  if (n >= 4) lines.push(t("hintLength", s.length));
+  $("hints-list").innerHTML = lines.map(f => `<li>${f}</li>`).join("");
 
-  let caselle = "";
+  let boxes = "";
   if (n >= 4) {
-    caselle = [...s].map((c, i) => (i === 0 || i === s.length - 1)
-      ? `<span class="piena">${M(c)}</span>` : "<span></span>").join("");
+    boxes = [...s].map((c, i) => (i === 0 || i === s.length - 1)
+      ? `<span class="filled">${U(c)}</span>` : "<span></span>").join("");
   } else if (n >= 2) {
-    caselle = `<span class="piena">${M(s[0])}</span><span class="puntini">…</span>` +
-      (n >= 3 ? `<span class="piena">${M(s[s.length - 1])}</span>` : "");
+    boxes = `<span class="filled">${U(s[0])}</span><span class="gap">…</span>` +
+      (n >= 3 ? `<span class="filled">${U(s[s.length - 1])}</span>` : "");
   }
-  $("caselle").innerHTML = caselle;
+  $("boxes").innerHTML = boxes;
 
-  $("b-aiutino").hidden = n >= NUM_AIUTI;
-  // gli aiuti dati gratis non si contano: con la categoria già nota il bottone dice «Aiuto 1 di 3»
-  const g = stato.aiutiGratis;
-  $("b-aiutino").textContent = t("aiutoBottone", n + 1 - g, NUM_AIUTI - g);
-  $("b-arrendo").hidden = n < NUM_AIUTI;
+  $("b-hint").hidden = n >= NUM_HINTS;
+  // free hints don't count: with the category already known the button says "Hint 1 of 3"
+  const g = state.freeHints;
+  $("b-hint").textContent = t("hintButton", n + 1 - g, NUM_HINTS - g);
+  $("b-give-up").hidden = n < NUM_HINTS;
 }
 
-$("b-aiutino").onclick = () => {
-  if (stato.aiuti >= NUM_AIUTI) return;
-  stato.aiuti++;
-  disegnaAiuti();
-  disegna();
+$("b-hint").onclick = () => {
+  if (state.hints >= NUM_HINTS) return;
+  state.hints++;
+  drawHints();
+  draw();
 };
-$("b-arrendo").onclick = () => fine("🏳️", t("arreso"), t("arresoTesto", M(stato.segreta)));
+$("b-give-up").onclick = () => endGame("🏳️", t("gaveUp"), t("gaveUpText", U(state.secret)));
 
-/* ===== Tema chiaro/scuro ===== */
-const scuroSistema = window.matchMedia("(prefers-color-scheme: dark)");
-let temaScelto = false; // finché il bambino non tocca l'interruttore, il gioco segue il dispositivo
-function applicaTema(tema) {
-  const scuro = tema === "scuro";
-  document.documentElement.dataset.tema = tema;
-  $("b-tema").setAttribute("aria-checked", String(scuro));
-  $("b-tema").title = t(scuro ? "temaChiaroTitolo" : "temaScuroTitolo");
-  document.querySelector('meta[name="theme-color"]').content = scuro ? "#172036" : "#E3F2FF";
+/* ===== Light/dark theme ===== */
+const systemDark = window.matchMedia("(prefers-color-scheme: dark)");
+let themeChosen = false; // until the child touches the switch, the game follows the device
+function applyTheme(theme) {
+  const dark = theme === "dark";
+  document.documentElement.dataset.theme = theme;
+  $("b-theme").setAttribute("aria-checked", String(dark));
+  $("b-theme").title = t(dark ? "toLightTitle" : "toDarkTitle");
+  document.querySelector('meta[name="theme-color"]').content = dark ? "#172036" : "#E3F2FF";
 }
-$("b-tema").onclick = () => {
-  temaScelto = true;
-  applicaTema(document.documentElement.dataset.tema === "scuro" ? "chiaro" : "scuro");
+$("b-theme").onclick = () => {
+  themeChosen = true;
+  applyTheme(document.documentElement.dataset.theme === "dark" ? "light" : "dark");
 };
-scuroSistema.addEventListener("change", e => { if (!temaScelto) applicaTema(e.matches ? "scuro" : "chiaro"); });
+systemDark.addEventListener("change", e => { if (!themeChosen) applyTheme(e.matches ? "dark" : "light"); });
 
-/* ===== Avvio ===== */
-$("versione").textContent = "v" + VERSIONE;
-caricaParole();
-applicaTesti();
-mostra("s-nome");
-if (puntatorePreciso.matches) $("in-nome").focus();
+/* ===== Startup ===== */
+$("version").textContent = "v" + VERSION;
+loadWords();
+applyTexts();
+show("s-name");
+if (finePointer.matches) $("in-name").focus();
 </script>
 </body>
 </html>
