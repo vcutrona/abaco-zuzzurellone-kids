@@ -93,7 +93,8 @@ A single `state` object holds the game. The interval is `state.low`/`state.high`
 
 ### Mode 2: the computer thinks of the word, the child guesses
 
-- **Group picker (`s-groups`).** All groups start selected and at least one is required. The word count is always shown. "Gioca ancora" keeps the same groups.
+- **Group picker (`s-groups`).** All groups start on, so it's visible that the game uses every word. While all are on, tapping a group keeps only that one (a child taps "Animali" to play with animals); after that each tap adds or removes a group, and removing the last one turns them all back on, so "Inizia" is never disabled. "Scegli tutti" appears only when some group is off (hidden with `visibility`, so "Inizia" never moves). The intro text says it: "Tocca un gruppo per giocare solo con quello…". The word count is always shown; "Gioca ancora" keeps the same choice.
+  - **Rejected:** plain toggles with every group on (the first tap removed the group the child wanted) and an "All words" button above groups that all start off (the groups looked excluded while every word was in play).
 - **Group look.** On: solid green. Off: dashed border, faded text and grey emoji. A badge on the top-right corner shows ✓ or ✕, so the state doesn't rely on colour alone; it sits outside the label so it doesn't make the buttons taller.
 - **Secret word.** It is always drawn from the selected groups, but guesses may be any word.
 - **Hints.** `NUM_HINTS` progressive hints, in order: category, first letter, last letter, length. The boxes below them show `B …`, then `B _ _ _ _ O` once the length is known. "Mi arrendo" appears only after the last hint.

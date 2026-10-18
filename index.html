@@ -315,8 +315,7 @@
   .group[aria-pressed="true"] .emoji { filter: none; opacity: 1; }
   .group-actions { display: flex; justify-content: space-between; align-items: center; gap: .5rem; flex-wrap: wrap; margin-bottom: .8rem; }
   .group-actions .link { padding-left: 0; }
-  #word-count { font-weight: 800; color: var(--muted); }
-  #word-count.zero { color: var(--red); }
+  #word-count { font-weight: 800; color: var(--muted); margin-left: auto; }
   #b-start2 { width: 100%; }
   @media (min-width: 600px) {
     .groups { grid-template-columns: repeat(3, minmax(0, 1fr)); }
@@ -926,9 +925,9 @@ const TEXTS = {
     zoomStart: "La parola segreta inizia con",
     zoomAria: (n, P) => (P ? `Le parole possibili iniziano con ${P}: l'abaco mostra la lettera numero ${n}.` : "L'abaco mostra la prima lettera delle parole possibili."),
     groupsTitle: "Con quali parole giochiamo?",
-    groupsInfo: "Scegli uno o più gruppi. Con un solo gruppo sai già di che tipo è la parola segreta.",
-    all: "Scegli tutti", none: "Togli tutti",
-    wordCount: n => (n === 0 ? "Scegli almeno un gruppo" : n === 1 ? "1 parola" : `${n} parole`)
+    groupsInfo: "Tocca un gruppo per giocare solo con quello, poi aggiungine altri se vuoi. Con un solo gruppo sai già di che tipo è la parola segreta.",
+    all: "Scegli tutti",
+    wordCount: n => (n === 1 ? "1 parola" : `${n} parole`)
   },
   en: {
     pageTitle: (A, Z) => `${A[0] + A.slice(1).toLowerCase()}… ${Z[0] + Z.slice(1).toLowerCase()}!`,
@@ -992,9 +991,9 @@ const TEXTS = {
     zoomStart: "The secret word starts with",
     zoomAria: (n, P) => (P ? `The possible words start with ${P}: the abacus shows letter number ${n}.` : "The abacus shows the first letter of the possible words."),
     groupsTitle: "Which words shall we play with?",
-    groupsInfo: "Pick one or more groups. With just one group you already know what kind of word the secret is.",
-    all: "Select all", none: "Clear all",
-    wordCount: n => (n === 0 ? "Pick at least one group" : n === 1 ? "1 word" : `${n} words`)
+    groupsInfo: "Tap a group to play with that one only, then add more if you like. With just one group you already know what kind of word the secret is.",
+    all: "Select all",
+    wordCount: n => (n === 1 ? "1 word" : `${n} words`)
   }
 };
 
@@ -1414,25 +1413,29 @@ function startMode2() {
   focusField(false);
 }
 
+// Group picker. Every group is on at first, so it's clear the game uses all the words.
+// When all are on, tapping a group keeps only that one (a child taps "Animals" to play with animals);
+// then each tap adds or removes a group, and removing the last one turns them all back on.
 function drawGroups() {
   $("groups").innerHTML = GROUPS.map(g =>
     `<button class="group" data-g="${g.id}" aria-pressed="${state.groups.has(g.id)}"><span class="emoji" aria-hidden="true">${g.emoji}</span><span class="label">${g[lang]}</span><span class="mark" aria-hidden="true">${state.groups.has(g.id) ? "✓" : "✕"}</span></button>`
   ).join("");
   $("groups").querySelectorAll(".group").forEach(b => (b.onclick = () => {
     const id = b.dataset.g;
-    if (state.groups.has(id)) state.groups.delete(id); else state.groups.add(id);
+    if (state.groups.size === GROUPS.length) state.groups = new Set([id]);
+    else if (state.groups.has(id)) state.groups.delete(id);
+    else state.groups.add(id);
+    if (state.groups.size === 0) state.groups = new Set(GROUPS.map(g => g.id));
     drawGroups();
     $("groups").querySelector(`[data-g="${id}"]`).focus();
   }));
-  const all = state.groups.size === GROUPS.length;
-  $("b-all").textContent = t(all ? "none" : "all");
-  const n = wordsInPlay().length;
-  $("word-count").textContent = t("wordCount", n);
-  $("word-count").classList.toggle("zero", n === 0);
-  $("b-start2").disabled = n === 0;
+  // "Select all" only when some group is off; hidden rather than removed, so nothing below it moves
+  $("b-all").textContent = t("all");
+  $("b-all").style.visibility = state.groups.size === GROUPS.length ? "hidden" : "visible";
+  $("word-count").textContent = t("wordCount", wordsInPlay().length);
 }
 $("b-all").onclick = () => {
-  state.groups = state.groups.size === GROUPS.length ? new Set() : new Set(GROUPS.map(g => g.id));
+  state.groups = new Set(GROUPS.map(g => g.id));
   drawGroups();
 };
 $("b-start2").onclick = () => startMode2();
