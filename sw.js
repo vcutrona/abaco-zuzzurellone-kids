@@ -23,19 +23,27 @@ self.addEventListener("activate", e => {
     .then(() => self.clients.claim()));
 });
 
-// The page: network first, so online players always get the latest version; the cache when offline.
+// The page: network first, so online players always get the latest version; the cache when offline,
+// or when the network is too slow (after NETWORK_WAIT ms the cached copy is served, and the network
+// answer, if it arrives, still refreshes the cache for next time).
 // Everything else (fonts, icons): cache first, since those files only change with a new release.
+const NETWORK_WAIT = 3000;
 self.addEventListener("fetch", e => {
   const req = e.request;
   if (req.method !== "GET" || new URL(req.url).origin !== location.origin) return;
   if (req.mode === "navigate") {
-    e.respondWith(fetch(req)
-      .then(res => {
+    const network = fetch(req).then(res => {
+      if (res.ok) {
         const copy = res.clone();
         caches.open(CACHE).then(c => c.put("./", copy));
-        return res;
-      })
-      .catch(() => caches.match("./")));
+      }
+      return res;
+    });
+    e.waitUntil(network.catch(() => {}));
+    const slow = new Promise(resolve => setTimeout(resolve, NETWORK_WAIT))
+      .then(async () => (await caches.match("./")) || network);
+    e.respondWith(Promise.race([network, slow])
+      .catch(async () => (await caches.match("./")) || Response.error()));
     return;
   }
   e.respondWith(caches.match(req).then(hit => hit || fetch(req)));
