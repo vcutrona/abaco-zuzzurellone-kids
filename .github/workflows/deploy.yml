@@ -1,0 +1,74 @@
+# Publishes the game on GitHub Pages only when a version tag (e.g. v1.0.0) is pushed.
+# Ordinary commits on main are not deployed.
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    tags:
+      - "v*"
+  # Manual re-deploy from the Actions tab: choose a tag (not a branch) in "Use workflow from".
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One deployment at a time; a newer tag waits for the running one to finish.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Check that this run is for a tag
+        if: github.ref_type != 'tag'
+        run: |
+          echo "::error::Deployments are allowed only from version tags (e.g. v1.0.0), not from '${{ github.ref_name }}'."
+          exit 1
+
+      - name: Check out the tagged commit
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check that the tagged commit is on main
+        run: |
+          git fetch origin main
+          if ! git merge-base --is-ancestor "$GITHUB_SHA" origin/main; then
+            echo "::error::Tag ${{ github.ref_name }} points to a commit that is not on main."
+            exit 1
+          fi
+
+      - name: Check that the tag matches the version in index.html
+        run: |
+          VERSION=$(grep -oP 'const VERSIONE = "\K[^"]+' index.html)
+          if [ "v$VERSION" != "${{ github.ref_name }}" ]; then
+            echo "::error::Tag is ${{ github.ref_name }} but index.html says v$VERSION. Update VERSIONE before tagging."
+            exit 1
+          fi
+          echo "Deploying version v$VERSION"
+
+      # Only the files the game needs are published (README, workflows and templates stay out).
+      # Add new files here when they are introduced, e.g. the PWA manifest, service worker and icons.
+      - name: Prepare the site folder
+        run: |
+          mkdir -p _site
+          cp index.html _site/
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload the site
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v5
