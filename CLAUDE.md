@@ -20,9 +20,9 @@ Development is spec-driven: the author writes the specs and reviews every iterat
   - measuring sizes and alignments;
   - confirming that the page never scrolls sideways (`scrollWidth > innerWidth`) and that there are no JS errors.
 
-  If Google Fonts is unreachable, load the real font from the `@fontsource/*` npm packages.
+  The font is self-hosted in `fonts/`, so screenshots use the real Baloo 2 even offline.
 - **Edits to `index.html`.** Make text replacements whose search string occurs exactly once. A too-broad replacement once left stray text in the page (the favicon bug), so after each change also check that no stray text leaked into the page.
-- **Persistence.** There is deliberately none: no cookies, no `localStorage`, no tracking. Language, theme, name and selected word groups last only while the page is open. The only external request is the Google Fonts `<link>` for Baloo 2.
+- **Persistence.** There is deliberately none: no cookies, no `localStorage`, no tracking. Language, theme, name and selected word groups last only while the page is open. The game makes no external requests.
 
 ## Architecture of `index.html`
 
@@ -31,7 +31,7 @@ Development is spec-driven: the author writes the specs and reviews every iterat
 - **`<head>`:**
   - meta tags (`viewport-fit=cover`, `theme-color`) and an inline SVG favicon;
   - a tiny script that sets `data-theme` (`light`/`dark`) before paint, which avoids a colour flash;
-  - Google Fonts and the main `<style>`.
+  - the main `<style>`, which starts with the `@font-face` rules for the self-hosted Baloo 2 (latin subset, weights 500/700/800, same files Google Fonts serves).
 - **`<body>`:**
   - a shared header on a 3-column grid: language switch or "⬅ Menu" on the left, small logo in the middle, `.controls` with the sun/moon switch on the right;
   - the screens `<section class="screen" id="s-…">`: `s-name`, `s-menu`, `s-secret` (mode 1 setup), `s-groups` (mode 2 group picker), `s-game` (shared by both modes) and `s-end`;
@@ -142,7 +142,6 @@ A single `state` object holds the game. The interval is `state.low`/`state.high`
 **Next, agreed: PWA**
 - `manifest.json` with PNG icons and an `apple-touch-icon`.
 - A service worker for offline use.
-- Self-hosting the font instead of loading it from Google Fonts, and updating the README Privacy section accordingly.
 - Adding all the new files to the workflow's "Prepare the site folder" step.
 
 **Ideas, not decided:**
