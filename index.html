@@ -292,17 +292,26 @@
   #b-start { width: 100%; }
 
   /* Word group picker: big buttons to switch on and off */
-  .groups { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .5rem; margin: .4rem 0 .6rem; }
+  .groups { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .8rem .6rem; margin: .7rem 0 .6rem; }
   .group {
-    display: flex; align-items: center; gap: .5rem; text-align: left; min-height: 3.4rem;
-    padding: .45rem .6rem; border-radius: 14px; border: 4px solid var(--off);
-    background: var(--bg); color: var(--ink); font-weight: 800; font-size: 1rem; line-height: 1.15;
+    position: relative; display: flex; align-items: center; gap: .5rem; text-align: left; min-height: 3.4rem;
+    padding: .45rem .6rem; border-radius: 14px; border: 4px dashed var(--off);
+    background: var(--bg); color: var(--muted); font-weight: 800; font-size: 1rem; line-height: 1.15;
   }
   .group .emoji { font-size: 1.5rem; line-height: 1; flex: none; }
-  .group span:last-child { min-width: 0; overflow-wrap: break-word; hyphens: auto; }
+  .group .label { min-width: 0; overflow-wrap: break-word; hyphens: auto; }
+  /* badge on the top-right corner: ✓ when the group is on, ✕ when it is off,
+     so the state doesn't rely on colour alone (and the label keeps all the room) */
+  .group .mark {
+    position: absolute; top: -.6rem; right: -.45rem; width: 1.45rem; height: 1.45rem; border-radius: 50%;
+    display: grid; place-items: center; font-size: .85rem; line-height: 1;
+    background: var(--bg); border: 3px solid var(--off); color: var(--muted);
+  }
+  .group[aria-pressed="true"] .mark { background: #fff; border-color: var(--green); color: var(--green-dark); }
   @media (max-width: 359px) { .group { font-size: .9rem; gap: .35rem; padding-inline: .45rem; } .group .emoji { font-size: 1.25rem; } }
+  /* off: dashed border, faded text and emoji; on: solid green */
   .group .emoji { filter: grayscale(1); opacity: .55; }
-  .group[aria-pressed="true"] { background: var(--green); border-color: var(--green); color: #fff; }
+  .group[aria-pressed="true"] { background: var(--green); border-color: var(--green); border-style: solid; color: #fff; }
   .group[aria-pressed="true"] .emoji { filter: none; opacity: 1; }
   .group-actions { display: flex; justify-content: space-between; align-items: center; gap: .5rem; flex-wrap: wrap; margin-bottom: .8rem; }
   .group-actions .link { padding-left: 0; }
@@ -1407,7 +1416,7 @@ function startMode2() {
 
 function drawGroups() {
   $("groups").innerHTML = GROUPS.map(g =>
-    `<button class="group" data-g="${g.id}" aria-pressed="${state.groups.has(g.id)}"><span class="emoji" aria-hidden="true">${g.emoji}</span><span>${g[lang]}</span></button>`
+    `<button class="group" data-g="${g.id}" aria-pressed="${state.groups.has(g.id)}"><span class="emoji" aria-hidden="true">${g.emoji}</span><span class="label">${g[lang]}</span><span class="mark" aria-hidden="true">${state.groups.has(g.id) ? "✓" : "✕"}</span></button>`
   ).join("");
   $("groups").querySelectorAll(".group").forEach(b => (b.onclick = () => {
     const id = b.dataset.g;
