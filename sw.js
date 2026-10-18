@@ -1,6 +1,6 @@
 // Service worker: lets the game work offline.
 // The cache name follows the game version, so every release replaces the old cache.
-const VERSION = "1.0.2";
+const VERSION = "1.1.0";
 const CACHE = `abaco-v${VERSION}`;
 const FILES = [
   "./",
