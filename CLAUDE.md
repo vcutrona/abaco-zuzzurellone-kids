@@ -41,7 +41,7 @@ Development is spec-driven: the author writes the specs and reviews every iterat
 ### PWA files
 
 - **`sw.js`.** It precaches the page, manifest, icons and fonts in a cache named after its own `VERSION` constant, so a release replaces the cache and the activate step deletes the old ones. Navigations are network first (online players always get the latest page, and the cache copy is refreshed); everything else is cache first. The page registers it at startup, only over http/https.
-- **Icons.** `icons/icon.svg` is the source: the green A cube and the purple Z cube of the logo on the `--bg` light blue, inside the maskable safe zone. The letters are SVG paths taken from Baloo 2 (generated with fontTools from the font's `.woff`), so the icon and the inline favicon render the same without the font. The PNGs (192, 512, used for both `any` and `maskable`, and the 180px `apple-touch-icon`) are rendered from it; re-render them if the SVG changes.
+- **Icons.** `icons/icon.svg` is the source: the green A cube and the purple Z cube of the logo on the `--bg` light blue, inside the maskable safe zone. The letters are SVG paths taken from Baloo 2, so the icon and the inline favicon render the same without the font. The PNGs are 192, 512 (used for both `any` and `maskable`) and the 180px `apple-touch-icon`. Don't edit any of these by hand: `tools/make-icons.py <baloo-2-latin-800-normal.woff>` regenerates `icon.svg`, the favicon in `index.html` and the PNGs (it needs fontTools and `rsvg-convert`; the `.woff` comes from the `@fontsource/baloo-2` npm package, since fontTools can't read the repo's `.woff2` without brotli).
 - **Font licence.** `fonts/OFL.txt` must ship with the font files.
 
 ### Main script
