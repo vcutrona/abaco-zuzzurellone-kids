@@ -255,6 +255,8 @@
      Long words shrink by themselves (see fitTiles) */
   .interval { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, .85fr) minmax(0, 1fr); gap: .35rem; align-items: stretch; margin-bottom: .9rem; }
   .tile { border-radius: 16px; padding: .5rem .25rem .4rem; color: #fff; text-align: center; display: flex; flex-direction: column; justify-content: center; min-width: 0; }
+  /* narrow phones: thinner side padding, so ZUZZURELLONE and 11-letter words (COCCODRILLO) fit whole */
+  @media (max-width: 339px) { .tile { padding-inline: 2px; } }
   .tile small { font-size: .8rem; font-weight: 700; opacity: .9; }
   .tile strong { display: block; font-size: 1.15rem; font-weight: 800; line-height: 1.15; white-space: nowrap; overflow: hidden; }
   .tile strong.wrap { white-space: normal; overflow-wrap: anywhere; }
@@ -299,7 +301,8 @@
     background: var(--bg); color: var(--muted); font-weight: 800; font-size: 1rem; line-height: 1.15;
   }
   .group .emoji { font-size: 1.5rem; line-height: 1; flex: none; }
-  .group .label { min-width: 0; overflow-wrap: break-word; hyphens: auto; }
+  /* whole words only: no hyphenation, which can be hard to read for children */
+  .group .label { min-width: 0; }
   /* badge on the top-right corner: ✓ when the group is on, ✕ when it is off,
      so the state doesn't rely on colour alone (and the label keeps all the room) */
   .group .mark {
@@ -855,7 +858,7 @@ const GROUPS = [
   { id: "travel", emoji: "🚗", it: "Mezzi e luoghi", en: "Vehicles and places" },
   { id: "nature", emoji: "🌳", it: "Natura e stagioni", en: "Nature and seasons" },
   { id: "body", emoji: "🖐️", it: "Corpo", en: "Body" },
-  { id: "people", emoji: "🧚", it: "Persone e fiabe", en: "People and characters" },
+  { id: "people", emoji: "🧚", it: "Persone e fiabe", en: "People and fairy tales" },
   { id: "things", emoji: "🎁", it: "Oggetti e altro", en: "Things and more" }
 ];
 

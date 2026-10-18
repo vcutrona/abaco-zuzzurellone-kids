@@ -130,6 +130,7 @@ A single `state` object holds the game. The interval is `state.low`/`state.high`
 - **Header sizing.** `--t` sets the header size: the small-logo cubes and both switches are always `1.6em` tall. Under 420px "⬅ Menu" becomes an arrow only, and under 340px `--t` drops to `.7rem`.
 - **Switches.** The theme and language switches are identical in size, shadow and animation, with `role="switch"` and a 64×44px touch area. The theme follows `prefers-color-scheme` until the child touches the switch.
 - **iOS.** Respect safe areas (`env(safe-area-inset-*)`) and keep input fonts at 16px or more to avoid iOS auto-zoom.
+- **Whole words.** Words are never split across lines: no `hyphens: auto` (syllable breaks are hard to read for children). Check that every word fits whole at 300px: the longest word must fit in each group button, ZUZZURELLONE in the side tiles and 11-letter words (COCCODRILLO) in the middle tile, which is why tiles have 2px side padding under 340px. Chromium on Linux doesn't hyphenate Italian, so screenshots there don't show hyphenation bugs: measure word widths instead.
 - **Texts.**
   - Messages avoid gendered adjectives, for example "Hai vinto, X!".
   - The footer shows only on the name and menu screens: version, GitHub, MIT licence, "made with Claude", and Wikipedia. Its items wrap whole, without separator dots.
