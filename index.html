@@ -180,8 +180,9 @@
   /* phones: only the arrow of "⬅ Menu" is left, so the logo can be bigger and centred */
   @media (max-width: 339px) { .topbar { --t: .7rem; } }
   @media (max-width: 419px) { .topbar { gap: .3rem; } .topbar .menu-label { display: none; } .topbar .link { min-width: 2.75rem; font-size: 1.3rem; text-decoration: none; } }
-  /* group of controls on the right: the theme today, more controls in the future */
-  .controls { grid-column: 3; justify-self: end; display: flex; align-items: center; gap: .6rem; }
+  /* group of controls on the right: capitals and theme. The gap keeps their 64px touch areas
+     from overlapping (the capitals one grows to the left, the theme one to the left from 6px past its right edge) */
+  .controls { grid-column: 3; justify-self: end; display: flex; align-items: center; gap: max(.6rem, calc(58px - 2.9 * var(--t, 1rem))); }
 
   /* Sun/moon switch, sized in em on the same --t as the logo */
   .theme {
@@ -427,6 +428,34 @@
   .lang[aria-checked="true"] .knob .it { display: none; }
   .lang[aria-checked="true"] .knob .uk { display: block; }
   @media (prefers-reduced-motion: reduce) { .lang .knob { transition: none; } }
+
+  /* Capitals switch: same shape as the other two, with "a" or "A" in the knob */
+  .case {
+    font-size: var(--t, 1rem); flex: none; position: relative; width: 2.9em; height: 1.6em; padding: 0;
+    border: 0; border-radius: 999px; background: #BFD4EC; box-shadow: 0 2px 0 rgba(31, 42, 68, .18);
+  }
+  [data-theme="dark"] .case { background: #3A4868; box-shadow: 0 2px 0 rgba(0, 0, 0, .35); }
+  .case::before { content: ""; position: absolute; right: 0; top: 50%; width: 64px; height: 44px; transform: translateY(-50%); }
+  .case .knob {
+    position: absolute; top: .18em; left: .18em; width: 1.24em; height: 1.24em; border-radius: 50%;
+    display: grid; place-items: center; background: #fff; box-shadow: 0 .1em 0 rgba(0, 0, 0, .15);
+    transition: transform .2s; color: var(--ink); font-weight: 800; line-height: 1; padding-top: .1em;
+  }
+  [data-theme="dark"] .case .knob { background: #1B2440; }
+  /* the knob letters keep their own case, even when the whole page is in capitals */
+  .case .knob b { font-size: .95em; text-transform: none; }
+  .case .knob .up { display: none; }
+  .case[aria-checked="true"] .knob { transform: translateX(1.3em); }
+  .case[aria-checked="true"] .knob .low { display: none; }
+  .case[aria-checked="true"] .knob .up { display: block; }
+  @media (prefers-reduced-motion: reduce) { .case .knob { transition: none; } }
+
+  /* All-capitals mode, for children who don't read lowercase letters yet.
+     Buttons and placeholders don't inherit text-transform, so they are listed explicitly. */
+  :root[data-case="upper"] body,
+  :root[data-case="upper"] button,
+  :root[data-case="upper"] input::placeholder { text-transform: uppercase; }
+  :root[data-case="upper"] #version { text-transform: none; }
 </style>
 </head>
 <body>
@@ -441,6 +470,9 @@
     <button class="link" id="b-back" data-menu hidden data-t-aria="back">⬅<span class="menu-label"> Menu</span></button>
     <div class="logo mini" id="logo-mini" aria-hidden="true" hidden><span class="cube c2 r0">A</span><span class="ellipsis">…</span><span class="cube c4 r3">Z</span></div>
     <div class="controls">
+      <button class="case" id="b-case" role="switch" aria-checked="false" data-t-aria="capitals">
+        <span class="knob" aria-hidden="true"><b class="low">a</b><b class="up">A</b></span>
+      </button>
       <button class="theme" id="b-theme" role="switch" aria-checked="false" data-t-aria="darkTheme">
         <span class="knob" aria-hidden="true">
           <svg class="sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.6" fill="currentColor"/><path d="M12 2.4v2.4M12 19.2v2.4M2.4 12h2.4M19.2 12h2.4M5.2 5.2l1.7 1.7M17.1 17.1l1.7 1.7M5.2 18.8l1.7-1.7M17.1 6.9l1.7-1.7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" fill="none"/></svg>
@@ -870,6 +902,7 @@ const TEXTS = {
     pageTitle: (A, Z) => `${A[0] + A.slice(1).toLowerCase()}… ${Z[0] + Z.slice(1).toLowerCase()}!`,
     lang: "English", langTitle: "Switch to English",
     darkTheme: "Tema scuro", toLightTitle: "Passa al tema chiaro", toDarkTitle: "Passa al tema scuro",
+    capitals: "Tutto in maiuscolo", toUpperTitle: "Scrivi tutto in maiuscolo", toLowerTitle: "Usa anche le minuscole",
     back: "Torna al menu",
     nameTitle: "Come vuoi farti chiamare?", nameInfo: "Scrivi il tuo nome o un soprannome: serve solo per salutarti durante il gioco.",
     namePh: "Scrivi qui", nameAria: "Il tuo nome o soprannome", play: "Gioca", surprise: "Usa un soprannome a sorpresa",
@@ -936,6 +969,7 @@ const TEXTS = {
     pageTitle: (A, Z) => `${A[0] + A.slice(1).toLowerCase()}… ${Z[0] + Z.slice(1).toLowerCase()}!`,
     lang: "English", langTitle: "Passa all'italiano",
     darkTheme: "Dark theme", toLightTitle: "Switch to light theme", toDarkTitle: "Switch to dark theme",
+    capitals: "All capitals", toUpperTitle: "Show everything in capitals", toLowerTitle: "Use lowercase letters too",
     back: "Back to menu",
     nameTitle: "What should we call you?", nameInfo: "Type your name or a nickname: we only use it to say hi during the game.",
     namePh: "Name or nickname", nameAria: "Your name or nickname", play: "Play", surprise: "Use a surprise nickname",
@@ -1072,6 +1106,7 @@ function applyTexts() {
   if (displayName()) $("greeting").textContent = t("greeting", displayName());
   drawGroups();
   applyTheme(document.documentElement.dataset.theme);
+  applyCase();
 }
 
 $("b-lang").onclick = () => {
@@ -1532,6 +1567,21 @@ $("b-theme").onclick = () => {
   applyTheme(document.documentElement.dataset.theme === "dark" ? "light" : "dark");
 };
 systemDark.addEventListener("change", e => { if (!themeChosen) applyTheme(e.matches ? "dark" : "light"); });
+
+/* ===== All capitals ===== */
+// Lowercase at startup; the choice isn't saved, like the theme
+let capitals = false;
+function applyCase() {
+  document.documentElement.dataset.case = capitals ? "upper" : "mixed";
+  $("b-case").setAttribute("aria-checked", String(capitals));
+  $("b-case").title = t(capitals ? "toLowerTitle" : "toUpperTitle");
+  // the phone keyboard opens in capitals too (the game's word fields already do)
+  if (capitals) $("in-name").setAttribute("autocapitalize", "characters"); else $("in-name").removeAttribute("autocapitalize");
+}
+$("b-case").onclick = () => {
+  capitals = !capitals;
+  applyCase();
+};
 
 /* ===== Startup ===== */
 $("version").textContent = "v" + VERSION;

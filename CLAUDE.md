@@ -22,7 +22,7 @@ Development is spec-driven: the author writes the specs and reviews every iterat
 
   The font is self-hosted in `fonts/`, so screenshots use the real Baloo 2 even offline. To test offline mode and updates, serve the folder over http and use `context.setOffline(true)`.
 - **Edits to `index.html`.** Make text replacements whose search string occurs exactly once. A too-broad replacement once left stray text in the page (the favicon bug), so after each change also check that no stray text leaked into the page.
-- **Persistence.** There is deliberately none: no cookies, no `localStorage`, no tracking. Language, theme, name and selected word groups last only while the page is open. The game makes no external requests. The service worker only caches the game's own files.
+- **Persistence.** There is deliberately none: no cookies, no `localStorage`, no tracking. Language, theme, capitals, name and selected word groups last only while the page is open. The game makes no external requests. The service worker only caches the game's own files.
 
 ## Architecture of `index.html`
 
@@ -33,7 +33,7 @@ Development is spec-driven: the author writes the specs and reviews every iterat
   - a tiny script that sets `data-theme` (`light`/`dark`) before paint, which avoids a colour flash;
   - the main `<style>`, which starts with the `@font-face` rules for the self-hosted Baloo 2 (latin subset, weights 500/700/800, same files Google Fonts serves).
 - **`<body>`:**
-  - a shared header on a 3-column grid: language switch or "⬅ Menu" on the left, small logo in the middle, `.controls` with the sun/moon switch on the right;
+  - a shared header on a 3-column grid: language switch or "⬅ Menu" on the left, small logo in the middle, `.controls` with the capitals switch and the sun/moon switch on the right;
   - the screens `<section class="screen" id="s-…">`: `s-name`, `s-menu`, `s-secret` (mode 1 setup), `s-groups` (mode 2 group picker), `s-game` (shared by both modes) and `s-end`;
   - the footer.
 - **`show(id)`** switches screens and decides what appears in the header and footer for each one.
@@ -127,6 +127,7 @@ A single `state` object holds the game. The interval is `state.low`/`state.high`
 - **Look.** Flat and colourful, Baloo 2, minimal animation that respects `prefers-reduced-motion`.
 - **Layout.** Mobile-first base rules, with breakpoints at 600px and 900px. From 900px the list of tried words moves into a side column.
 - **Logo.** Letters on slightly crooked cubes, like wooden alphabet blocks (`.cube`, size `--s`). The title shows the two dictionary ends on two lines, "ABACO…" on the left and "…ZUZZURELLONE" on the right, as if one carried on into the other; it is built by `applyTexts()` from the current language's ends. All cubes have the same size; the colours follow the abacus order (red, yellow, green, blue, purple), starting from green for the first word and purple for the second. The small header logo, the app icon and the favicon show only the green A cube and the purple Z cube. The title's `…` uses the `.ellipsis` class: `.dots` is taken by the guess dots.
+- **All capitals.** The "a/A" switch in the header (on every screen, also during a game) puts the whole interface in capitals, for children who don't read lowercase yet: `data-case="upper"` on `<html>` sets `text-transform: uppercase` on `body`, `button` and placeholders (buttons and placeholders don't inherit it). It also makes the phone keyboard open in capitals in the name field. Lowercase at startup, and the choice isn't saved. Re-check whole words at 300px when texts change: capitals are wider.
 - **Header sizing.** `--t` sets the header size: the small-logo cubes and both switches are always `1.6em` tall. Under 420px "⬅ Menu" becomes an arrow only, and under 340px `--t` drops to `.7rem`.
 - **Switches.** The theme and language switches are identical in size, shadow and animation, with `role="switch"` and a 64×44px touch area. The theme follows `prefers-color-scheme` until the child touches the switch.
 - **iOS.** Respect safe areas (`env(safe-area-inset-*)`) and keep input fonts at 16px or more to avoid iOS auto-zoom.
@@ -156,3 +157,4 @@ A single `state` object holds the game. The interval is `state.low`/`state.high`
 - **Font.** Playpen Sans was previewed and not adopted. If adopted, check the small logo on narrow phones, because the font is wider.
 - **Zoom across two letters.** When the bounds straddle two first letters (e.g. YAK–ZEBU), the bar stays narrow. Not addressed yet.
 - **Feedback without a GitHub account.** For now there is no channel.
+- **Remember the capitals choice.** Save the all-capitals preference in `localStorage`, so it survives a reload. It isn't personal data, but it would be the first thing the game saves: the README's "nothing is saved" and the persistence rule above would need updating.

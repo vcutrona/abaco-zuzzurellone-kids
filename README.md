@@ -27,6 +27,8 @@ Without ever saying so, the game is a binary search over a dictionary. It is als
 - Flat, colourful graphics with minimal animation.
 - Optional name or nickname, or a funny surprise nickname such as *Dancing Penguin*.
 
+**All capitals.** A switch in the header shows the whole game in capital letters, for children who can't read lowercase yet. On phones, the keyboard then opens in capitals too.
+
 **Two languages.** The game is available in Italian and English, each with its own 500 simple nouns in 19 categories. On first load, the language is picked from the browser's preferred languages, with English as fallback.
 
 **Light and dark theme.** The game follows the device setting, and a sun/moon switch changes it.
