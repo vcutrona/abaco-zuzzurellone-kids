@@ -333,7 +333,7 @@
   .zoom .boxes span { width: 1.6rem; height: 1.9rem; font-size: 1.05rem; border-radius: 8px; }
   .zoom .boxes span.here { border-color: var(--yellow); color: var(--ink); }
   .zoom.new { background: rgba(255, 194, 61, .35); color: var(--ink); }
-  /* Discreet footer: version, code, licence and credits */
+  /* Discreet footer: version, code and licence, the game on Wikipedia */
   /* items wrap whole, separated by space: no dot is left hanging at the end of a line */
   .footer { margin-top: 2rem; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 0 1.1rem; font-size: .85rem; color: var(--muted); text-align: center; }
   .footer > * { white-space: nowrap; padding: .3rem 0; }
@@ -626,8 +626,6 @@
   <footer class="footer" id="footer">
     <span id="version"></span>
     <a href="https://github.com/vcutrona/abaco-zuzzurellone-kids" target="_blank" rel="noopener" data-t="footerCode"></a>
-    <a href="https://github.com/vcutrona/abaco-zuzzurellone-kids/blob/main/LICENSE" target="_blank" rel="noopener" data-t="footerLicense"></a>
-    <span data-t="footerClaude"></span>
     <a href="https://it.wikipedia.org/wiki/Abaco_zuzzurellone" target="_blank" rel="noopener" data-t="footerWiki"></a>
   </footer>
 </main>
@@ -956,8 +954,7 @@ const TEXTS = {
     outOfGuesses: "Tentativi finiti", outOfGuessesText: W => `La parola segreta era ${W}. La prossima volta la trovi!`,
     gaveUp: "Nessun problema", gaveUpText: W => `La parola segreta era ${W}. Vuoi riprovare?`,
     again: "Gioca ancora", changeGame: "Cambia gioco",
-    footerCode: "Codice su GitHub", footerLicense: "Licenza MIT",
-    footerClaude: "Creato con Claude di Anthropic", footerWiki: "Il gioco su Wikipedia",
+    footerCode: "Codice su GitHub (licenza MIT)", footerWiki: "Il gioco su Wikipedia",
     zoomStart: "La parola segreta inizia con",
     zoomAria: (n, P) => (P ? `Le parole possibili iniziano con ${P}: l'abaco mostra la lettera numero ${n}.` : "L'abaco mostra la prima lettera delle parole possibili."),
     groupsTitle: "Con quali parole giochiamo?",
@@ -1023,8 +1020,7 @@ const TEXTS = {
     outOfGuesses: "Out of guesses", outOfGuessesText: W => `The secret word was ${W}. You’ll find it next time!`,
     gaveUp: "No problem", gaveUpText: W => `The secret word was ${W}. Want to try again?`,
     again: "Play again", changeGame: "Change game",
-    footerCode: "Source on GitHub", footerLicense: "MIT License",
-    footerClaude: "Made with Claude by Anthropic", footerWiki: "The game on Wikipedia (in Italian)",
+    footerCode: "Source on GitHub (MIT License)", footerWiki: "The game on Wikipedia (in Italian)",
     zoomStart: "The secret word starts with",
     zoomAria: (n, P) => (P ? `The possible words start with ${P}: the abacus shows letter number ${n}.` : "The abacus shows the first letter of the possible words."),
     groupsTitle: "Which words shall we play with?",
