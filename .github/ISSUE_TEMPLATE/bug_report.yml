@@ -1,0 +1,75 @@
+name: Bug report
+description: Something in the game doesn't work as expected
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a problem! You can write in English or Italian.
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: A short description of the problem.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: What did you do before the problem appeared?
+      placeholder: |
+        1. Choose "You guess the word"
+        2. Select only "Animals"
+        3. Type ...
+    validations:
+      required: false
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect to happen?
+    validations:
+      required: false
+  - type: input
+    id: version
+    attributes:
+      label: Game version
+      description: Shown at the bottom of the start screen.
+      placeholder: v1.0.0
+    validations:
+      required: true
+  - type: dropdown
+    id: mode
+    attributes:
+      label: Where in the game?
+      options:
+        - Start screen or menu
+        - "You think of the word"
+        - "You guess the word"
+        - Somewhere else
+    validations:
+      required: true
+  - type: dropdown
+    id: language
+    attributes:
+      label: Game language
+      options:
+        - Italian
+        - English
+    validations:
+      required: true
+  - type: input
+    id: device
+    attributes:
+      label: Device and browser
+      placeholder: e.g. iPhone 13 with Safari, Windows laptop with Chrome
+    validations:
+      required: false
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: If you can, drag and drop a screenshot here.
+    validations:
+      required: false

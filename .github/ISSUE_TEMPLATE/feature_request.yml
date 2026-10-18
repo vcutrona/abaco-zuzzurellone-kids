@@ -1,0 +1,36 @@
+name: Feature request
+description: Suggest an idea or an improvement for the game
+title: "[Idea] "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for your idea! You can write in English or Italian.
+  - type: textarea
+    id: idea
+    attributes:
+      label: Your idea
+      description: What would you like the game to do?
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why would it help?
+      description: For example, what problem it solves or who would enjoy it (children, parents, teachers…).
+    validations:
+      required: false
+  - type: dropdown
+    id: area
+    attributes:
+      label: Which part of the game?
+      options:
+        - "You think of the word"
+        - "You guess the word"
+        - Words and categories
+        - Languages
+        - Look and feel
+        - Something else
+    validations:
+      required: false
