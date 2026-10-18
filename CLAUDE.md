@@ -91,6 +91,7 @@ A single `state` object holds the game. The interval is `state.low`/`state.high`
 - **Secret word.** It is always drawn from the selected groups, but guesses may be any word.
 - **Hints.** `NUM_HINTS` progressive hints, in order: category, first letter, last letter, length. The boxes below them show `B …`, then `B _ _ _ _ O` once the length is known. "Mi arrendo" appears only after the last hint.
 - **Free category hint.** If every word in play shares one category, the category hint is given for free (`freeHints`) and the button starts at "Aiuto 1 di 3".
+- **Try button.** Under 600px it sits below the field at full width, the same size as the hint button, so it's the natural button to press after typing (the big yellow hint button used to win). From 600px it sits next to the field, and both buttons share a `min-width: 12rem` so they stay the same size (tablets are touch devices too, so the same imbalance applies there).
 - **Keyboard.** On touch devices it closes after each guess, so the updated abacus is visible. With a fine pointer the field stays focused.
 
 ### The abacus
