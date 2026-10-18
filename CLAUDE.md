@@ -41,7 +41,7 @@ Development is spec-driven: the author writes the specs and reviews every iterat
 ### PWA files
 
 - **`sw.js`.** It precaches the page, manifest, icons and fonts in a cache named after its own `VERSION` constant, so a release replaces the cache and the activate step deletes the old ones. Navigations are network first (online players always get the latest page, and the cache copy is refreshed); everything else is cache first. The page registers it at startup, only over http/https.
-- **Icons.** `icons/icon.svg` is the source: the favicon's wire with the yellow and red beads on the `--bg` light blue, inside the maskable safe zone. The PNGs (192, 512, used for both `any` and `maskable`, and the 180px `apple-touch-icon`) are rendered from it; re-render them if the SVG changes.
+- **Icons.** `icons/icon.svg` is the source: the green A cube and the purple Z cube of the logo on the `--bg` light blue, inside the maskable safe zone. The letters are SVG paths taken from Baloo 2 (generated with fontTools from the font's `.woff`), so the icon and the inline favicon render the same without the font. The PNGs (192, 512, used for both `any` and `maskable`, and the 180px `apple-touch-icon`) are rendered from it; re-render them if the SVG changes.
 - **Font licence.** `fonts/OFL.txt` must ship with the font files.
 
 ### Main script
@@ -124,7 +124,8 @@ A single `state` object holds the game. The interval is `state.low`/`state.high`
 
 - **Look.** Flat and colourful, Baloo 2, minimal animation that respects `prefers-reduced-motion`.
 - **Layout.** Mobile-first base rules, with breakpoints at 600px and 900px. From 900px the list of tried words moves into a side column.
-- **Header sizing.** `--t` sets the header size: the small-logo pills and both switches are always `1.6em` tall. Under 420px "⬅ Menu" becomes an arrow only, and under 340px `--t` drops to `.7rem`.
+- **Logo.** Letters on slightly crooked cubes, like wooden alphabet blocks (`.cube`, size `--s`). The title shows the two dictionary ends on two lines, "ABACO…" on the left and "…ZUZZURELLONE" on the right, as if one carried on into the other; it is built by `applyTexts()` from the current language's ends. All cubes have the same size; the colours follow the abacus order (red, yellow, green, blue, purple), starting from green for the first word and purple for the second. The small header logo, the app icon and the favicon show only the green A cube and the purple Z cube. The title's `…` uses the `.ellipsis` class: `.dots` is taken by the guess dots.
+- **Header sizing.** `--t` sets the header size: the small-logo cubes and both switches are always `1.6em` tall. Under 420px "⬅ Menu" becomes an arrow only, and under 340px `--t` drops to `.7rem`.
 - **Switches.** The theme and language switches are identical in size, shadow and animation, with `role="switch"` and a 64×44px touch area. The theme follows `prefers-color-scheme` until the child touches the switch.
 - **iOS.** Respect safe areas (`env(safe-area-inset-*)`) and keep input fonts at 16px or more to avoid iOS auto-zoom.
 - **Texts.**
