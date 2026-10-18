@@ -37,7 +37,7 @@ Without ever saying so, the game is a binary search over a dictionary. It is als
 
 **Accessible.** The game supports keyboard navigation, uses screen reader labels, and respects reduced-motion settings.
 
-**Installable and offline.** The game is a Progressive Web App: it can be added to the home screen and, after the first visit, it works without an internet connection.
+**Installable and offline.** The game is a Progressive Web App: it can be added to the home screen and, after the first visit, it works without an internet connection. Where the browser supports it, an *Install the game* button opens the install dialog; on iPhone and iPad it explains the two steps in Safari.
 
 **No tracking, no storage.** There are no cookies and no accounts, and nothing is saved between sessions. The browser only keeps a copy of the game files, for offline use.
 

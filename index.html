@@ -342,6 +342,20 @@
   .footer { margin-top: 2rem; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 0 1.1rem; font-size: .85rem; color: var(--muted); text-align: center; }
   .footer > * { white-space: nowrap; padding: .3rem 0; }
   .footer a { color: inherit; font-weight: 700; text-decoration: underline; text-underline-offset: 2px; }
+  /* "Install the game": on a row of its own above the footer links, only where installing really works */
+  .footer .install-row { flex-basis: 100%; display: flex; justify-content: center; padding-bottom: .4rem; }
+  .footer .install {
+    min-height: 2.75rem; padding: .35rem 1rem .25rem;
+    border: 3px solid var(--off); border-radius: 999px; background: var(--card); color: var(--ink); font-weight: 800; font-size: .95rem;
+  }
+  /* iPhone and iPad: Safari can't open the install dialog from a page, so the button shows the steps */
+  .install-help { border: 0; border-radius: var(--radius); padding: 1.2rem 1.2rem 1rem; max-width: min(22rem, calc(100vw - 2rem)); background: var(--card); color: var(--ink); box-shadow: 0 6px 0 var(--shadow); }
+  .install-help::backdrop { background: rgba(23, 32, 54, .55); }
+  .install-help h2 { font-size: 1.3rem; }
+  .install-help ol { padding-left: 1.3rem; margin: .5rem 0 1rem; }
+  .install-help li { margin-bottom: .4rem; font-weight: 700; }
+  .install-help li svg { width: 1.3em; height: 1.3em; vertical-align: -.25em; color: var(--blue); }
+  .install-help .btn { width: 100%; }
   .hints { margin-top: .9rem; border: 4px dashed var(--yellow); border-radius: 16px; padding: .7rem .8rem; }
   .hints ul { margin: 0 0 .5rem; padding-left: 1.2rem; font-weight: 700; }
   .boxes { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; }
@@ -628,11 +642,20 @@
   </section>
 
   <footer class="footer" id="footer">
+    <div class="install-row" id="install-row" hidden><button class="install" id="b-install" data-t="install"></button></div>
     <span id="version"></span>
     <a href="https://github.com/vcutrona/abaco-zuzzurellone-kids" target="_blank" rel="noopener" data-t="footerCode"></a>
     <a href="https://it.wikipedia.org/wiki/Abaco_zuzzurellone" target="_blank" rel="noopener" data-t="footerWiki"></a>
   </footer>
 </main>
+<dialog class="install-help" id="install-help">
+  <h2 data-t="installTitle"></h2>
+  <ol>
+    <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7.5 7.5 12 3l4.5 4.5M8 11H6.5A1.5 1.5 0 0 0 5 12.5v7A1.5 1.5 0 0 0 6.5 21h11a1.5 1.5 0 0 0 1.5-1.5v-7a1.5 1.5 0 0 0-1.5-1.5H16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> <span data-t="installStep1"></span></li>
+    <li data-t="installStep2"></li>
+  </ol>
+  <form method="dialog"><button class="btn green" data-t="installOk"></button></form>
+</dialog>
 <script>
 // Each category has its group, the sentence used as the "category" hint, and its words.
 // Words and categories can be added freely: the game removes duplicates and sorts everything.
@@ -959,6 +982,8 @@ const TEXTS = {
     gaveUp: "Nessun problema", gaveUpText: W => `La parola segreta era ${W}. Vuoi riprovare?`,
     again: "Gioca ancora", changeGame: "Cambia gioco",
     footerCode: "Codice su GitHub (licenza MIT)", footerWiki: "Il gioco su Wikipedia",
+    install: "📲 Installa il gioco", installTitle: "Installa il gioco", installStep1: "Tocca il pulsante Condividi",
+    installStep2: "Scegli «Aggiungi alla schermata Home».", installOk: "Ho capito",
     zoomStart: "La parola segreta inizia con",
     zoomAria: (n, P) => (P ? `Le parole possibili iniziano con ${P}: l'abaco mostra la lettera numero ${n}.` : "L'abaco mostra la prima lettera delle parole possibili."),
     groupsTitle: "Con quali parole giochiamo?",
@@ -1025,6 +1050,8 @@ const TEXTS = {
     gaveUp: "No problem", gaveUpText: W => `The secret word was ${W}. Want to try again?`,
     again: "Play again", changeGame: "Change game",
     footerCode: "Source on GitHub (MIT License)", footerWiki: "The game on Wikipedia (in Italian)",
+    install: "📲 Install the game", installTitle: "Install the game", installStep1: "Tap the Share button",
+    installStep2: "Choose “Add to Home Screen”.", installOk: "Got it",
     zoomStart: "The secret word starts with",
     zoomAria: (n, P) => (P ? `The possible words start with ${P}: the abacus shows letter number ${n}.` : "The abacus shows the first letter of the possible words."),
     groupsTitle: "Which words shall we play with?",
@@ -1585,6 +1612,32 @@ $("b-case").onclick = () => {
   capitals = !capitals;
   applyCase();
 };
+
+/* ===== Install the game =====
+   The button shows only where installing really works: where the browser offers its install dialog
+   (Chrome, Edge and Samsung Internet on Android, Chrome and Edge on computers), and on iPhone and iPad,
+   where Safari has no dialog for pages and the button explains the steps. Never once the game is installed. */
+const installed = () => matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+// iPadOS presents itself as a Mac: a Mac with a touch screen is an iPad
+const appleTouch = /iPhone|iPad|iPod/.test(navigator.userAgent) || (/Macintosh/.test(navigator.userAgent) && navigator.maxTouchPoints > 1);
+let installPrompt = null;
+// No preventDefault(): Chrome keeps showing its own "Install app" banner, and the button stays
+// as a second way in, also after the banner has been closed
+window.addEventListener("beforeinstallprompt", e => {
+  installPrompt = e;
+  $("install-row").hidden = false;
+});
+window.addEventListener("appinstalled", () => { installPrompt = null; $("install-row").hidden = true; });
+$("b-install").onclick = async () => {
+  if (!installPrompt) return $("install-help").showModal();
+  try {
+    await installPrompt.prompt();
+    await installPrompt.userChoice;
+  } catch { /* already used, e.g. through the browser's banner */ }
+  installPrompt = null; // the dialog can only be opened once per offer
+  $("install-row").hidden = true;
+};
+if (appleTouch && !installed()) $("install-row").hidden = false;
 
 /* ===== Startup ===== */
 $("version").textContent = "v" + VERSION;
