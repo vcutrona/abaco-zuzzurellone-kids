@@ -136,7 +136,6 @@ A single `state` object holds the game. The interval is `state.low`/`state.high`
   1. Run `bump-my-version bump patch|minor|major`. With `.bumpversion.toml` it updates `VERSION`, commits, and creates the annotated tag `vX.Y.Z` locally.
   2. Run `git push origin main`.
   3. Push the tag separately with `git push origin vX.Y.Z`.
-- **The v1.0.0 deploy.** Pushing the tag did not start the workflow: the tag had been deleted and recreated, and the workflow file reached GitHub in the same push. The manual run from the tag worked. If a fresh tag pushed on its own doesn't start the workflow either, investigate.
 
 ## Roadmap
 
