@@ -138,7 +138,7 @@
   .mode.one { background: var(--green); box-shadow: 0 5px 0 var(--green-dark); }
   .mode.two { background: var(--purple); box-shadow: 0 5px 0 var(--purple-dark); }
   .mode:active { transform: translateY(4px); box-shadow: none; }
-  /* "How to play": open at first, with an arrow that shows it can be closed and reopened */
+  /* "How to play": closed at first, with an arrow that shows it can be opened and closed again */
   .rules { margin-top: 1rem; }
   details summary { font-weight: 800; cursor: pointer; min-height: 2.75rem; display: flex; align-items: center; gap: .5rem; list-style: none; }
   details summary::-webkit-details-marker { display: none; }
@@ -440,7 +440,7 @@
     <div class="logo title" aria-hidden="true"><span class="from"></span><i></i><span class="to"></span></div>
     <h1 id="greeting"></h1>
     <p data-t="intro"></p>
-    <details class="panel rules" open>
+    <details class="panel rules">
       <summary data-t="rulesTitle"></summary>
       <ol>
         <li data-t="rule1"></li>
