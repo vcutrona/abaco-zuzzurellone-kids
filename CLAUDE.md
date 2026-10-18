@@ -108,7 +108,7 @@ A single `state` object holds the game. The interval is `state.low`/`state.high`
 - **Bead size.** `--d` is the real diameter: at most `--bead` and never more than 80% of the column, computed with `cqw` units under `@supports`. Bar, wire and beads all use `--d`.
 - **Zoom.**
   - When both ends share a prefix (`commonPrefix`), the abacus shows the next letter. For example, between ZEBBA and ZERBA it shows the third letter, from B to R.
-  - The row "Iniziano con [Z][E][?]" above it shows the prefix.
+  - The row "La parola segreta inizia con [Z][E][?]" (EN "The secret word starts with") above it shows the prefix. It names the secret word on purpose: an implicit subject ("Iniziano con", "They start with") was unclear for children.
   - When the zoom goes one letter deeper, that row turns yellow until the next guess.
   - Letters are highlighted only when they concern the position shown.
 - **Accessibility.** The abacus has `role="img"` and a descriptive `aria-label`.
