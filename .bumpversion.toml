@@ -1,0 +1,14 @@
+[tool.bumpversion]
+current_version = "1.0.0"
+commit = true
+tag = true
+sign_tags = false
+tag_name = "v{new_version}"
+tag_message = "v{new_version}"
+allow_dirty = false
+message = "Bump version to v{new_version}"
+
+[[tool.bumpversion.files]]
+filename = "index.html"
+search = 'const VERSIONE = "{current_version}";'
+replace = 'const VERSIONE = "{new_version}";'
