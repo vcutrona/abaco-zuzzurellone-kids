@@ -149,7 +149,6 @@ A single `state` object holds the game. The interval is `state.low`/`state.high`
 - **Mobile stores.** Package the game with Capacitor or a TWA. In the kids category the footer links would need a parental gate.
 - **Mode 1 word groups.** Let the child pick groups in mode 1 too ("pensa a un animale!").
 - **Difficulty label.** Show easy, medium or hard under the choice of computer guesses.
-- **Menu intro.** Shorten it, since it partly repeats "Come si gioca".
 - **Font.** Playpen Sans was previewed and not adopted. If adopted, check the small logo on narrow phones, because the font is wider.
 - **Zoom across two letters.** When the bounds straddle two first letters (e.g. YAK–ZEBU), the bar stays narrow. Not addressed yet.
 - **Feedback without a GitHub account.** For now there is no channel.
