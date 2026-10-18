@@ -55,11 +55,12 @@ jobs:
           echo "Deploying version v$VERSION"
 
       # Only the files the game needs are published (README, workflows and templates stay out).
-      # Add new files here when they are introduced, e.g. the PWA manifest, service worker and icons.
+      # Add new files here when they are introduced.
       - name: Prepare the site folder
         run: |
           mkdir -p _site
-          cp index.html _site/
+          cp index.html manifest.webmanifest sw.js _site/
+          cp -r icons fonts _site/
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v6

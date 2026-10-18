@@ -1,6 +1,6 @@
 # Abaco… Zuzzurellone!
 
-A colourful word-guessing game for children aged 6–8, based on the classic Italian word game *Abaco zuzzurellone*. It runs entirely in the browser, as a single HTML file, in Italian and English.
+A colourful word-guessing game for children aged 6–8, based on the classic Italian word game *Abaco zuzzurellone*. It runs entirely in the browser, in Italian and English, and can be installed on phones and tablets to play offline.
 
 **Play it:** [vcutrona.github.io/abaco-zuzzurellone-kids](https://vcutrona.github.io/abaco-zuzzurellone-kids/)
 
@@ -35,27 +35,28 @@ Without ever saying so, the game is a binary search over a dictionary. It is als
 
 **Accessible.** The game supports keyboard navigation, uses screen reader labels, and respects reduced-motion settings.
 
-**No tracking, no storage.** There are no cookies and no accounts, and nothing is saved between sessions.
+**Installable and offline.** The game is a Progressive Web App: it can be added to the home screen and, after the first visit, it works without an internet connection.
+
+**No tracking, no storage.** There are no cookies and no accounts, and nothing is saved between sessions. The browser only keeps a copy of the game files, for offline use.
 
 ## How to run it
 
-The whole game is a single file, `index.html`, with no build step and no dependencies.
+The game is plain HTML, CSS and JavaScript in `index.html`, with no build step and no dependencies. Next to it are the files of the installable app: `manifest.webmanifest`, the service worker `sw.js`, the icons in `icons/` and the font in `fonts/`.
 
-**Locally:** open `index.html` in a browser, or serve the folder with any static server:
+**Locally:** serve the folder with any static server:
 
 ```bash
 python3 -m http.server 8000
 # then open http://localhost:8000
 ```
 
-**On GitHub Pages:**
-1. Put `index.html` in the root of the repository.
-2. Go to *Settings → Pages*.
-3. Choose *Deploy from a branch*, then select the main branch and the `/ (root)` folder.
+Opening `index.html` directly also works, but without offline support: service workers only run over `http` or `https`.
+
+**On GitHub Pages:** the workflow in `.github/workflows/deploy.yml` publishes the game when a version tag (for example `v1.0.3`) is pushed. In *Settings → Pages*, the source must be *GitHub Actions*. Only the files listed in the workflow's "Prepare the site folder" step are published.
 
 ## Versioning
 
-The game follows [Semantic Versioning](https://semver.org/). The current version is shown in the footer of the start screens and is set by the `VERSION` constant at the top of the script. Each release should update that constant and get a matching Git tag (for example `v1.0.0`).
+The game follows [Semantic Versioning](https://semver.org/). The current version is shown in the footer of the start screens and is set by the `VERSION` constant at the top of the script (the same constant in `sw.js` names the offline cache). Each release should update both and get a matching Git tag (for example `v1.0.0`). [bump-my-version](https://github.com/callowayproject/bump-my-version) does all three: `bump-my-version bump patch` (or `minor`, `major`) updates the version, commits and tags.
 
 ## Customisation
 

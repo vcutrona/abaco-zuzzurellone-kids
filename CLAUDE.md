@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 A browser word-guessing game for children aged 6–8, based on the Italian word game *Abaco zuzzurellone*: a secret word lies between two dictionary ends, and each guess only reveals whether it comes before or after in alphabetical order. Live at https://vcutrona.github.io/abaco-zuzzurellone-kids/.
 
-The entire game (HTML, CSS and JS) lives in a single file, `index.html`. There is no build step, no dependencies, no package manager, no test suite and no linter. To run it, open `index.html` directly or use `python3 -m http.server 8000`.
+The game itself (HTML, CSS and JS) lives in a single file, `index.html`. Next to it are the PWA files: `manifest.webmanifest`, the service worker `sw.js`, `icons/` and the self-hosted font in `fonts/`. There is no build step, no dependencies, no package manager, no test suite and no linter. To run it, use `python3 -m http.server 8000` (opening `index.html` directly works too, but the service worker only runs over http/https).
 
 Development is spec-driven: the author writes the specs and reviews every iteration, and Claude writes code, word lists and texts.
 
@@ -20,16 +20,16 @@ Development is spec-driven: the author writes the specs and reviews every iterat
   - measuring sizes and alignments;
   - confirming that the page never scrolls sideways (`scrollWidth > innerWidth`) and that there are no JS errors.
 
-  The font is self-hosted in `fonts/`, so screenshots use the real Baloo 2 even offline.
+  The font is self-hosted in `fonts/`, so screenshots use the real Baloo 2 even offline. To test offline mode and updates, serve the folder over http and use `context.setOffline(true)`.
 - **Edits to `index.html`.** Make text replacements whose search string occurs exactly once. A too-broad replacement once left stray text in the page (the favicon bug), so after each change also check that no stray text leaked into the page.
-- **Persistence.** There is deliberately none: no cookies, no `localStorage`, no tracking. Language, theme, name and selected word groups last only while the page is open. The game makes no external requests.
+- **Persistence.** There is deliberately none: no cookies, no `localStorage`, no tracking. Language, theme, name and selected word groups last only while the page is open. The game makes no external requests. The service worker only caches the game's own files.
 
 ## Architecture of `index.html`
 
 ### Head and body
 
 - **`<head>`:**
-  - meta tags (`viewport-fit=cover`, `theme-color`) and an inline SVG favicon;
+  - meta tags (`viewport-fit=cover`, `theme-color`), an inline SVG favicon, the `apple-touch-icon` and the manifest link;
   - a tiny script that sets `data-theme` (`light`/`dark`) before paint, which avoids a colour flash;
   - the main `<style>`, which starts with the `@font-face` rules for the self-hosted Baloo 2 (latin subset, weights 500/700/800, same files Google Fonts serves).
 - **`<body>`:**
@@ -37,6 +37,12 @@ Development is spec-driven: the author writes the specs and reviews every iterat
   - the screens `<section class="screen" id="s-…">`: `s-name`, `s-menu`, `s-secret` (mode 1 setup), `s-groups` (mode 2 group picker), `s-game` (shared by both modes) and `s-end`;
   - the footer.
 - **`show(id)`** switches screens and decides what appears in the header and footer for each one.
+
+### PWA files
+
+- **`sw.js`.** It precaches the page, manifest, icons and fonts in a cache named after its own `VERSION` constant, so a release replaces the cache and the activate step deletes the old ones. Navigations are network first (online players always get the latest page, and the cache copy is refreshed); everything else is cache first. The page registers it at startup, only over http/https.
+- **Icons.** `icons/icon.svg` is the source: the favicon's wire with the yellow and red beads on the `--bg` light blue, inside the maskable safe zone. The PNGs (192, 512, used for both `any` and `maskable`, and the 180px `apple-touch-icon`) are rendered from it; re-render them if the SVG changes.
+- **Font licence.** `fonts/OFL.txt` must ship with the font files.
 
 ### Main script
 
@@ -127,22 +133,17 @@ A single `state` object holds the game. The interval is `state.low`/`state.high`
 
 ## Releases and deployment
 
-- **Versions.** The project uses SemVer. `VERSION` in `index.html` must equal the Git tag without the `v`.
+- **Versions.** The project uses SemVer. `VERSION` in `index.html` must equal the Git tag without the `v`. `sw.js` has its own `VERSION`, kept equal by bump-my-version: if it didn't change, browsers would keep the old service worker and cache.
 - **GitHub Pages.** The source is *GitHub Actions*. The `github-pages` environment allows deployments from `v*` tags.
 - **When it deploys.** `.github/workflows/deploy.yml` runs only on `v*` tag pushes, or manually from a tag. Commits on `main` without a tag publish nothing.
 - **Workflow checks.** It verifies that the run is for a tag, that the tag is on `main`, and that it matches `VERSION`.
-- **Published files.** Only the files listed in the "Prepare the site folder" step are published, currently just `index.html`.
+- **Published files.** Only the files listed in the "Prepare the site folder" step are published, currently `index.html`, `manifest.webmanifest`, `sw.js`, `icons/` and `fonts/`. A new runtime file must be added there and, if needed offline, to the `FILES` list in `sw.js`.
 - **Release steps:**
-  1. Run `bump-my-version bump patch|minor|major`. With `.bumpversion.toml` it updates `VERSION`, commits, and creates the annotated tag `vX.Y.Z` locally.
+  1. Run `bump-my-version bump patch|minor|major`. With `.bumpversion.toml` it updates `VERSION` in `index.html` and `sw.js`, commits, and creates the annotated tag `vX.Y.Z` locally.
   2. Run `git push origin main`.
   3. Push the tag separately with `git push origin vX.Y.Z`.
 
 ## Roadmap
-
-**Next, agreed: PWA**
-- `manifest.json` with PNG icons and an `apple-touch-icon`.
-- A service worker for offline use.
-- Adding all the new files to the workflow's "Prepare the site folder" step.
 
 **Ideas, not decided:**
 - **Mobile stores.** Package the game with Capacitor or a TWA. In the kids category the footer links would need a parental gate.

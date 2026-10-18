@@ -12,3 +12,8 @@ message = "Bump version to v{new_version}"
 filename = "index.html"
 search = 'const VERSION = "{current_version}";'
 replace = 'const VERSION = "{new_version}";'
+
+[[tool.bumpversion.files]]
+filename = "sw.js"
+search = 'const VERSION = "{current_version}";'
+replace = 'const VERSION = "{new_version}";'
